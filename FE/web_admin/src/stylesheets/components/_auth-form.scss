@@ -1,0 +1,7 @@
+@use '../abstracts' as *;
+
+.auth-form {
+    width: 100dvw;
+    height: 100dvh;
+    background-color: $bg-primary;
+}

@@ -1,0 +1,26 @@
+#-------------------
+# Android (aquarium_app_client)
+#-------------------
+**/.gradle/
+**/.idea/
+**/.kotlin/
+**/build/
+**/local.properties
+
+# ---------------------
+# React + Vite (aquarium_web_admin)
+# ---------------------
+**/node_modules/
+**/.vite/
+**/dist/
+
+# ---------------------
+# Spring Boot Kotlin (aquarium_server)
+# ---------------------
+**/target/
+**/.idea/
+**/.mvn/
+**/*.iml
+**/.classpath
+**/.project
+**/.settings/

@@ -6,6 +6,7 @@ import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.aquarium_app.ui.screens.auth.AuthScreen
 
 @Composable
 fun AppNavigation() {
@@ -22,10 +23,10 @@ fun AppNavigation() {
     * */
     NavHost(
         navController = navController,
-//        startDestination = if (isLoggedIn.value) "home" else "login"
-        startDestination = "home"
+        startDestination = if (isLoggedIn.value) "home" else "login"
+//        startDestination = "home"
     ) {
-        composable("login") {  }
+        composable("login") { AuthScreen() }
         composable("home") {  }
     }
 }

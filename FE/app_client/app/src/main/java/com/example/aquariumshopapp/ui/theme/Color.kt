@@ -17,3 +17,5 @@ val BlackAlpha30 = Color(0x4D000000)
 val GreenPrimary = Color(0xFF00AD64)
 val BackgroundColor = Color(0xFFF6F6F6)
 val DiscountColorHome = Color.Red
+
+val ERROR_RED = Color(0xFFFA2525)

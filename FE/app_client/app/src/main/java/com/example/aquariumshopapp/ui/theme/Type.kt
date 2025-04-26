@@ -27,6 +27,12 @@ val textButtonMedium = TextStyle(
     textAlign = TextAlign.Center
 )
 
+val textError = TextStyle(
+    fontWeight = FontWeight.Normal,
+    fontSize = 13.sp,
+    textAlign = TextAlign.Center
+)
+
 val detailTextSmall = TextStyle(
     fontWeight = FontWeight.Normal,
     fontSize = 12.sp,

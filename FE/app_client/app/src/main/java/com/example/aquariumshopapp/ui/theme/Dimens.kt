@@ -5,6 +5,7 @@ import androidx.compose.ui.unit.dp
 object Dimens {
     /*  Padding  */
     val paddingSmall = 8.dp
+    val paddingXSmall = 12.dp
     val paddingMedium = 16.dp
     val paddingLarge = 24.dp
 
@@ -12,6 +13,7 @@ object Dimens {
     val iconSizeSmall = 16.dp
     val iconSizeMedium = 24.dp
     val iconSizeLarge = 32.dp
+    val iconSizeXLarge = 38.dp
 
     /*  Border radius  */
     val borderRadiusSmall = 8

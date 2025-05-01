@@ -45,24 +45,13 @@ fun CustomOutlinedTextField(
     onValueChange: (String) -> Unit,
     value: String,
 
-    windowType: WindowType,
-
     errorMessage: String
 ) {
-    val modifierWType = when(windowType) {
-        WindowType.Medium -> Modifier.height(60.dp)
-        else -> Modifier.height(50.dp)
-    }
-    val styleText = when(windowType) {
-        WindowType.Medium -> textFieldMedium
-        else -> placeholderStyle
-    }
-
     Column(
         modifier = Modifier
     ) {
         Box(
-            modifier = modifier.then(modifierWType)
+            modifier = modifier.height(50.dp)
         ) {
             OutlinedTextField(
                 value = value,
@@ -79,7 +68,7 @@ fun CustomOutlinedTextField(
                 placeholder = {
                     Text(
                         placeholder,
-                        style = styleText,
+                        style = placeholderStyle,
                         color = placeholderColor,
                         modifier = Modifier.fillMaxWidth()
                     )

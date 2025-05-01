@@ -48,8 +48,7 @@ fun AuthForm(
     authUIState: AuthUIState,
     onChangeFrom: (targetForm: String) -> Unit,
     onInputChange: (AuthFieldsState) -> Unit,
-    onPrimaryButtonClicked: () -> Unit,
-    windowType: WindowType
+    onPrimaryButtonClicked: () -> Unit
 ) {
     val authFieldsState = authUIState.fields
     val authFieldsErrorState = authUIState.errors
@@ -73,13 +72,8 @@ fun AuthForm(
                 .background(Color.Transparent),
             verticalArrangement = Arrangement.Bottom
         ) {
-            val modifierMainForm = when(windowType) {
-                WindowType.Medium -> Modifier.fillMaxHeight(.75f)
-                else -> Modifier.fillMaxHeight(.7f)
-            }
-
             Column(
-                modifier = modifierMainForm
+                modifier = Modifier.fillMaxHeight(.7f)
                     .fillMaxWidth()
                     .clip(
                         shape = RoundedCornerShape(
@@ -100,37 +94,24 @@ fun AuthForm(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     /*  Logo  */
-                    val modifierLogo = when(windowType) {
-                        WindowType.Medium -> Modifier.size(180.dp)
-                        else -> Modifier.size(120.dp)
-                    }
                     Image(
                         painter = painterResource(R.drawable.leaf_solid),
                         contentDescription = "Logo",
                         colorFilter = ColorFilter.tint(GreenPrimary),
-                        modifier = modifierLogo.align(Alignment.CenterHorizontally)
+                        modifier = Modifier
+                            .size(120.dp)
+                            .align(Alignment.CenterHorizontally)
                     )
 
                     /*  Title  */
-                    val styleTitle = when(windowType) {
-                        WindowType.Medium -> {
-                            TextStyle(
-                                fontSize = 40.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                        else -> {
-                            TextStyle(
-                                fontSize = 30.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                    }
                     Text(
                         authForm.title,
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
-                        style = styleTitle,
+                        style = TextStyle(
+                            fontSize = 30.sp,
+                            fontWeight = FontWeight.Bold
+                        ),
                         color = GreenPrimary
                     )
 
@@ -150,7 +131,6 @@ fun AuthForm(
                         false,
                         { onInputChange(authFieldsState.copy(email = it)) },
                         authFieldsState.email,
-                        windowType,
                         authFieldsErrorState.emailError
                     )
 
@@ -169,7 +149,6 @@ fun AuthForm(
                             true,
                             { onInputChange(authFieldsState.copy(password = it)) },
                             authFieldsState.password,
-                            windowType,
                             authFieldsErrorState.passwordError
                         )
                     }
@@ -189,27 +168,18 @@ fun AuthForm(
                             true,
                             { onInputChange(authFieldsState.copy(confirmPassword = it)) },
                             authFieldsState.confirmPassword,
-                            windowType,
                             authFieldsErrorState.confirmPasswordError
                         )
                     }
 
                     /*  Button  */
-                    val modifierButton = when(windowType) {
-                        WindowType.Medium -> Modifier.height(60.dp)
-                        else -> Modifier.height(50.dp)
-                    }
-                    val textStyle = when(windowType) {
-                        WindowType.Medium -> textButtonMedium
-                        else -> textButtonSmall
-                    }
                     Button(
                         onClick = {
                             if (authForm.type === "register") onPrimaryButtonClicked()
                         },
                         modifier = Modifier
                             .fillMaxWidth(0.8f)
-                            .then(modifierButton)
+                            .height(50.dp)
                             .clip(RoundedCornerShape(Dimens.borderRadiusExtraLarge.dp))
                             .background(GreenPrimary),
                         colors = ButtonDefaults.buttonColors(
@@ -219,7 +189,7 @@ fun AuthForm(
                     ) {
                         Text(
                             authForm.label,
-                            style = textStyle,
+                            style = textButtonSmall,
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
@@ -232,11 +202,6 @@ fun AuthForm(
                         verticalArrangement = Arrangement.spacedBy(Dimens.spaceSmall, Alignment.CenterVertically),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        val textStyleLinkSwitchSC = when(windowType) {
-                            WindowType.Medium -> Typography.bodyLarge
-                            else -> Typography.bodyMedium
-                        }
-
                         /*  Link to register  */
                         Text(
                             text = buildAnnotatedString {
@@ -251,7 +216,7 @@ fun AuthForm(
                                 }
                             },
                             textAlign = TextAlign.Center,
-                            style = textStyleLinkSwitchSC,
+                            style = Typography.bodyMedium,
                             modifier = Modifier.clickable(
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() }
@@ -277,7 +242,7 @@ fun AuthForm(
                                         onChangeFrom("forgot")
                                     },
                                 textAlign = TextAlign.Center,
-                                style = textStyleLinkSwitchSC
+                                style = Typography.bodyMedium
                             )
                         }
                     }

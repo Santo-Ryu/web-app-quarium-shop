@@ -14,7 +14,6 @@ fun AuthScreen(viewModel: AuthViewModel = viewModel()) {
     val authFieldsState by viewModel.authFieldsState.collectAsState()
     val authFieldsErrorState by viewModel.authFieldsErrorState.collectAsState()
     val currentForm by viewModel.currentForm.collectAsState()
-    val windowType = rememberWindowSizeClass()
 
     /*  Component  */
     AuthForm(
@@ -26,6 +25,5 @@ fun AuthScreen(viewModel: AuthViewModel = viewModel()) {
         { formType -> viewModel.onSwitchForm(formType) },
         { updatedState -> viewModel.onInputChanged(updatedState) },
         { viewModel.onRegisterClicked() },
-        windowType
     )
 }

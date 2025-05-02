@@ -12,18 +12,10 @@ val textFieldSmall = TextStyle(
     fontWeight = FontWeight.Normal,
     fontSize = 16.sp
 )
-val textFieldMedium = TextStyle(
-    fontWeight = FontWeight.Normal,
-    fontSize = 20.sp
-)
+
 val textButtonSmall = TextStyle(
     fontWeight = FontWeight.SemiBold,
     fontSize = 20.sp,
-    textAlign = TextAlign.Center
-)
-val textButtonMedium = TextStyle(
-    fontWeight = FontWeight.SemiBold,
-    fontSize = 26.sp,
     textAlign = TextAlign.Center
 )
 
@@ -38,6 +30,22 @@ val detailTextSmall = TextStyle(
     fontSize = 12.sp,
     textAlign = TextAlign.Left,
     color = Color(0xFF656565)
+)
+
+val titleLarge = TextStyle(
+    fontWeight = FontWeight.Bold,
+    fontSize = 26.sp,
+    textAlign = TextAlign.Center
+)
+val titleMedium = TextStyle(
+    fontWeight = FontWeight.SemiBold,
+    fontSize = 22.sp,
+    textAlign = TextAlign.Center
+)
+val titleSmall = TextStyle(
+    fontWeight = FontWeight.SemiBold,
+    fontSize = 18.sp,
+    textAlign = TextAlign.Center
 )
 
 // Material Design 3

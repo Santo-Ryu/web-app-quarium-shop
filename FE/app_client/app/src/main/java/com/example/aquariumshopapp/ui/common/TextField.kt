@@ -23,8 +23,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.aquarium_app.ui.theme.ERROR_RED
 import com.example.aquarium_app.ui.theme.textError
-import com.example.aquarium_app.ui.utils.WindowType
-import com.example.aquarium_app.ui.theme.textFieldMedium
 
 @Composable
 fun CustomOutlinedTextField(

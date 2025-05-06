@@ -6,9 +6,11 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material3.ripple
@@ -32,13 +35,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.aquarium_app.ui.theme.BlackAlpha10
 import com.example.aquarium_app.ui.theme.Dimens
 import com.example.aquarium_app.ui.theme.GreenPrimary
 import com.example.aquarium_app.ui.theme.Typography
 
 @Composable
-fun CategoryList() {
+fun CategoryList(navController: NavController) {
     var selectedIndex by remember { mutableStateOf(0) }
     var categories by remember {
         mutableStateOf(
@@ -63,12 +67,13 @@ fun CategoryList() {
 
         Spacer(Modifier.height(Dimens.spaceSmall))
 
-        LazyRow(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(45.dp)
+                .horizontalScroll(rememberScrollState())
         ) {
-            items(categories.size) { index ->
+            categories.forEachIndexed { index, category ->
                 val isSelected = index == selectedIndex
 
                 val animatedBoxColor by animateColorAsState(
@@ -85,15 +90,28 @@ fun CategoryList() {
 
                 Spacer(modifier = Modifier.width(Dimens.paddingXSmall))
 
-                CategoryCard(
-                    categories[index],
-                    index,
-                    scale,
-                    animatedBoxColor,
-                    animatedIconColor,
-                    interactionSource,
-                    onSelected = { selectedIndex = it }
-                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .clip(RoundedCornerShape(Dimens.borderRadiusMedium))
+                        .background(animatedBoxColor)
+                        .padding(Dimens.paddingXSmall)
+                        .clickable(
+                            indication = ripple(bounded = true),
+                            interactionSource = interactionSource
+                        ){ selectedIndex = index }
+                    ,
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        category,
+                        textAlign = TextAlign.Center,
+                        style = Typography.titleSmall,
+                        color = animatedIconColor,
+                        modifier = Modifier
+                            .graphicsLayer(scaleX = scale, scaleY = scale)
+                    )
+                }
             }
         }
     }

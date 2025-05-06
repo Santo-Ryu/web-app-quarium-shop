@@ -4,6 +4,8 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +21,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +39,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.aquarium_app.ui.screens.home.components.ProductCard
 import com.example.aquarium_app.ui.theme.Dimens
 import com.example.aquarium_app.ui.theme.*
@@ -48,7 +52,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun SaleOff() {
+fun SaleOff(navController: NavController) {
     Column(
         modifier = Modifier
             .padding(Dimens.paddingXSmall)
@@ -93,10 +97,12 @@ fun SaleOff() {
                 .fillMaxWidth()
                 .height(180.dp) 
         ) {
-            LazyRow(
-                modifier = Modifier.fillMaxSize(),
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .horizontalScroll(rememberScrollState()),
             ) {
-                items(saleProducts.size) { index ->
+                saleProducts.forEach { item ->
                     Column(
                         modifier = Modifier
                             .width(140.dp)
@@ -105,9 +111,10 @@ fun SaleOff() {
                                 1.dp, BlackAlpha10,
                                 RoundedCornerShape(Dimens.borderRadiusSmall.dp)
                             )
+                            .clickable { navController.navigate("product_details") }
                     ) {
                         Image(
-                            painter = painterResource(saleProducts[index]),
+                            painter = painterResource(item),
                             contentDescription = "Product",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier

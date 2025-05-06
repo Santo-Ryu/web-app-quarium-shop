@@ -1,4 +1,4 @@
-package com.example.aquariumshopapp.ui.model.auth
+package com.example.aquariumshopapp.ui.model
 
 import com.example.aquariumshopapp.domain.model.AuthFieldsErrorState
 import com.example.aquariumshopapp.domain.model.AuthFieldsState

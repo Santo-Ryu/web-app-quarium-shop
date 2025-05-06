@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.aquarium_app.ui.screens.auth.AuthScreen
 import com.example.aquariumshopapp.ui.screens.home.HomeScreen
 import com.example.aquariumshopapp.ui.screens.product_details.ProductDetailsScreen
+import com.example.aquariumshopapp.ui.screens.product_review.ProductReviewScreen
 
 @Composable
 fun AppNavigation() {
@@ -26,10 +27,11 @@ fun AppNavigation() {
     NavHost(
         navController = navController,
 //        startDestination = if (isLoggedIn.value) "home" else "login"
-        startDestination = "product_details"
+        startDestination = "product_review"
     ) {
         composable("login") { AuthScreen() }
         composable("home") { HomeScreen() }
         composable("product_details") { ProductDetailsScreen() }
+        composable("product_review") { ProductReviewScreen(navController) }
     }
 }

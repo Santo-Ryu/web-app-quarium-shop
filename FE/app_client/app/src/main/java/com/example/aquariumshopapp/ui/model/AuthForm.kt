@@ -1,4 +1,4 @@
-package com.example.aquariumshopapp.ui.model.auth
+package com.example.aquariumshopapp.ui.model
 
 data class AuthForm(
     val type: String, // "login", "register", "forgot"

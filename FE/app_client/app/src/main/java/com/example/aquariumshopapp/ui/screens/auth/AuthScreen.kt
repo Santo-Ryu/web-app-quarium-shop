@@ -5,8 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.aquarium_app.ui.screens.auth.components.AuthForm
-import com.example.aquarium_app.ui.utils.rememberWindowSizeClass
-import com.example.aquariumshopapp.ui.model.auth.AuthUIState
+import com.example.aquariumshopapp.ui.model.AuthUIState
 import com.example.aquariumshopapp.ui.screens.auth.AuthViewModel
 
 @Composable

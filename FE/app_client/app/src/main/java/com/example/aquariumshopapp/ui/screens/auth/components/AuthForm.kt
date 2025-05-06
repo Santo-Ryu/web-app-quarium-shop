@@ -35,11 +35,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.aquarium_app.ui.common.CustomOutlinedTextField
-import com.example.aquarium_app.ui.utils.WindowType
 import com.example.aquarium_app.ui.theme.*
 import com.example.aquariumshopapp.R
 import com.example.aquariumshopapp.domain.model.AuthFieldsState
-import com.example.aquariumshopapp.ui.model.auth.AuthUIState
+import com.example.aquariumshopapp.ui.model.AuthUIState
 import com.example.aquariumshopapp.ui.screens.auth.components.ExoVideoPlayer
 import com.example.aquariumshopapp.ui.theme.modifierOutlinedTextFieldAuthForm
 

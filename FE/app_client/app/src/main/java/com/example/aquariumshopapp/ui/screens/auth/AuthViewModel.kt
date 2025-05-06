@@ -3,11 +3,10 @@ package com.example.aquariumshopapp.ui.screens.auth
 import androidx.lifecycle.ViewModel
 import com.example.aquariumshopapp.domain.model.AuthFieldsErrorState
 import com.example.aquariumshopapp.domain.model.AuthFieldsState
-import com.example.aquariumshopapp.ui.model.auth.AuthForm
+import com.example.aquariumshopapp.ui.model.AuthForm
 import com.example.aquariumshopapp.ui.utils.Validator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlin.toString
 
 class AuthViewModel: ViewModel() {
     private val _authFieldsState = MutableStateFlow(AuthFieldsState())

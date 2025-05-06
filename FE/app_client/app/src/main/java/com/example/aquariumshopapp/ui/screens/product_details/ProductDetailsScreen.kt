@@ -2,6 +2,7 @@ package com.example.aquariumshopapp.ui.screens.product_details
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,13 +22,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.aquarium_app.ui.theme.BlackAlpha30
 import com.example.aquarium_app.ui.theme.Dimens
 import com.example.aquariumshopapp.R
 import com.example.aquariumshopapp.ui.screens.product_details.components.ProductDetails
 
 @Composable
-fun ProductDetailsScreen() {
+fun ProductDetailsScreen(navController: NavController) {
     Box() {
         Column(
             modifier = Modifier
@@ -38,13 +40,14 @@ fun ProductDetailsScreen() {
             verticalArrangement = Arrangement.Bottom,
         ) {
             /*  Product Details  */
-            ProductDetails()
+            ProductDetails(navController)
         }
 
         /*  Navbar  */
+        data class IconNavBar(val iconId: Int, val command: String)
         val listOfNavbar = listOf(
-            R.drawable.arrow_left_solid,
-            R.drawable.cart_shopping_solid
+            IconNavBar(R.drawable.arrow_left_solid, "Back Home"),
+            IconNavBar(R.drawable.cart_shopping_solid, "Add To Card")
         )
         Row(
             modifier = Modifier
@@ -60,9 +63,16 @@ fun ProductDetailsScreen() {
                     modifier = Modifier
                         .background(BlackAlpha30, shape = CircleShape)
                         .padding(14.dp)
+                        .clickable {
+                            val route = when (item.command) {
+                                "Add To Cart" -> ""
+                                else -> "home"
+                            }
+                            navController.navigate(route)
+                        }
                 ) {
                     Image(
-                        painter = painterResource(item),
+                        painter = painterResource(item.iconId),
                         contentDescription = "Icon",
                         colorFilter = ColorFilter.tint(Color.White),
                         modifier = Modifier

@@ -31,6 +31,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.aquarium_app.ui.theme.BUTTON_PRIMARY_GREEN
 import com.example.aquarium_app.ui.theme.BlackAlpha10
 import com.example.aquarium_app.ui.theme.Dimens
@@ -40,7 +41,7 @@ import com.example.aquarium_app.ui.theme.White
 import com.example.aquariumshopapp.R
 
 @Composable
-fun ProductComment() {
+fun ProductComment(navController: NavController) {
     val paddingSet = Modifier
         .padding(
             start = Dimens.paddingMedium,
@@ -212,7 +213,7 @@ fun ProductComment() {
             }
 
             Button(
-                onClick = {},
+                onClick = { navController.navigate("product_review") },
                 modifier = Modifier
                     .fillMaxWidth(),
                 shape = RoundedCornerShape(20.dp),

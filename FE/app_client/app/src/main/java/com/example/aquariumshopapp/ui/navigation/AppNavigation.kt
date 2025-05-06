@@ -27,11 +27,11 @@ fun AppNavigation() {
     NavHost(
         navController = navController,
 //        startDestination = if (isLoggedIn.value) "home" else "login"
-        startDestination = "product_review"
+        startDestination = "product_details"
     ) {
         composable("login") { AuthScreen() }
         composable("home") { HomeScreen() }
-        composable("product_details") { ProductDetailsScreen() }
+        composable("product_details") { ProductDetailsScreen(navController) }
         composable("product_review") { ProductReviewScreen(navController) }
     }
 }

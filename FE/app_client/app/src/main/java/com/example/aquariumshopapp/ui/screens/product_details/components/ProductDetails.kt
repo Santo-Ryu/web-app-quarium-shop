@@ -17,12 +17,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.aquarium_app.ui.theme.BlackAlpha10
 import com.example.aquarium_app.ui.theme.BlackAlpha30
 import com.example.aquariumshopapp.R
 
 @Composable
-fun ProductDetails() {
+fun ProductDetails(navController: NavController) {
     val productImages = listOf(
         R.drawable.cay_dong_tien,
         R.drawable.banner3,
@@ -75,7 +76,7 @@ fun ProductDetails() {
             )
 
             /*  Product Comments  */
-            ProductComment()
+            ProductComment(navController)
 
             /*  Product Related  */
             ProductRelated()

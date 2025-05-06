@@ -10,6 +10,7 @@ object Dimens {
     val paddingLarge = 24.dp
 
     /*  Icon size  */
+    val iconSizeXSmall = 14.dp
     val iconSizeSmall = 16.dp
     val iconSizeMedium = 24.dp
     val iconSizeLarge = 32.dp
@@ -22,6 +23,7 @@ object Dimens {
     val borderRadiusExtraLarge = 32
 
     /*  Space  */
+    val spaceESmall = 4.dp
     val spaceSmall = 8.dp
     val spaceMedium = 16.dp
     val spaceLarge = 24.dp

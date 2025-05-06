@@ -42,6 +42,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.aquarium_app.ui.theme.Dimens
 import com.example.aquarium_app.ui.theme.GreenPrimary
 import com.example.aquarium_app.ui.theme.Typography
@@ -49,9 +50,10 @@ import com.example.aquarium_app.ui.theme.*
 import com.example.aquariumshopapp.R
 
 @Composable
-fun ProductCard(modifier: Modifier) {
+fun ProductCard(modifier: Modifier, navController: NavController) {
     Column(
         modifier = modifier
+            .clickable { navController.navigate("product_details") }
     ) {
 //        Image
         Box(
@@ -91,7 +93,7 @@ fun ProductCard(modifier: Modifier) {
                 Text(
                     "4.5",
                     style = Typography.titleMedium,
-                    color = RATING_YELLOW,
+                    color = RATING_YELLOW_2,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .wrapContentWidth(Alignment.CenterHorizontally)
@@ -99,7 +101,7 @@ fun ProductCard(modifier: Modifier) {
                 Image(
                     painter = painterResource(R.drawable.star_solid),
                     contentDescription = "Product Image",
-                    colorFilter = ColorFilter.tint(RATING_YELLOW),
+                    colorFilter = ColorFilter.tint(RATING_YELLOW_2),
                     modifier = Modifier
                         .size(Dimens.iconSizeSmall)
                 )

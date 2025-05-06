@@ -36,6 +36,7 @@ import com.example.aquarium_app.ui.theme.BUTTON_PRIMARY_GREEN
 import com.example.aquarium_app.ui.theme.BlackAlpha10
 import com.example.aquarium_app.ui.theme.Dimens
 import com.example.aquarium_app.ui.theme.GreenPrimary
+import com.example.aquarium_app.ui.theme.RATING_YELLOW_2
 import com.example.aquarium_app.ui.theme.Typography
 import com.example.aquarium_app.ui.theme.White
 import com.example.aquariumshopapp.R
@@ -104,7 +105,7 @@ fun ProductComment(navController: NavController) {
                         Icon(
                             imageVector = Icons.Default.Star,
                             contentDescription = null,
-                            tint = Color(0xFFFFC107),
+                            tint = RATING_YELLOW_2,
                             modifier = Modifier.size(16.dp)
                         )
                     }

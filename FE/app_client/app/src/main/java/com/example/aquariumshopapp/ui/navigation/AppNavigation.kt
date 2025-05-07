@@ -13,6 +13,7 @@ import com.example.aquariumshopapp.ui.screens.product_review.ProductReviewScreen
 import com.example.aquariumshopapp.ui.screens.search.FilterSideBar
 import com.example.aquariumshopapp.ui.screens.search.SearchInputScreen
 import com.example.aquariumshopapp.ui.screens.search.SearchResultScreen
+import com.example.aquariumshopapp.ui.screens.shopping_cart.ShoppingCartScreen
 
 @Composable
 fun AppNavigation() {
@@ -30,7 +31,7 @@ fun AppNavigation() {
     NavHost(
         navController = navController,
 //        startDestination = if (isLoggedIn.value) "home" else "login"
-        startDestination = "filter_sidebar"
+        startDestination = "shopping_cart"
     ) {
         composable("login") { AuthScreen() }
 
@@ -45,5 +46,7 @@ fun AppNavigation() {
         composable("search_result") { SearchResultScreen(navController) }
 
         composable("filter_sidebar") { FilterSideBar(navController) }
+
+        composable("shopping_cart") { ShoppingCartScreen(navController) }
     }
 }

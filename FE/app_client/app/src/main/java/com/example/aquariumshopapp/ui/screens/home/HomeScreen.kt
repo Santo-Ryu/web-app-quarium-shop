@@ -20,6 +20,7 @@ import com.example.aquarium_app.ui.screens.home.components.NavigationBar
 import com.example.aquarium_app.ui.theme.BackgroundColor
 import com.example.aquarium_app.ui.theme.BlackAlpha10
 import com.example.aquarium_app.ui.theme.White
+import com.example.aquariumshopapp.ui.theme.productCardModifier
 
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -30,32 +31,23 @@ fun HomeScreen(navController: NavController) {
             .background(BackgroundColor),
     ) {
         /*  Modifiers  */
-        val barModifier = Modifier
-            .fillMaxWidth()
-            .weight(.1f)
-            .background(White)
-
         val mainContentModifier = Modifier
             .fillMaxWidth()
             .weight(.8f)
             .verticalScroll(rememberScrollState())
 
-        val cardModifier = Modifier
-            .clip(RoundedCornerShape(8.dp))
-            .border(
-                1.dp, BlackAlpha10,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .height(250.dp)
-            .weight(1f)
-
         /*  Header  */
-        Header(barModifier)
+        Header(navController)
 
         /*  Main  */
-        MainContent(mainContentModifier, cardModifier, navController)
+        MainContent(
+            mainContentModifier,
+            Modifier.productCardModifier()
+                .weight(1f),
+            navController
+        )
 
         /*  Navigation bar  */
-        NavigationBar(barModifier)
+        NavigationBar(navController)
     }
 }

@@ -40,6 +40,7 @@ android {
 }
 
 dependencies {
+    implementation("com.google.accompanist:accompanist-flowlayout:0.34.0")
     implementation("com.google.accompanist:accompanist-pager:0.34.0")
     implementation("com.google.accompanist:accompanist-pager-indicators:0.34.0")
     implementation("androidx.compose.material3:material3-window-size-class:<latest_version>")

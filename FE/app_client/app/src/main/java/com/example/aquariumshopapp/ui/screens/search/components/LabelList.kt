@@ -1,25 +1,19 @@
-package com.example.aquariumshopapp.ui.screens.home.components
+package com.example.aquariumshopapp.ui.screens.search.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import com.google.accompanist.flowlayout.FlowRow
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material3.ripple
@@ -35,45 +29,37 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.aquarium_app.ui.theme.BlackAlpha10
 import com.example.aquarium_app.ui.theme.Dimens
 import com.example.aquarium_app.ui.theme.GreenPrimary
 import com.example.aquarium_app.ui.theme.Typography
 
 @Composable
-fun CategoryList(navController: NavController) {
+fun LabelList(
+    title: String,
+    list: List<String>
+) {
     var selectedIndex by remember { mutableStateOf(0) }
-    var categories by remember {
-        mutableStateOf(
-            listOf(
-                "Tất cả",
-                "Cá cảnh",
-                "Cây thủy sinh",
-                "Dụng cụ",
-                "Bể cá"
-            )
-        )
-    }
 
     Column(
         modifier = Modifier
     ) {
         Text(
-            "Sắp xếp theo",
+            title,
             Modifier.padding(start = Dimens.paddingXSmall),
             style = Typography.titleSmall
         )
 
         Spacer(Modifier.height(Dimens.spaceSmall))
 
-        Row(
+        FlowRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(45.dp)
-                .horizontalScroll(rememberScrollState())
+                .padding(start = 12.dp, end = 12.dp),
+            mainAxisSpacing = Dimens.paddingXSmall,
+            crossAxisSpacing = Dimens.paddingXSmall,
         ) {
-            categories.forEachIndexed { index, category ->
+            list.forEachIndexed { index, category ->
                 val isSelected = index == selectedIndex
 
                 val animatedBoxColor by animateColorAsState(
@@ -88,11 +74,9 @@ fun CategoryList(navController: NavController) {
                     animationSpec = tween(durationMillis = 300)
                 )
 
-                Spacer(modifier = Modifier.width(Dimens.paddingXSmall))
-
                 Box(
                     modifier = Modifier
-                        .fillMaxHeight()
+                        .height(45.dp)
                         .clip(RoundedCornerShape(Dimens.borderRadiusMedium))
                         .background(animatedBoxColor)
                         .padding(Dimens.paddingXSmall)

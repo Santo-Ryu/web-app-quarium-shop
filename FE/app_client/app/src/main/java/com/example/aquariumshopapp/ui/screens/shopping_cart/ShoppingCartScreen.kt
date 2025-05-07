@@ -3,6 +3,7 @@ package com.example.aquariumshopapp.ui.screens.shopping_cart
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -82,7 +83,7 @@ fun ShoppingCartScreen(navController: NavController) {
                     color = GreenPrimary
                 )
             }
-            Row() {
+            Row(modifier = Modifier.clickable { navController.navigate("payment") }) {
                 Text(
                     text = "Thanh toán",
                     style = Typography.titleLarge,

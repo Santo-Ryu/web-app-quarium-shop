@@ -4,5 +4,15 @@
 // base
 @use "base/index" as *;
 
+// vendor
+@use "vendor/index" as *;
+
 // components
 @use "components/index" as *;
+
+// layouts
+@use "layouts/index" as *;
+
+// pages
+@use "pages/auth/index" as *;
+@use "pages/dashboard/index" as *;

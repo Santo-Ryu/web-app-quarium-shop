@@ -6,9 +6,9 @@ export const MainLayout = ({
 }) => {
     return (
         <>
-            <div className="layout-container">
+            <div className="main-layout">
                 <Sidebar />
-                <div className="layout-main">
+                <div className="main-layout__content">
                     <Header />
                     {layout}
                 </div>

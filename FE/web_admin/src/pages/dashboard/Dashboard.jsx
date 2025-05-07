@@ -1,6 +1,5 @@
-import { MainContent } from "../../layouts/MainContent";
+import { Helmet } from "react-helmet-async";
 import { MainLayout } from "../../layouts/MainLayout";
-import { Sidebar } from "../../layouts/Sidebar";
 import { DoashboardContent } from "./DashBoardContent";
 
 export const Doashboard = () => {

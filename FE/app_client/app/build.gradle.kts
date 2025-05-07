@@ -40,6 +40,8 @@ android {
 }
 
 dependencies {
+    implementation("org.osmdroid:osmdroid-wms:6.1.16")
+    implementation("org.osmdroid:osmdroid-android:6.1.16")
     implementation("androidx.compose.material:material-icons-extended:1.6.0")
     implementation("com.google.accompanist:accompanist-flowlayout:0.34.0")
     implementation("com.google.accompanist:accompanist-pager:0.34.0")

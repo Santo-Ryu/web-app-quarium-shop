@@ -1,9 +1,13 @@
 package com.example.aquarium_app.ui.screens.home.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Surface
@@ -21,14 +25,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.aquarium_app.ui.theme.Dimens.paddingMedium
 import com.example.aquarium_app.ui.theme.GreenPrimary
+import com.example.aquarium_app.ui.theme.White
 import com.example.aquariumshopapp.R
 
 @Composable
-fun Header(modifier: Modifier) {
+fun Header(navController: NavController) {
     Surface(
-        modifier = modifier,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(85.dp)
+            .background(White),
         color = Color.White,
         tonalElevation = 4.dp,
         shadowElevation = 8.dp,
@@ -65,6 +74,7 @@ fun Header(modifier: Modifier) {
                 contentDescription = "Logo",
                 colorFilter = ColorFilter.tint(GreenPrimary),
                 modifier = Modifier.size(28.dp)
+                    .clickable { navController.navigate("search_input") }
             )
         }
 }

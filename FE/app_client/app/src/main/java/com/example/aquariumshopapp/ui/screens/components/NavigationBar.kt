@@ -7,16 +7,16 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,21 +31,26 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.aquarium_app.ui.theme.GreenPrimary
+import com.example.aquarium_app.ui.theme.White
 import com.example.aquariumshopapp.R
 
 @Composable
-fun NavigationBar(modifier: Modifier) {
+fun NavigationBar(navController: NavController) {
     var selectedIndex by remember { mutableStateOf(0) }
     val listIcon = listOf(
-        R.drawable.house_solid,
-        R.drawable.cart_shopping_solid,
-        R.drawable.bell_solid,
-        R.drawable.user_solid
+        IconNav(R.drawable.house_solid, "Home"),
+        IconNav(R.drawable.cart_shopping_solid, "Shopping Cart"),
+        IconNav(R.drawable.bell_solid, "Notification"),
+        IconNav(R.drawable.user_solid, "Personal")
     )
 
     Row(
-        modifier = modifier
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(85.dp)
+            .background(White)
             .padding(20.dp, 15.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -79,11 +84,20 @@ fun NavigationBar(modifier: Modifier) {
                     .clickable(
                         indication = ripple(bounded = true),
                         interactionSource = interactionSource
-                    ){ selectedIndex = index },
+                    ){
+                        selectedIndex = index
+                        val route = when(listIcon[index].command) {
+                            "Home" -> "home"
+                            "Shopping Cart" -> "shopping_cart"
+                            "Notification" -> "notification"
+                            else -> "Personal"
+                        }
+                        navController.navigate(route)
+                    },
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(listIcon[index]),
+                    painter = painterResource(listIcon[index].iconId),
                     contentDescription = "Navigation Icon",
                     modifier = Modifier
                         .size(25.dp)
@@ -94,3 +108,5 @@ fun NavigationBar(modifier: Modifier) {
         }
     }
 }
+
+data class IconNav(val iconId: Int, val command: String)

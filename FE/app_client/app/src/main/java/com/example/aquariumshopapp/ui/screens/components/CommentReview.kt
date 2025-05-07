@@ -1,4 +1,4 @@
-package com.example.aquariumshopapp.ui.screens.product_details.components
+package com.example.aquariumshopapp.ui.screens.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border

@@ -47,6 +47,7 @@
             cursor: pointer;
             padding: pxToRem(8) pxToRem(12);
             transition: ease-in-out;
+            color: $primary-color;
         }
 
         svg:hover {

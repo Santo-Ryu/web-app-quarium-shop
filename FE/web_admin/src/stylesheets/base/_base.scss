@@ -1,3 +1,5 @@
+@use '../abstracts/' as *;
+
 * {
     box-sizing: border-box;
     font-family: "Open Sans", sans-serif;
@@ -11,4 +13,23 @@
 
 *::-webkit-scrollbar {
     display: none;
+}
+
+body {
+    width: 100dvw;
+    height: 100dvh;
+    @include flex-layout();
+}
+
+input {
+    outline: none;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    color: black;
+    text-decoration: none;
 }

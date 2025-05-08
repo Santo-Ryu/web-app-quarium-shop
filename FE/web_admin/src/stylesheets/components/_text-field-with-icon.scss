@@ -1,0 +1,22 @@
+@use '../abstracts' as *;
+
+.text-field {
+    width: 100%;
+    height: pxToRem(50);
+    border: 1 solid $stroke-black-10;
+    background-color: $background-gray;
+    @include flex-layout();
+    padding: pxToRem(15);
+    border-radius: pxToRem(30);
+
+    &__icon {
+        font-size: pxToRem(18);
+    }
+
+    &__input {
+        width: 95%;
+        padding: pxToRem(8);
+        border: none;
+        background-color: transparent;
+    }
+}

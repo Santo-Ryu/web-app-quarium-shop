@@ -1,0 +1,68 @@
+@use '../../abstracts/' as *;
+
+.auth-form {
+    width: 45dvw;
+    height: pxToRem(380);
+    background-color: $background-white;
+    @include flex-layout(flex, space-between, center, column);
+
+    &__label {
+        color: black;
+        font-size: 20px;
+        @include flex-layout(flex, center, center, row);
+    }
+
+    &__heading {
+        font-size: pxToRem(30);
+        margin-right: pxToRem(12);
+    }
+
+    &__icon {
+        font-size: pxToRem(33);
+    }
+
+    &__forgot-link {
+        width: 100%;
+        text-align: right;
+        cursor: pointer;
+        font-size: pxToRem(15);
+    }
+
+    &__forgot-link:hover {
+        text-decoration: underline;
+    }
+
+    &__button {
+        width: 100%;
+        padding: pxToRem(15);
+        border-radius: pxToRem(30);
+        background-color: rgb(42, 42, 42);
+        color: white;
+        font-size: pxToRem(16);
+    }
+
+    &__redirect {
+        width: 100%;
+        text-align: center;
+        font-size: pxToRem(15);
+
+        &-link {
+            cursor: pointer;
+        }
+
+        &-link:hover {
+            text-decoration: underline;
+        }
+    }
+
+    &__list-icon {
+        width: 100%;
+        @include flex-layout();
+        gap: pxToRem(30);
+
+        svg {
+            cursor: pointer;
+            font-size: pxToRem(24);
+        }
+    }
+}

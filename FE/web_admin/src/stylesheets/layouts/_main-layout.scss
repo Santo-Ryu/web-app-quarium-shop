@@ -1,0 +1,13 @@
+@use '../abstracts/' as *;
+
+.main-layout {
+    width: 100dvw;
+    height: 100dvh;
+    @include flex-layout(flex, center, center, row);
+
+    &__content {
+        @include flex-layout(flex, start, center, column);
+        width: 100%;
+        height: 100%;
+    }
+}

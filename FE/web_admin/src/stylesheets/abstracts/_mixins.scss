@@ -1,3 +1,5 @@
+@use '../abstracts/functions' as *;
+
 // Responsive mixins for media queries
 @mixin respond($breakpoint) {
     @if $breakpoint == small {
@@ -23,4 +25,15 @@
     justify-content: $justify;
     align-items: $align;
     flex-direction: $direction;
+}
+
+// Chart
+@mixin chart-css {
+    width: 100%;
+    height: pxToRem(430);
+    background-color: white;
+    padding: pxToRem(40);
+    border-radius: pxToRem(20);
+    @include flex-layout(flex, center, center, column);
+    gap: pxToRem(20);  
 }

@@ -1,0 +1,5 @@
+@use '../../abstracts/' as *;
+
+.pie-chart {
+    @include chart-css;
+}

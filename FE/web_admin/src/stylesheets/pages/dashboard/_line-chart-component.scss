@@ -1,0 +1,9 @@
+@use '../../abstracts/' as *;
+
+.line-chart {
+    @include chart-css;
+
+    &__label {
+        width: 100%;
+    }
+}

@@ -1,0 +1,33 @@
+@use '../../abstracts/' as *;
+
+.dashboard-card {
+    width: 100%;
+    background-color: white;
+    border-radius: pxToRem(20);
+    padding: pxToRem(18);
+    @include flex-layout(flex, center, center, column);
+    gap: pxToRem(18);
+
+    &__title {
+        @include flex-layout(flex, space-between, center, row);
+        width: 100%;
+
+        svg {
+            font-size: pxToRem(25);
+        }
+    }
+
+    &__line {
+        width: 100%;
+    }
+
+    &__content {
+        height: 100%;
+        @include flex-layout(flex, space-between, end, column);
+    }
+
+    &__details {
+        width: 100%;
+        @include flex-layout(flex, start, center, row);
+    }
+}

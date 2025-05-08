@@ -1,1 +1,4 @@
-@forward './doashboard'
+@forward './dashboard-content';
+@forward './dashboard-card';
+@forward './line-chart-component';
+@forward './pie-chart';

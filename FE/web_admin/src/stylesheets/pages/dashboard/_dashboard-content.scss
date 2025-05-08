@@ -1,0 +1,31 @@
+@use '../../abstracts/' as *;
+
+.dashboard-content {
+    width: 100%;
+    height: auto;
+    @include flex-layout(flex, center, center, column);
+    gap: pxToRem(20);
+
+    &__overview {
+        width: 100%;
+        @include flex-layout(flex, space-between, center, row);
+        gap: pxToRem(20);
+    }
+
+    &__line-chart {
+        @include flex-layout(flex, center, center, column);
+        width: 100%;
+        gap: pxToRem(20);
+
+        .chart-row {
+            @include flex-layout(flex, space-between, center, row);
+            width: 100%;
+            gap: pxToRem(20);
+
+            > * {
+                flex: 1;
+                min-width: 0;
+            }
+        }
+    }
+}

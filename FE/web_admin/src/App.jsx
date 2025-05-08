@@ -3,6 +3,8 @@ import { Auth } from "./pages/auth/Auth"
 import { HelmetProvider } from "react-helmet-async"
 import { Doashboard } from "./pages/dashboard/Dashboard"
 import { Message } from "./pages/message/Message"
+import { Order } from "./pages/order/order"
+import { OrderDetails } from "./pages/order/OrderDetails"
 
 function App() {
   return (
@@ -10,9 +12,17 @@ function App() {
       <HelmetProvider>
         <Router>
           <Routes>
-            <Route path="/auth/:type" element={<Auth />} />
+            
             <Route path="/" element={<Doashboard />} />
+
+            <Route path="/auth/:type" element={<Auth />} />
+
             <Route path="/message" element={<Message />} />
+
+            <Route path="/order" element={<Order />} />
+            <Route path="/order-details" element={<OrderDetails />} /> {/* /order-details/{id} */}
+            <Route path="/order-update" element={<OrderDetails />} /> {/* /order-update/{id} */}
+
           </Routes>
         </Router>
       </HelmetProvider>

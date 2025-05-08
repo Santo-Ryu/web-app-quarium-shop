@@ -1,0 +1,170 @@
+@use '../../abstracts/' as *;
+
+.order-details {
+    width: 100%;
+    height: 90%;
+    @include flex-layout(flex, center, center, row);
+    gap: pxToRem(15);
+
+    // Main
+    &__main {
+        width: 60%;
+        height: 100%;
+        @include flex-layout(flex, center, center, Column);
+        gap: pxToRem(12);
+    }
+
+    &__header {
+        background-color: white;
+        width: 100%;
+        border-radius: pxToRem(8);
+        padding: pxToRem(8) pxToRem(12);
+        gap: pxToRem(12);
+        @include flex-layout(flex, space-between, center, row);
+    }
+
+    &__status {
+        padding: pxToRem(8) pxToRem(12);
+        color: white;
+        border-radius: pxToRem(8);
+    }
+
+    &__info {
+        width: 100%;
+        height: pxToRem(120);
+        border-radius: pxToRem(8);
+        @include flex-layout(flex, space-between, center, row);
+        gap: pxToRem(12);
+    }
+
+    &__customer {
+        height: 100%;
+        width: 40%;
+        background-color: white;
+        border-radius: pxToRem(8);
+    }
+
+    &__customer-details{
+        padding: pxToRem(8) pxToRem(12);
+    }
+
+    &__customer-name {
+        font-size: pxToRem(16);
+        font-weight: 600;
+    }
+
+    &__customer-info, &__notes-content {
+        font-size: pxToRem(14);
+        color: black;
+        color: $black-70;
+        font-weight: 500;
+    }
+
+    &__notes {
+        height: 100%;
+        width: 60%;
+        border-radius: pxToRem(8);
+        background-color: white;
+    }
+
+    &__notes-content {
+        padding: pxToRem(8) pxToRem(12);
+        border-radius: pxToRem(8) pxToRem(8) 0 0;
+    }
+
+    &__section-title {
+        padding: pxToRem(8) pxToRem(12);
+        background-color: white;
+        border-radius: pxToRem(8) pxToRem(8) 0 0;
+        background-color: $primary-color;
+        color: white;
+    }
+
+    &__products {
+        width: 100%;
+        border-radius: pxToRem(8);
+        height: 100%;
+    }
+
+    // Summary
+    &__summary {
+        width: 40%;
+        height: 100%;
+        @include flex-layout(flex, center, center, column);
+        border-radius: pxToRem(8);
+        gap: pxToRem(20);
+    }
+
+    &__payment {
+        width: 100%;
+        background-color: white;
+    }
+
+    &__payment-details {
+        padding: pxToRem(8) pxToRem(12);
+        border-radius: pxToRem(8) pxToRem(8) 0 0;
+        font-size: pxToRem(14);
+        color: black;
+        color: $black-70;
+        font-weight: 500;
+    }
+
+    &__calculation {
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        padding: pxToRem(12);
+        border-radius: pxToRem(8);
+        font-size: pxToRem(16);
+        color: black;
+        color: $black-70;
+        font-weight: 500;
+        @include flex-layout(flex, space-between, center, column);
+    }
+
+    &__price-breakdown {
+        width: 100%;
+    }
+
+    &__price-item {
+        width: 100%;
+        @include flex-layout(flex, space-between, center, row);
+    }
+
+    &__total {
+        @include flex-layout(flex, space-between, center, row);
+        width: 100%;
+    }
+
+    &__total-amount {
+        font-size: pxToRem(18);
+        color: black;
+        color: $black-70;
+        font-weight: 500;
+    }
+
+    &__actions {
+        width: 100%;
+        height: pxToRem(100);
+        @include flex-layout(flex, space-between, center, row);
+    }
+
+    &__button {
+        width: 30%;
+        padding: pxToRem(15) pxToRem(20);
+        border-radius: pxToRem(8);
+        font-weight: 600;
+        font-size: pxToRem(16);
+    }
+
+    &__button--edit {
+        background-color: white;
+    }
+    &__button--cancel {
+        background-color: white;
+    }
+    &__button--close {
+        background-color: red;
+        color: white;
+    }
+}

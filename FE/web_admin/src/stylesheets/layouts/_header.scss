@@ -1,0 +1,82 @@
+@use '../abstracts/' as *;
+
+.header {
+    width: 100%;
+    height: pxToRem(70);
+    background-color: $primary-color;
+    @include flex-layout(flex, space-between, center, row);
+
+    &__toggle {
+        width: pxToRem(70);
+        height: 100%;
+        @include flex-layout();
+        cursor: pointer;
+
+        svg {
+            font-size: pxToRem(30);
+            color: white;
+        }
+
+        svg:hover {
+            font-size: pxToRem(35);
+            transition: ease-in-out;
+        }
+    }
+
+    &__tools {
+        @include flex-layout(flex, end, center, row);
+        width: 100%;
+        height: 100%;
+    }
+
+    &__search-bar {
+        width: 30%;
+        @include flex-layout(flex, center, center, row);
+        background-color: white;
+        border-radius: pxToRem(30);
+
+        input {
+            width: 100%;
+            padding: pxToRem(12) pxToRem(12);
+            outline: none;
+            border: none;
+            background-color: transparent;
+        }
+        
+        svg {
+            cursor: pointer;
+            padding: pxToRem(8) pxToRem(12);
+            transition: ease-in-out;
+        }
+
+        svg:hover {
+            font-size: pxToRem(18);
+        }
+    }
+
+    &__notification {
+        width: pxToRem(70);
+        height: 100%;
+        @include flex-layout();
+        cursor: pointer;
+
+        svg {
+            padding: pxToRem(13);
+            border-radius: 100%;            
+            background-color: white;
+        }
+    }
+
+    &__avatar {
+        width: pxToRem(70);
+        height: 100%;
+        @include flex-layout();
+        cursor: pointer;
+
+        img {
+            padding: pxToRem(5);
+            border-radius: 100%;            
+            background-color: white;
+        }
+    }
+}

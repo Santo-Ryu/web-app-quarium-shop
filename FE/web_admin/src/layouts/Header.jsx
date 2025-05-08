@@ -1,4 +1,4 @@
-import { faBars, faBell, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
+import { faBars, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 export const Header = ({
@@ -17,9 +17,6 @@ export const Header = ({
                             placeholder="Tìm kiếm"
                         />
                         <FontAwesomeIcon icon={faMagnifyingGlass} />
-                    </div>
-                    <div className="header__notification">
-                        <FontAwesomeIcon icon={faBell} />
                     </div>
                     <div className="header__avatar">
                         <img src="/public/vite.svg" alt="" />

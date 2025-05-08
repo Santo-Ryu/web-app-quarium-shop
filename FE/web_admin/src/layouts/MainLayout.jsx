@@ -2,10 +2,9 @@ import { useState } from "react"
 import { Header } from "./Header"
 import { Sidebar } from "./Sidebar"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
 
 export const MainLayout = ({
-    layoutLabel,
+    label,
     layout
 }) => {
     const [openSidebar, setOpenSidebar] = useState(true);
@@ -24,7 +23,7 @@ export const MainLayout = ({
                         handleOpenSidebar={handleOpenSidebar}
                     />
                     <div className="main-layout__body">
-                        <h1 className="main-layout__label"><FontAwesomeIcon icon={faHome} />{layoutLabel}</h1>
+                        <h1 className="main-layout__label"><FontAwesomeIcon icon={label.icon} />{label.text}</h1>
                         {layout}
                     </div>
                 </div>

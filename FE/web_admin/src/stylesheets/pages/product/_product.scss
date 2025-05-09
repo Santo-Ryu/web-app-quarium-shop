@@ -1,0 +1,21 @@
+@use '../../abstracts/' as *;
+
+.product-table__button {
+    @include flex-layout(flex, center, center, row);
+    gap: pxToRem(12);
+
+    &--view {
+        background-color: rgb(0, 132, 255);
+    }
+
+    &--delete {
+        background-color: rgb(255, 0, 76);
+    }
+}
+
+.table-button {
+    border-radius: pxToRem(8);
+    padding: pxToRem(8) pxToRem(12);
+    color: white;
+    font-weight: 600;
+}

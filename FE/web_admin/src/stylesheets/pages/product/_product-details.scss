@@ -1,0 +1,28 @@
+@use '../../abstracts/' as *;
+
+.product-details {
+    width: 100%;
+    height: auto;
+    @include flex-layout(flex, center, center, column);
+    gap: pxToRem(20);
+
+    &__item {
+        width: 100%;
+        @include flex-layout(flex, start, start, column);
+        gap: pxToRem(5);
+
+        &--input {
+            width: 100%;
+            padding: pxToRem(8)  pxToRem(12);
+            border: 1px solid $stroke-black-20;
+            border-radius: pxToRem(5);
+        }
+
+        &--select {
+            width: 100%;
+            padding: pxToRem(8)  pxToRem(12);
+            border: 1px solid $stroke-black-20;
+            border-radius: pxToRem(5);
+        }
+    }
+}

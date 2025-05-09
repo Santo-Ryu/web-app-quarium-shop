@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const CustomTable = ({
+    selectOption = null,
     buttonOption = null,
     hiddenSearchBar,
     columns,
@@ -25,6 +26,13 @@ export const CustomTable = ({
         <section className="custom-table">
             {hiddenSearchBar && 
             <header className="custom-table__header">
+                {selectOption != null && 
+                    <select className='custom-table__select' name="" id="">
+                        {selectOption.map((e, key) => (
+                            <option key={key} value={e.id}>{e.option}</option>
+                        ))}
+                    </select>
+                }
                 <input
                     className='custom-table__input'
                     type="text"

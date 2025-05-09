@@ -12,6 +12,7 @@ import { CustomerOrderHistory } from "./pages/customer/CustomerOrderHistory"
 import { Product } from "./pages/product/Product"
 import { ProductDetails } from "./pages/product/ProductDetails"
 import { Personal } from "./pages/personal/Personal"
+import { Discount } from "./pages/discount/Discount"
 
 function App() {
   return (
@@ -38,6 +39,8 @@ function App() {
             <Route path="/product-details" element={<ProductDetails />} /> {/* /customer-details/{id} */}
 
             <Route path="/personal" element={<Personal />} />
+
+            <Route path="/discount" element={<Discount />} />
 
           </Routes>
         </Router>

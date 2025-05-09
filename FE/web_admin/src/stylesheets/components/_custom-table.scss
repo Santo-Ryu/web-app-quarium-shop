@@ -11,15 +11,20 @@
         @include flex-layout(flex, space-between, center, row);
     }
 
-    &__button {
-        padding: pxToRem(8) pxToRem(15);
+    &__buttons {
         height: 100%;
-        border-radius: pxToRem(8);
-        background-color: $primary-color;
-        color: white;
-        font-weight: 600;
         @include flex-layout(flex, center, center, row);
-        gap: pxToRem(5);
+        gap: pxToRem(20);
+
+        &--item {
+            padding: pxToRem(8) pxToRem(15);
+            background-color: $primary-color;
+            color: white;
+            font-weight: 600;
+            border-radius: pxToRem(8);
+            @include flex-layout(flex, center, center, row);
+            gap: pxToRem(10);
+        }
     }
 
     &__input {

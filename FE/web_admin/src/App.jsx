@@ -3,7 +3,7 @@ import { Auth } from "./pages/auth/Auth"
 import { HelmetProvider } from "react-helmet-async"
 import { Doashboard } from "./pages/dashboard/Dashboard"
 import { Message } from "./pages/message/Message"
-import { Order } from "./pages/order/order"
+import { Order } from "./pages/order/order";
 import { OrderDetails } from "./pages/order/OrderDetails"
 import { OrderUpdate } from "./pages/order/OrderUpdate"
 import { Customer } from "./pages/customer/Customer"

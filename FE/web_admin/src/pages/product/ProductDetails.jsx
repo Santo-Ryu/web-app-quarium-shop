@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { MainLayout } from "../../layouts/MainLayout";
 import { DetailsContent } from "../../components/DetailsContent";
 import { useState } from "react";
-import { ProductDetailsContent } from "./ProductDetailsContent";
+import { FieldsRenderer } from "../../components/FieldsRenderer";
 
 export const ProductDetails = () => {
     const navigate = useNavigate();
@@ -16,6 +16,19 @@ export const ProductDetails = () => {
     const handleDisabledInput = () => {
         setDisabledInput(prev => !prev)
     }
+
+    const fields = [
+        { label: "ID sản phẩm", type: "text", name: "id" , disabled: disabledInput},
+        { label: "Danh mục", type: "select", name: "category", options: ["Cá cảnh", "Cây thủy sinh"], disabled: disabledInput},
+        { label: "Tên sản phẩm", type: "text", name: "name", disabled: disabledInput },
+        { label: "Mô tả", type: "quill", name: "description", disabled: disabledInput },
+        { label: "Đánh giá", type: "text", name: "rating", disabled: disabledInput },
+        { label: "Giá tiền", type: "number", name: "price", disabled: disabledInput },
+        { label: "Tồn kho", type: "number", name: "stock", disabled: disabledInput },
+        { label: "Đã bán", type: "number", name: "sold", disabled: disabledInput },
+        { label: "Ngày thêm vào", type: "date", name: "createdAt", disabled: disabledInput },
+        { label: "Cập nhật gần đây", type: "date", name: "updatedAt", disabled: disabledInput },
+    ];
 
     const listButton = [
         {button: "Dừng bán", icon: faStore, onClick: null},
@@ -33,7 +46,7 @@ export const ProductDetails = () => {
                 layout={
                     <DetailsContent
                         listButton={listButton}
-                        layout={<ProductDetailsContent disabledInput={disabledInput} />}
+                        layout={<FieldsRenderer fields={fields}  />}
                     />
                 }
             />

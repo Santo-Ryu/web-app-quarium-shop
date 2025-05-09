@@ -2,9 +2,10 @@ import { Helmet } from "react-helmet-async";
 import { MainLayout } from "../../layouts/MainLayout";
 import { faBoxArchive } from "@fortawesome/free-solid-svg-icons";
 import { CustomTable } from "../../components/CustomTable";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Order = () => {
+    const navigate = useNavigate();
     const label = {text: 'Đơn hàng', icon: faBoxArchive}
 
     const switchColorStatus = (status) => {
@@ -63,7 +64,11 @@ export const Order = () => {
         },
         {
             name: <span style={{ fontSize: '0.9rem', }}>Chức năng</span>,
-            cell: row => (<Link to={'/order-details/{id}'}>Xem thêm</Link>),
+            cell: row => (
+                <div className="product-table__button">
+                    <button className="table-button product-table__button--view" onClick={() => navigate('/order-details')}>Xem thêm</button>
+                </div>
+            ),
             sortable: true,
             width: '160px'
         },

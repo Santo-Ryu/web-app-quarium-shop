@@ -1,9 +1,12 @@
 import { width } from '@fortawesome/free-brands-svg-icons/fa42Group';
 import { CustomTable } from '../../components/CustomTable';
+import { useNavigate } from 'react-router-dom';
 
 export const OrderUpdateContent = ({
     id
 }) => {
+    const navigate = useNavigate();
+
     const columns = [
         {
             name: <span className="order-table__header">Sản phẩm</span>,
@@ -56,8 +59,8 @@ export const OrderUpdateContent = ({
     ]      
 
     const buttonList = [
-        {buttonName: 'Lưu', className: 'order-details__button order-details__button--edit'},
-        {buttonName: 'Đóng', className: 'order-details__button order-details__button--cancel'}
+        {buttonName: 'Lưu', className: 'order-details__button order-details__button--edit', onClick: () => {}},
+        {buttonName: 'Đóng', className: 'order-details__button order-details__button--cancel', onClick: () => navigate('/order-details')}
     ]
 
     const selectStatus = ["Hoàn thành", "Chờ xử lý", "Đang giao"]
@@ -134,6 +137,7 @@ export const OrderUpdateContent = ({
                         <button 
                             key={index} 
                             className={button.className}
+                            onClick={button.onClick}
                         >
                             {button.buttonName}
                         </button>

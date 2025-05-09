@@ -8,7 +8,7 @@
 
     // Main
     &__main {
-        width: 60%;
+        width: 70%;
         height: 100%;
         @include flex-layout(flex, center, center, Column);
         gap: pxToRem(12);
@@ -31,7 +31,6 @@
 
     &__info {
         width: 100%;
-        height: pxToRem(120);
         border-radius: pxToRem(8);
         @include flex-layout(flex, space-between, center, row);
         gap: pxToRem(12);
@@ -48,12 +47,27 @@
         padding: pxToRem(8) pxToRem(12);
     }
 
+    &__customer-details--input {
+        @include flex-layout(flex, center, center, column);
+        padding: pxToRem(8) pxToRem(12);
+        gap: pxToRem(10);
+
+        input {
+            width: 100%;
+            border: 1px solid$stroke-black-20;
+            padding: pxToRem(8) pxToRem(12);
+            border-radius: pxToRem(8);
+        }
+    }
+
     &__customer-name {
         font-size: pxToRem(16);
         font-weight: 600;
+        width: 100%;
     }
 
     &__customer-info, &__notes-content {
+        width: 100%;
         font-size: pxToRem(14);
         color: black;
         color: $black-70;
@@ -78,6 +92,7 @@
         border-radius: pxToRem(8) pxToRem(8) 0 0;
         background-color: $primary-color;
         color: white;
+        width: 100%;
     }
 
     &__products {
@@ -86,13 +101,20 @@
         height: 100%;
     }
 
+    &__select {
+        padding: pxToRem(8) pxToRem(12);
+        border-radius: pxToRem(8);
+        border: 1px solid $stroke-black-20;
+        cursor: pointer;
+    }
+
     // Summary
     &__summary {
-        width: 40%;
+        width: 30%;
         height: 100%;
         @include flex-layout(flex, center, center, column);
         border-radius: pxToRem(8);
-        gap: pxToRem(20);
+        gap: pxToRem(5);
     }
 
     &__payment {
@@ -113,7 +135,6 @@
         width: 100%;
         height: 100%;
         background-color: white;
-        padding: pxToRem(12);
         border-radius: pxToRem(8);
         font-size: pxToRem(16);
         color: black;
@@ -124,6 +145,8 @@
 
     &__price-breakdown {
         width: 100%;
+        height: 100%;
+        padding: pxToRem(12);
     }
 
     &__price-item {
@@ -134,6 +157,7 @@
     &__total {
         @include flex-layout(flex, space-between, center, row);
         width: 100%;
+        padding: pxToRem(12);
     }
 
     &__total-amount {
@@ -146,7 +170,8 @@
     &__actions {
         width: 100%;
         height: pxToRem(100);
-        @include flex-layout(flex, space-between, center, row);
+        @include flex-layout(flex, space-between, center, row); 
+        gap: pxToRem(20);
     }
 
     &__button {
@@ -159,12 +184,29 @@
 
     &__button--edit {
         background-color: white;
+        width: 100%;
     }
     &__button--cancel {
         background-color: white;
+        width: 100%;
     }
     &__button--close {
         background-color: red;
         color: white;
+    }
+}
+
+.order-table {
+    &__button--delete {
+        width: 80%;
+        background-color: red;
+        border-radius: pxToRem(8);
+        color: white;
+        padding: pxToRem(8) pxToRem(12);
+    }
+
+    &__quantity {
+        width: pxToRem(50);
+        padding: pxToRem(5);
     }
 }

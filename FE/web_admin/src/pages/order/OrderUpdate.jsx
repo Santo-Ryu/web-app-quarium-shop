@@ -6,7 +6,7 @@ import { OrderUpdateContent } from "./OrderUpdateContent";
 
 export const OrderUpdate = () => {
     const id = useParams();
-    const label = {text: 'Chi tiết đơn hàng', icon: faBoxArchive}
+    const label = {text: 'Chỉnh sửa đơn hàng', icon: faBoxArchive}
 
     return (
         <>

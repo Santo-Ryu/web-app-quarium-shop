@@ -10,7 +10,7 @@ export const Order = () => {
     const switchColorStatus = (status) => {
         switch (status) {
             case "Hoàn thành": return "#4CAF50";      // Xanh lá
-            case "Chờ xác nhận": return "#f44336";    // Đỏ
+            case "Chờ xác nhận": return "#FFC107";    // Vàng
             case "Đang giao": return "#2196F3";       // Xanh dương
             default: return "#9E9E9E";                // Xám cho các trạng thái chưa rõ
         }

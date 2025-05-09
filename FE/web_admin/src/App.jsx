@@ -8,6 +8,7 @@ import { OrderDetails } from "./pages/order/OrderDetails"
 import { OrderUpdate } from "./pages/order/OrderUpdate"
 import { Customer } from "./pages/customer/Customer"
 import { CustomerDetails } from "./pages/customer/CustomerDetails"
+import { CustomerOrderHistory } from "./pages/customer/CustomerOrderHistory"
 
 function App() {
   return (
@@ -27,7 +28,8 @@ function App() {
             <Route path="/order-update" element={<OrderUpdate />} /> {/* /order-update/{id} */}
 
             <Route path="/customer" element={<Customer />} />
-            <Route path="/customer-details" element={<CustomerDetails />} />
+            <Route path="/customer-details" element={<CustomerDetails />} /> {/* /customer-details/{id} */}
+            <Route path="/customer-order-history" element={<CustomerOrderHistory />} /> {/* /customer-order-history/{id} */}
 
           </Routes>
         </Router>

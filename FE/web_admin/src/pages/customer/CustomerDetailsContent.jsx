@@ -1,10 +1,12 @@
 import { faClose, faGear, faHistory, faSave } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 export const CustomerDetailsContent = ({
     id
 }) => {
+    const navigate = useNavigate();
     const [disabledInput, setDisabledInput] = useState(true)
 
     const handleDisabledInput = () => {
@@ -24,10 +26,10 @@ export const CustomerDetailsContent = ({
     ]
 
     const listButton = [
-        {button: "Lịch sử", icon: faHistory, onClick: null},
+        {button: "Lịch sử", icon: faHistory, onClick: () => navigate('/customer-order-history')},
         {button: "Chỉnh sửa", icon: faGear, onClick: handleDisabledInput},
         {button: "Lưu", icon: faSave, onClick: null},
-        {button: "Đóng", icon: faClose, onClick: null},
+        {button: "Đóng", icon: faClose, onClick: () => navigate('/customer')},
     ]
 
     return (

@@ -1,7 +1,9 @@
 import DataTable from 'react-data-table-component';
 import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const CustomTable = ({
+    buttonOption = null,
     hiddenSearchBar,
     columns,
     data,
@@ -30,6 +32,12 @@ export const CustomTable = ({
                     value={search}
                     onChange={handleFilter}
                 />
+                {buttonOption != null && buttonOption.hidden ? 
+                    <button className='custom-table__button' onClick={buttonOption.func}>
+                        <FontAwesomeIcon icon={buttonOption.icon} />
+                        {buttonOption.name}
+                    </button> : ""
+                }
             </header>
             }
 

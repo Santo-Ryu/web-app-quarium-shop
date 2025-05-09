@@ -13,7 +13,7 @@ export const OrderDetailsContent = ({
             name: <span className="order-table__header">Hình ảnh</span>,
             sortable: true,
             width: '100px',
-            cell: row => (<img src={row.image} style={{borderRadius: '8px', border: '1px solid gray'}} alt='Product Image' />)
+            cell: row => (<img src={row.image} style={{borderRadius: '8px', border: '1px solid gray', width: '40px', height: '40px'}} alt='Product Image' />)
         },
         {
             name: <span className="order-table__header">Số lượng</span>,
@@ -28,7 +28,7 @@ export const OrderDetailsContent = ({
                     {row.discount > 0 ? (
                         <>
                             <p style={{ textDecoration: 'line-through', color: '#999' }}>{row.price}</p>
-                            <p>{Math.round(parseFloat(row.price) * (1 - row.discount)).toLocaleString()}.000</p>
+                            <p>{Math.round(parseFloat(row.price) * (1 - row.discount)).toLocaleString()}.000 (-{row.discount*100}%)</p>
                         </>
                     ) : (
                         <p>{row.price}</p>
@@ -44,8 +44,8 @@ export const OrderDetailsContent = ({
     ]
 
     const data = [
-        { id: 1, productName: "Cá beta đỏ", image: "/public/vite.svg", quantity: 2, price: "12.000", totalPrice: "24.000", discount: 0.2},
-        { id: 2, productName: "Cá beta đỏ", image: "/public/vite.svg", quantity: 2, price: "12.000", totalPrice: "24.000", discount: 0},
+        { id: 1, productName: "Cá beta thái", image: "/src/assets/beta1.jpg", quantity: 1, price: "200.000", totalPrice: "160.000", discount: 0.2},
+        { id: 2, productName: "Cá beta sữa", image: "/src/assets/beta3.jpg", quantity: 1, price: "120.000", totalPrice: "120.000", discount: 0},
     ]      
 
     const buttonList = [
@@ -100,25 +100,16 @@ export const OrderDetailsContent = ({
             </div>
 
             <div className="order-details__summary">
-                <section className="order-details__payment">
-                    <h2 className="order-details__section-title">Hóa đơn thanh toán</h2>
-                    <dl className="order-details__payment-details">
-                        <div className="order-details__payment-item">
-                            <dt className="order-details__payment-label">Thanh toán khi nhận hàng</dt>
-                            <dd className="order-details__payment-value">10.000.000 đ</dd>
-                        </div>
-                    </dl>
-                </section>
-
                 <section className="order-details__calculation">
+                    <h2 className="order-details__section-title">Hóa đơn thanh toán</h2>
                     <div className="order-details__price-breakdown">
                         <dl className="order-details__price-item">
                             <dt className="order-details__price-label">Tạm tính</dt>
-                            <dd className="order-details__price-value">100.000 đ</dd>
+                            <dd className="order-details__price-value">180.000 đ</dd>
                         </dl>
                         <dl className="order-details__price-item">
                             <dt className="order-details__price-label">Khuyến mãi</dt>
-                            <dd className="order-details__price-value">-10.000 đ</dd>
+                            <dd className="order-details__price-value">-40.000 đ</dd>
                         </dl>
                         <dl className="order-details__price-item">
                             <dt className="order-details__price-label">Phí vận chuyển</dt>
@@ -126,13 +117,13 @@ export const OrderDetailsContent = ({
                         </dl>
                         <dl className="order-details__price-item">
                             <dt className="order-details__price-label">Thành tiền</dt>
-                            <dd className="order-details__price-value">100.000 đ</dd>
+                            <dd className="order-details__price-value">190.000 đ</dd>
                         </dl>
                     </div>
 
                     <footer className="order-details__total">
                         <h3 className="order-details__total-label">Cần thanh toán</h3>
-                        <p className="order-details__total-amount">100.000 đ</p>
+                        <p className="order-details__total-amount">190.000 đ</p>
                     </footer>
                 </section>
 

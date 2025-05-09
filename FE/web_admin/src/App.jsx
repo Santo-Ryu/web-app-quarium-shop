@@ -5,6 +5,8 @@ import { Doashboard } from "./pages/dashboard/Dashboard"
 import { Message } from "./pages/message/Message"
 import { Order } from "./pages/order/order"
 import { OrderDetails } from "./pages/order/OrderDetails"
+import { OrderUpdate } from "./pages/order/OrderUpdate"
+import { Customer } from "./pages/customer/Customer"
 
 function App() {
   return (
@@ -21,7 +23,9 @@ function App() {
 
             <Route path="/order" element={<Order />} />
             <Route path="/order-details" element={<OrderDetails />} /> {/* /order-details/{id} */}
-            <Route path="/order-update" element={<OrderDetails />} /> {/* /order-update/{id} */}
+            <Route path="/order-update" element={<OrderUpdate />} /> {/* /order-update/{id} */}
+
+            <Route path="/customer" element={<Customer />} />
 
           </Routes>
         </Router>

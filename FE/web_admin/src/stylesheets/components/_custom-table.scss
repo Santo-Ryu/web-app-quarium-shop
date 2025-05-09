@@ -8,6 +8,18 @@
 
     &__header {
         width: 100%;
+        @include flex-layout(flex, space-between, center, row);
+    }
+
+    &__button {
+        padding: pxToRem(8) pxToRem(15);
+        height: 100%;
+        border-radius: pxToRem(8);
+        background-color: $primary-color;
+        color: white;
+        font-weight: 600;
+        @include flex-layout(flex, center, center, row);
+        gap: pxToRem(5);
     }
 
     &__input {

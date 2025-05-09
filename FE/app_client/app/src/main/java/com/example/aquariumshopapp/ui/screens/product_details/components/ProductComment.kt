@@ -40,6 +40,7 @@ import com.example.aquarium_app.ui.theme.RATING_YELLOW_2
 import com.example.aquarium_app.ui.theme.Typography
 import com.example.aquarium_app.ui.theme.White
 import com.example.aquariumshopapp.R
+import com.example.aquariumshopapp.data.model.Comment
 
 @Composable
 fun ProductComment(navController: NavController) {
@@ -141,17 +142,9 @@ fun ProductComment(navController: NavController) {
 
         /*  Comments  */
 //        Giới hạn comment không quá 200 chữ
-        data class Comment(
-            val image: Int,
-            val name: String,
-            val rating: Int,
-            val comment: String,
-            val time: String
-        )
         val comments = listOf(
-            Comment(R.drawable.cay_dong_tien, "Santo", 4, "Rất tốt", "00:00:00"),
-            Comment(R.drawable.cay_dong_tien, "Santo", 4, "Rất tốt", "00:00:00"),
-            Comment(R.drawable.cay_dong_tien, "Santo", 4, "Rất tốt", "00:00:00"),
+            Comment(R.drawable.avt1, "Thanh Huyền", 4, "Rất tốt", "22/02/2025"),
+            Comment(R.drawable.avt2, "Phương Anh", 4, "Hài lòng", "15/04/2025"),
         )
 
         Column(
@@ -195,7 +188,7 @@ fun ProductComment(navController: NavController) {
                                     modifier = Modifier.size(12.dp)
                                 )
                                 Text(
-                                    ", ${item.time}",
+                                    ", ${item.createdAt}",
                                     style = Typography.bodySmall
                                 )
                             }

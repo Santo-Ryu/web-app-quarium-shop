@@ -100,7 +100,7 @@ fun ShoppingCartScreen(navController: NavController) {
                 .padding(start = 12.dp, end = 12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            repeat(10) { ShoppingCartCard(totalProduct) }
+            repeat(1) { ShoppingCartCard(totalProduct) }
         }
 
         NavigationBar(navController)

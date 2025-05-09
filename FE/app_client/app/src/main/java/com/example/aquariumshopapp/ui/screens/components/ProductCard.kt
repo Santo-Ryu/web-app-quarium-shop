@@ -38,6 +38,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,9 +48,14 @@ import com.example.aquarium_app.ui.theme.GreenPrimary
 import com.example.aquarium_app.ui.theme.Typography
 import com.example.aquarium_app.ui.theme.*
 import com.example.aquariumshopapp.R
+import com.example.aquariumshopapp.ui.model.TestData
 
 @Composable
-fun ProductCard(modifier: Modifier, navController: NavController) {
+fun ProductCard(
+    modifier: Modifier,
+    navController: NavController,
+    product: TestData
+) {
     Column(
         modifier = modifier
             .clickable { navController.navigate("product_details") }
@@ -66,7 +72,7 @@ fun ProductCard(modifier: Modifier, navController: NavController) {
                 )
         ) {
             Image(
-                painter = painterResource(R.drawable.cay_dong_tien),
+                painter = painterResource(product.id),
                 contentDescription = "Product Image",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
@@ -120,7 +126,7 @@ fun ProductCard(modifier: Modifier, navController: NavController) {
             ) {
 //                Title
                 Text(
-                    "Betta Half-moon",
+                    product.name,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
@@ -133,7 +139,7 @@ fun ProductCard(modifier: Modifier, navController: NavController) {
                 )
 //                Product detail
                 Text(
-                    "Cây đồng tiền sống bán cạn hoặc trên cạn hoặc dưới nước",
+                    product.details,
                     modifier = Modifier
                         .padding(
                             bottom = 6.dp,
@@ -160,7 +166,7 @@ fun ProductCard(modifier: Modifier, navController: NavController) {
                 ) {
 //                    If sale then display
 //                    Text(
-//                        "50,000 đ",
+//                        product.price,
 //                        style = TextStyle(
 //                            fontSize = 12.sp,
 //                            fontWeight = FontWeight.Medium,
@@ -169,7 +175,7 @@ fun ProductCard(modifier: Modifier, navController: NavController) {
 //                        )
 //                    )
                     Text(
-                        "46,000 đ",
+                        product.price,
                         style = TextStyle(
                             fontSize = 16.sp,
                             fontWeight = FontWeight.SemiBold

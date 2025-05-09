@@ -31,25 +31,8 @@ import com.example.aquariumshopapp.ui.screens.components.CommentReview
 @Composable
 fun ProductReviewScreen(navController: NavController) {
     val comments = listOf(
-        Comment(R.drawable.cay_dong_tien, "Santo", "Rất tốt", 4, "dd/MM/yyyy hh:MM:ss"),
-        Comment(R.drawable.cay_dong_tien, "Santo", "Rất tốt", 4, "dd/MM/yyyy hh:MM:ss"),
-        Comment(R.drawable.cay_dong_tien, "Santo", "Rất tốt", 4, "dd/MM/yyyy hh:MM:ss"),
-        Comment(R.drawable.cay_dong_tien, "Santo", "Rất tốt", 4, "dd/MM/yyyy hh:MM:ss"),
-        Comment(R.drawable.cay_dong_tien, "Santo", "Rất tốt", 4, "dd/MM/yyyy hh:MM:ss"),
-        Comment(R.drawable.cay_dong_tien, "Santo", "Rất tốt", 4, "dd/MM/yyyy hh:MM:ss"),
-        Comment(R.drawable.cay_dong_tien, "Santo", "Rất tốt", 4, "dd/MM/yyyy hh:MM:ss"),
-        Comment(R.drawable.cay_dong_tien, "Santo", "Rất tốt", 4, "dd/MM/yyyy hh:MM:ss"),
-        Comment(R.drawable.cay_dong_tien, "Santo", "Rất tốt", 4, "dd/MM/yyyy hh:MM:ss"),
-        Comment(R.drawable.cay_dong_tien, "Santo", "Rất tốt", 4, "dd/MM/yyyy hh:MM:ss"),
-        Comment(R.drawable.cay_dong_tien, "Santo", "Rất tốt", 4, "dd/MM/yyyy hh:MM:ss"),
-        Comment(R.drawable.cay_dong_tien, "Santo", "Rất tốt", 4, "dd/MM/yyyy hh:MM:ss"),
-        Comment(R.drawable.cay_dong_tien, "Santo", "Rất tốt", 4, "dd/MM/yyyy hh:MM:ss"),
-        Comment(R.drawable.cay_dong_tien, "Santo", "Rất tốt", 4, "dd/MM/yyyy hh:MM:ss"),
-        Comment(R.drawable.cay_dong_tien, "Santo", "Rất tốt", 4, "dd/MM/yyyy hh:MM:ss"),
-        Comment(R.drawable.cay_dong_tien, "Santo", "Rất tốt", 4, "dd/MM/yyyy hh:MM:ss"),
-        Comment(R.drawable.cay_dong_tien, "Santo", "Rất tốt", 4, "dd/MM/yyyy hh:MM:ss"),
-        Comment(R.drawable.cay_dong_tien, "Santo", "Rất tốt", 4, "dd/MM/yyyy hh:MM:ss"),
-        Comment(R.drawable.cay_dong_tien, "Santo", "Rất tốt", 4, "dd/MM/yyyy hh:MM:ss"),
+        Comment(R.drawable.avt1, "Thanh Huyền", 4, "Rất tốt", "22/02/2025"),
+        Comment(R.drawable.avt2, "Phương Anh", 4, "Hài lòng", "15/04/2025"),
     )
 
     Column(

@@ -20,9 +20,11 @@ import androidx.navigation.NavController
 import com.example.aquarium_app.ui.theme.Dimens
 import com.example.aquarium_app.ui.theme.GreenPrimary
 import com.example.aquarium_app.ui.theme.textButtonSmall
+import com.example.aquariumshopapp.R
 import com.example.aquariumshopapp.ui.screens.components.LabelList
 import com.example.aquariumshopapp.ui.screens.components.ProductCardList
 import com.example.aquariumshopapp.ui.screens.home.components.SaleOff
+import com.example.aquariumshopapp.ui.model.TestData
 
 @Composable
 fun MainContent(
@@ -30,6 +32,16 @@ fun MainContent(
     cardModifier: Modifier,
     navController: NavController
 ) {
+    val dataList by remember{
+        mutableStateOf(
+            listOf(
+                TestData(R.drawable.cay_dong_tien, "12,000", "Cây đồng tiền", "Sống được trên cạn lẫn dưới nước"),
+                TestData(R.drawable.beta2, "120,000", "Cá beta Rồng", "Siêu đẹp, mạnh mẽ như loài rồng"),
+                TestData(R.drawable.beca, "89,000", "Bể cá kinh xanh", "Trong suốt, đẹp đẽ, sang trọng, lịch lãm"),
+            )
+        )
+    }
+
     var categories by remember {
         mutableStateOf(
             listOf(
@@ -57,7 +69,7 @@ fun MainContent(
         /*  Product list  */
         val totalItem = 10
         ProductCardList(
-            totalItem = totalItem,
+            dataList = dataList,
             cardModifier = cardModifier,
             navController
         )

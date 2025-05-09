@@ -87,7 +87,7 @@ fun SearchInputScreen(navController: NavController) {
                 .background(BackgroundColor)
                 .verticalScroll(rememberScrollState())
         ) {
-            repeat(10) {
+            repeat(1) {
                 Row(
                     modifier = Modifier
                         .padding(top = 10.dp, start = 10.dp)

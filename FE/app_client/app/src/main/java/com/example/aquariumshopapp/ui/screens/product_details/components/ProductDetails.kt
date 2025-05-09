@@ -25,11 +25,9 @@ import com.example.aquariumshopapp.R
 @Composable
 fun ProductDetails(navController: NavController) {
     val productImages = listOf(
-        R.drawable.cay_dong_tien,
-        R.drawable.banner3,
-        R.drawable.cay_dong_tien,
-        R.drawable.cay_dong_tien,
-        R.drawable.cay_dong_tien,
+        R.drawable.beta2,
+        R.drawable.beta1,
+        R.drawable.beta3,
     )
     val mainImage = remember { mutableStateOf(productImages.first()) }
 

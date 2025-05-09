@@ -11,7 +11,7 @@ export const Sidebar = ({
         {icon: faHome, label: "Trang chủ", link: "/"},
         {icon: faMessage, label: "Tin nhắn", link: "/message"},
         {icon: faBoxArchive, label: "Đơn hàng", link: "/order"},
-        {icon: faUser, label: "Khách hàng", link: ""},
+        {icon: faUser, label: "Khách hàng", link: "/customer"},
         {icon: faBox, label: "Sản phẩm", link: ""},
         {icon: faGear, label: "Cá nhân", link: ""},
     ]
@@ -22,20 +22,14 @@ export const Sidebar = ({
                 <div className="sidebar__logo"><FontAwesomeIcon icon={faLeaf} /></div>
                 <hr className="sidebar__line" />
                 <ul className="sidebar__menu">
-                    {listIcon.map((item, index) => {
-                        const isActive = location.pathname === item.link;
-                        return (
-                            <li
-                                key={index} 
-                                className={`sidebar__item ${isActive ? `active` : ''}`}
-                            >
-                                <Link to={item.link} className="sidebar__link">
-                                    <FontAwesomeIcon icon={item.icon} />
-                                    <span>{item.label}</span>
-                                </Link>
-                            </li>   
-                        )
-                    })}
+                    {listIcon.map((item, index) => (
+                        <li key={index}  className="sidebar__item" >
+                            <Link to={item.link} className="sidebar__link">
+                                <FontAwesomeIcon icon={item.icon} />
+                                <span>{item.label}</span>
+                            </Link>
+                        </li>   
+                    ))}
                 </ul>
             </div>
         </>

@@ -1,4 +1,4 @@
-import { faBox, faBoxArchive, faGear, faHome, faLeaf, faMessage, faUser } from "@fortawesome/free-solid-svg-icons"
+import { faBox, faBoxArchive, faBoxes, faGear, faHome, faLeaf, faMessage, faUser } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Link, useLocation } from "react-router-dom";
 
@@ -12,7 +12,7 @@ export const Sidebar = ({
         {icon: faMessage, label: "Tin nhắn", link: "/message"},
         {icon: faBoxArchive, label: "Đơn hàng", link: "/order"},
         {icon: faUser, label: "Khách hàng", link: "/customer"},
-        {icon: faBox, label: "Sản phẩm", link: ""},
+        {icon: faBoxes, label: "Sản phẩm", link: "/product"},
         {icon: faGear, label: "Cá nhân", link: ""},
     ]
 

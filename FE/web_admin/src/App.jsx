@@ -11,6 +11,7 @@ import { CustomerDetails } from "./pages/customer/CustomerDetails"
 import { CustomerOrderHistory } from "./pages/customer/CustomerOrderHistory"
 import { Product } from "./pages/product/Product"
 import { ProductDetails } from "./pages/product/ProductDetails"
+import { Personal } from "./pages/personal/Personal"
 
 function App() {
   return (
@@ -35,6 +36,8 @@ function App() {
 
             <Route path="/product" element={<Product />} />
             <Route path="/product-details" element={<ProductDetails />} /> {/* /customer-details/{id} */}
+
+            <Route path="/personal" element={<Personal />} />
 
           </Routes>
         </Router>

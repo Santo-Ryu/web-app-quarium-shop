@@ -1,8 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import { CustomTable } from '../../components/CustomTable';
 
 export const OrderDetailsContent = ({
     id
 }) => {
+    const navigate = useNavigate();
+
     const columns = [
         {
             name: <span className="order-table__header">Tên sản phẩm</span>,
@@ -49,8 +52,8 @@ export const OrderDetailsContent = ({
     ]      
 
     const buttonList = [
-        {buttonName: 'Sửa đơn', className: 'order-details__button order-details__button--edit'},
-        {buttonName: 'Hủy đơn', className: 'order-details__button order-details__button--cancel'}
+        {buttonName: 'Sửa đơn', className: 'order-details__button order-details__button--edit', onClick: () => navigate('/order-update')},
+        {buttonName: 'Hủy đơn', className: 'order-details__button order-details__button--cancel', onClick: () => {}}
     ]
 
     const changeColorStatus = (type) => {
@@ -132,6 +135,7 @@ export const OrderDetailsContent = ({
                         <button 
                             key={index} 
                             className={button.className}
+                            onClick={button.onClick}
                         >
                             {button.buttonName}
                         </button>

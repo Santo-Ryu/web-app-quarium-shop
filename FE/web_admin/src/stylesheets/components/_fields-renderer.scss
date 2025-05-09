@@ -1,0 +1,62 @@
+@use '../abstracts/' as *;
+
+.fields-renderer {
+    width: 100%;
+    height: auto;
+    @include flex-layout(flex, center, center, column);
+    gap: pxToRem(20);
+
+    &__item {
+        width: 100%;
+        @include flex-layout(flex, start, start, column);
+        gap: pxToRem(5);
+
+        &--input {
+            width: 100%;
+            padding: pxToRem(8)  pxToRem(12);
+            border: 1px solid $stroke-black-20;
+            border-radius: pxToRem(5);
+        }
+
+        &--select {
+            width: 100%;
+            padding: pxToRem(8)  pxToRem(12);
+            border: 1px solid $stroke-black-20;
+            border-radius: pxToRem(5);
+        }
+    }
+
+    &__quill {
+        width: 100%;
+
+        .ql-container {
+            border-radius: 0 0 8px 8px;
+            min-height: 200px;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .ql-toolbar {
+            background-color: #f9f9f9;
+            border-radius: 8px 8px 0 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .ql-editor {
+            padding: 15px;
+            min-height: 150px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .ql-editor.ql-blank::before {
+            color: #aaa;
+            font-style: italic;
+        }
+
+        .ql-toolbar button:hover,
+        .ql-toolbar .ql-picker-label:hover {
+            color: #007bff;
+        }
+    }
+}

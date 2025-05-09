@@ -2,9 +2,10 @@ import { Helmet } from "react-helmet-async";
 import { MainLayout } from "../../layouts/MainLayout";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { CustomTable } from "../../components/CustomTable";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Customer = () => {
+    const navigate = useNavigate();
     const label = {text: 'Khách hàng', icon: faUser}
 
     const switchColorStatus = (status) => {
@@ -56,7 +57,11 @@ export const Customer = () => {
         },
         {
             name: <span style={{ fontSize: '0.9rem', }}>Chức năng</span>,
-            cell: row => (<Link to={'/customer-details/{id}'}>Xem thêm</Link>),
+            cell: row => (
+                <div className="product-table__button">
+                    <button className="table-button product-table__button--view" onClick={() => navigate('/customer-details')}>Xem thêm</button>
+                </div>
+            ),
             sortable: true,
             width: '160px'
         },

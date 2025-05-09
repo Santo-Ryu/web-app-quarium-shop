@@ -13,7 +13,7 @@ export const Sidebar = ({
         {icon: faBoxArchive, label: "Đơn hàng", link: "/order"},
         {icon: faUser, label: "Khách hàng", link: "/customer"},
         {icon: faBoxes, label: "Sản phẩm", link: "/product"},
-        {icon: faGear, label: "Cá nhân", link: ""},
+        {icon: faGear, label: "Cá nhân", link: "/personal"},
     ]
 
     return (

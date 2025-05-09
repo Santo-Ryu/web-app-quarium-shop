@@ -83,18 +83,18 @@ fun NotificationScreen(navController: NavController) {
         )
         val items = listOf(
             ItemNotification(
-                R.drawable.cay_dong_tien,
+                R.drawable.beta2,
                 "Đơn hàng #994823 của bạn đã được giao thành công!",
                 DONE_GREEN
             ),
             ItemNotification(
                 R.drawable.cay_dong_tien,
-                "Đơn hàng #994823 của bạn đang chờ xác nhận!",
+                "Đơn hàng #569556 của bạn đang chờ xác nhận!",
                 WAITING_YELLOW
             ),
             ItemNotification(
-                R.drawable.cay_dong_tien,
-                "Đơn hàng #994823 của bạn đang được giao!",
+                R.drawable.beta1,
+                "Đơn hàng #266594 của bạn đang được giao!",
                 DELIVERING_BLUE
             ),
         )
@@ -112,6 +112,7 @@ fun NotificationScreen(navController: NavController) {
                     Image(
                         painter = painterResource(item.image),
                         contentDescription = "Icon",
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier.size(50.dp)
                             .clip(RoundedCornerShape(8.dp))
                     )

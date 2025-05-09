@@ -34,9 +34,9 @@ fun AppNavigation() {
     NavHost(
         navController = navController,
 //        startDestination = if (isLoggedIn.value) "home" else "login"
-        startDestination = "notification"
+        startDestination = "search_result"
     ) {
-        composable("login") { AuthScreen() }
+        composable("auth") { AuthScreen() }
 
         composable("home") { HomeScreen(navController) }
 

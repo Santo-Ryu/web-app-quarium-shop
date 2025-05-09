@@ -79,14 +79,14 @@ fun SaleOff(navController: NavController) {
         Spacer(modifier = Modifier.height(Dimens.paddingSmall))
 
         /*  Sale slide  */
+        data class TestData(val id: Int, val price: String)
         val saleProducts by remember{
             mutableStateOf(
                 listOf(
-                    R.drawable.cay_dong_tien,
-                    R.drawable.cay_dong_tien,
-                    R.drawable.cay_dong_tien,
-                    R.drawable.cay_dong_tien,
-                    R.drawable.banner2,
+                    TestData(R.drawable.cay_dong_tien, "12,000"),
+                    TestData(R.drawable.beta2, "120,000"),
+                    TestData(R.drawable.beca, "89,000"),
+                    TestData(R.drawable.cay_dong_tien, "12,000")
                 )
             )
         }
@@ -114,7 +114,7 @@ fun SaleOff(navController: NavController) {
                             .clickable { navController.navigate("product_details") }
                     ) {
                         Image(
-                            painter = painterResource(item),
+                            painter = painterResource(item.id),
                             contentDescription = "Product",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
@@ -128,7 +128,7 @@ fun SaleOff(navController: NavController) {
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "30,000 đ",
+                                text = item.price,
                                 color = SALE_OFF_TAG,
                                 style = Typography.titleMedium,
                                 textAlign = TextAlign.Center,

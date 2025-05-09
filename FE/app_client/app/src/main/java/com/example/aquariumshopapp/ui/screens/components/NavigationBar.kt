@@ -32,13 +32,26 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.aquarium_app.ui.theme.GreenPrimary
 import com.example.aquarium_app.ui.theme.White
 import com.example.aquariumshopapp.R
 
 @Composable
 fun NavigationBar(navController: NavController) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+    
     var selectedIndex by remember { mutableStateOf(0) }
+    
+    // Update selectedIndex based on current route
+    when (currentRoute) {
+        "home" -> selectedIndex = 0
+        "shopping_cart" -> selectedIndex = 1
+        "notification" -> selectedIndex = 2
+        "personal" -> selectedIndex = 3
+    }
+    
     val listIcon = listOf(
         IconNav(R.drawable.house_solid, "Home"),
         IconNav(R.drawable.cart_shopping_solid, "Shopping Cart"),

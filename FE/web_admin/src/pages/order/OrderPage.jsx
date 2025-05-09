@@ -4,7 +4,7 @@ import { faBoxArchive } from "@fortawesome/free-solid-svg-icons";
 import { CustomTable } from "../../components/CustomTable";
 import { Link, useNavigate } from "react-router-dom";
 
-export const Order = () => {
+export const OrderPage = () => {
     const navigate = useNavigate();
     const label = {text: 'Đơn hàng', icon: faBoxArchive}
 

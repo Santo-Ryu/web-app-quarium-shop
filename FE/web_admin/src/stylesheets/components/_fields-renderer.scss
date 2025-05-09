@@ -2,7 +2,6 @@
 
 .fields-renderer {
     width: 100%;
-    height: auto;
     @include flex-layout(flex, center, center, column);
     gap: pxToRem(20);
 
@@ -23,6 +22,27 @@
             padding: pxToRem(8)  pxToRem(12);
             border: 1px solid $stroke-black-20;
             border-radius: pxToRem(5);
+        }
+
+        &--button {
+            width: 100%;
+            @include flex-layout(flex, end, center, row);
+            gap: pxToRem(10);
+
+            button {
+                padding: pxToRem(12) pxToRem(15);
+                border-radius: pxToRem(8);
+                font-weight: 600;
+                color: white;
+            }
+
+            .button-back {
+                background-color: #6c757d;
+            }
+
+            .button-confirm {
+                background-color: #007bff;
+            }
         }
     }
 

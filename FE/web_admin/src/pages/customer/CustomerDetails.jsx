@@ -26,7 +26,7 @@ export const CustomerDetails = () => {
         {label: "Địa chỉ", value: "Đà Nẵng", inputType: "text", disabled: disabledInput},
         {label: "Ngày sinh", value: "1999-02-22", inputType: "date", disabled: disabledInput},
         {label: "Ngày đăng ký", value: "2025-04-25", inputType: "date", disabled: true},
-        {label: "Đăng nhập lần cuối", value: "2025-04-27", inputType: "date", disabled: disabledInput}
+        {label: "Cập nhật gần đây", value: "2025-04-27", inputType: "date", disabled: disabledInput}
     ]
 
     const listButton = [

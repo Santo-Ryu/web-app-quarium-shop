@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const CustomTable = ({
     selectOption = null,
-    buttonOption = null,
+    buttons = null,
     hiddenSearchBar,
     columns,
     data,
@@ -24,7 +24,6 @@ export const CustomTable = ({
 
     return (
         <section className="custom-table">
-            {hiddenSearchBar && 
             <header className="custom-table__header">
                 {selectOption != null && 
                     <select className='custom-table__select' name="" id="">
@@ -33,21 +32,26 @@ export const CustomTable = ({
                         ))}
                     </select>
                 }
-                <input
-                    className='custom-table__input'
-                    type="text"
-                    placeholder="Tìm kiếm"
-                    value={search}
-                    onChange={handleFilter}
-                />
-                {buttonOption != null && buttonOption.hidden ? 
-                    <button className='custom-table__button' onClick={buttonOption.func}>
-                        <FontAwesomeIcon icon={buttonOption.icon} />
-                        {buttonOption.name}
-                    </button> : ""
+                {hiddenSearchBar && 
+                    <input
+                        className='custom-table__input'
+                        type="text"
+                        placeholder="Tìm kiếm"
+                        value={search}
+                        onChange={handleFilter}
+                    />
+                }
+                {buttons != null && 
+                    <div className='custom-table__buttons'>
+                        {buttons != null && buttons.map((e, key) => (
+                            <button className='custom-table__buttons--item' onClick={e.func} key={key}>
+                                <FontAwesomeIcon icon={e.icon} />
+                                {e.name}
+                            </button>
+                        ))}
+                    </div>
                 }
             </header>
-            }
 
             <article className='custom-table__content'>
                 <DataTable

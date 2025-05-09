@@ -209,4 +209,8 @@
         width: pxToRem(50);
         padding: pxToRem(5);
     }
+
+    &__input {
+        padding: pxToRem(8) pxToRem(12);
+    }
 }

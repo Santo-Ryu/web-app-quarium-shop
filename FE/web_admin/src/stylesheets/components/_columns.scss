@@ -1,0 +1,8 @@
+@use '../abstracts/' as *;
+
+.column__input {
+    padding: pxToRem(8) pxToRem(12);
+    border: 1px solid $stroke-black-20;
+    border-radius: pxToRem(5);
+}
+

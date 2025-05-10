@@ -9,7 +9,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.aquarium_app.ui.screens.auth.AuthScreen
 import com.example.aquariumshopapp.ui.screens.home.HomeScreen
 import com.example.aquariumshopapp.ui.screens.notification.NotificationScreen
-import com.example.aquariumshopapp.ui.screens.payment.AddressScreen
 import com.example.aquariumshopapp.ui.screens.payment.PaymentScreen
 import com.example.aquariumshopapp.ui.screens.personal.ChangePasswordScreen
 import com.example.aquariumshopapp.ui.screens.personal.MessageScreen
@@ -41,7 +40,7 @@ fun AppNavigation() {
     NavHost(
         navController = navController,
 //        startDestination = if (isLoggedIn.value) "home" else "login"
-        startDestination = "order_details"
+        startDestination = "payment"
     ) {
         composable("auth") { AuthScreen() }
 
@@ -60,8 +59,6 @@ fun AppNavigation() {
         composable("shopping_cart") { ShoppingCartScreen(navController) }
 
         composable("payment") { PaymentScreen(navController) }
-
-        composable("address") { AddressScreen(navController) }
 
         composable("notification") { NotificationScreen(navController) }
 

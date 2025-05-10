@@ -1,7 +1,6 @@
 package com.aquariumshop.aquariumshop.model.base
 
-import com.aquariumshop.aquariumshop.model.base.BaseEntity
-import com.example.aquarium_server.entity.UserImage
+import com.aquariumshop.aquariumshop.model.entity.UserImage
 import jakarta.persistence.Column
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.MappedSuperclass

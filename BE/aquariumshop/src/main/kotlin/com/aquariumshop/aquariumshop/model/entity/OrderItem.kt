@@ -1,11 +1,11 @@
 package com.aquariumshop.aquariumshop.model.entity
 
 import com.aquariumshop.aquariumshop.model.base.BaseEntity
-import com.example.aquarium_server.entity.Order
-import com.example.aquarium_server.entity.Product
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
 import lombok.AllArgsConstructor
 import lombok.Builder
@@ -21,9 +21,11 @@ import lombok.Setter
 @NoArgsConstructor
 @Table(name = "order_items")
 class OrderItem: BaseEntity() {
+    @ManyToOne
     @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false)
     var order: Order? = null
 
+    @OneToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
     var product: Product? = null
 

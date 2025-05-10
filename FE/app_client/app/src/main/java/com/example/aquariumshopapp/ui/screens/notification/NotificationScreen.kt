@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -77,23 +78,27 @@ fun NotificationScreen(navController: NavController) {
 
         /*  Notification  */
         data class ItemNotification(
-            val image: Int,
+            val iconId: Int,
+            val iconColor: Color,
             val message: String,
             val messageColor: Color,
         )
         val items = listOf(
             ItemNotification(
-                R.drawable.beta2,
+                R.drawable.square_check_solid,
+                DONE_GREEN,
                 "Đơn hàng #994823 của bạn đã được giao thành công!",
                 DONE_GREEN
             ),
             ItemNotification(
-                R.drawable.cay_dong_tien,
+                R.drawable.hourglass_end_solid,
+                WAITING_YELLOW,
                 "Đơn hàng #569556 của bạn đang chờ xác nhận!",
                 WAITING_YELLOW
             ),
             ItemNotification(
-                R.drawable.beta1,
+                R.drawable.truck_fast_solid,
+                DELIVERING_BLUE,
                 "Đơn hàng #266594 của bạn đang được giao!",
                 DELIVERING_BLUE
             ),
@@ -110,9 +115,9 @@ fun NotificationScreen(navController: NavController) {
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Image(
-                        painter = painterResource(item.image),
+                        painter = painterResource(item.iconId),
                         contentDescription = "Icon",
-                        contentScale = ContentScale.Crop,
+                        colorFilter = ColorFilter.tint(item.iconColor),
                         modifier = Modifier.size(50.dp)
                             .clip(RoundedCornerShape(8.dp))
                     )

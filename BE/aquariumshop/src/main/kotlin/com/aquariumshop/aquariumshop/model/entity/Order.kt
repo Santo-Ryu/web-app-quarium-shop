@@ -1,4 +1,4 @@
-package com.example.aquarium_server.entity
+package com.aquariumshop.aquariumshop.model.entity
 
 import com.aquariumshop.aquariumshop.model.base.BaseEntity
 import jakarta.persistence.*

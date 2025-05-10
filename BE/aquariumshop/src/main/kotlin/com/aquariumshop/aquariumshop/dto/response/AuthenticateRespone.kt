@@ -1,4 +1,5 @@
 package com.aquariumshop.aquariumshop.dto.response
 
-class AuthenticateRespone {
-}
+data class AuthenticateRequest (
+    val email: String
+)

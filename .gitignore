@@ -6,7 +6,6 @@
 **/.kotlin/
 **/build/
 **/local.properties
-
 # ---------------------
 # React + Vite (aquarium_web_admin)
 # ---------------------
@@ -24,3 +23,4 @@
 **/.classpath
 **/.project
 **/.settings/
+**/.env

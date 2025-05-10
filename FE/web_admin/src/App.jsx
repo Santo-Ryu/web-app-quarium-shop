@@ -13,6 +13,7 @@ import { Product } from "./pages/product/Product"
 import { ProductDetails } from "./pages/product/ProductDetails"
 import { Personal } from "./pages/personal/Personal"
 import { Discount } from "./pages/discount/Discount"
+import { Categories } from "./pages/categories/Categories"
 
 function App() {
   return (
@@ -34,6 +35,8 @@ function App() {
             <Route path="/customer" element={<Customer />} />
             <Route path="/customer-details" element={<CustomerDetails />} /> {/* /customer-details/{id} */}
             <Route path="/customer-order-history" element={<CustomerOrderHistory />} /> {/* /customer-order-history/{id} */}
+
+            <Route path="/categories" element={<Categories />} />
 
             <Route path="/product" element={<Product />} />
             <Route path="/product-details" element={<ProductDetails />} /> {/* /customer-details/{id} */}

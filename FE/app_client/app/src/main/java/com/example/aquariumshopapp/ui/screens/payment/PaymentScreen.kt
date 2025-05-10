@@ -124,11 +124,18 @@ fun PaymentScreen(navController: NavController) {
                         text = "Địa chỉ",
                         style = Typography.titleMedium
                     )
-                    Icon(
-                        imageVector = Icons.Default.ArrowForwardIos,
-                        contentDescription = "Choose Address",
-                        modifier = Modifier.size(15.dp)
-                    )
+                    Row() {
+                        Text(
+                            text = "Nhập địa chỉ khác?",
+                            style = Typography.bodyMedium,
+                            color = Color.Black.copy(.6f)
+                        )
+                        Icon(
+                            imageVector = Icons.Default.ArrowForwardIos,
+                            contentDescription = "Choose Address",
+                            modifier = Modifier.size(15.dp)
+                        )
+                    }
                 }
                 Column(
                     modifier = Modifier

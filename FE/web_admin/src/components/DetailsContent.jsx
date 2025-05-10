@@ -15,7 +15,7 @@ export const DetailsContent = ({
 
                 <article className="details-content__func">
                     <h3 className="details-content__func--header">Hình ảnh</h3>
-                    <img className="details-content__func--image" src="/src/assets/beta1.jpg" alt="Image" />
+                    <img className="details-content__func--image" src="/src/assets/avt1.jpg" alt="Image" />
                     <ul className="details-content__func--list-button">
                         {listButton.map((e, key) => (
                             <li className="list-button__item" key={key}>

@@ -5,6 +5,7 @@ import { MainLayout } from "../../layouts/MainLayout";
 import { DetailsContent } from '../../components/DetailsContent';
 import { CustomerDetailsContent } from "./CustomerDetailsContent";
 import { useState } from "react";
+import { FieldsRenderer } from "../../components/FieldsRenderer";
 
 export const CustomerDetails = () => {
     const navigate = useNavigate();
@@ -44,7 +45,7 @@ export const CustomerDetails = () => {
                 layout={
                     <DetailsContent 
                         listButton={listButton}
-                        layout={<CustomerDetailsContent typeInfo={typeInfo} />}
+                        layout={<FieldsRenderer fields={typeInfo} />}
                     />
                 }
             />

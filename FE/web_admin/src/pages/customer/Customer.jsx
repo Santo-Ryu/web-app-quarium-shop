@@ -60,10 +60,10 @@ export const Customer = () => {
             cell: row => (
                 <div className="product-table__button">
                     <button className="table-button product-table__button--view" onClick={() => navigate('/customer-details')}>Xem thêm</button>
+                    <button className="table-button product-table__button--delete">Xóa</button>
                 </div>
             ),
             sortable: true,
-            width: '160px'
         },
     ]
 

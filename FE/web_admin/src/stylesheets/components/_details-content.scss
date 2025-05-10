@@ -9,6 +9,7 @@
     &__info {
         width: 70%;
         height: 100%;
+        overflow-y: scroll;
         background-color: white;
         @include flex-layout(flex, start, start, column);
         gap: pxToRem(15);

@@ -5,6 +5,7 @@ import { MainLayout } from "../../layouts/MainLayout";
 import { DetailsContent } from "../../components/DetailsContent";
 import { useState } from "react";
 import { FieldsRenderer } from "../../components/FieldsRenderer";
+import { Value } from "sass";
 
 export const ProductDetails = () => {
     const navigate = useNavigate();
@@ -18,16 +19,16 @@ export const ProductDetails = () => {
     }
 
     const fields = [
-        { label: "ID sản phẩm", type: "text", name: "id" , disabled: disabledInput},
-        { label: "Danh mục", type: "select", name: "category", options: ["Cá cảnh", "Cây thủy sinh"], disabled: disabledInput},
-        { label: "Tên sản phẩm", type: "text", name: "name", disabled: disabledInput },
-        { label: "Mô tả", type: "quill", name: "description", disabled: disabledInput },
-        { label: "Đánh giá", type: "text", name: "rating", disabled: disabledInput },
-        { label: "Giá tiền", type: "number", name: "price", disabled: disabledInput },
-        { label: "Tồn kho", type: "number", name: "stock", disabled: disabledInput },
-        { label: "Đã bán", type: "number", name: "sold", disabled: disabledInput },
-        { label: "Ngày thêm vào", type: "date", name: "createdAt", disabled: disabledInput },
-        { label: "Cập nhật gần đây", type: "date", name: "updatedAt", disabled: disabledInput },
+        { label: "ID sản phẩm", value: "1", type: "text", name: "id" , disabled: disabledInput},
+        { label: "Danh mục", value: "Cá cảnh", type: "select", name: "category", options: ["Cá cảnh", "Cây thủy sinh"], disabled: disabledInput},
+        { label: "Tên sản phẩm", value: "Cá beta siêu đẹp", type: "text", name: "name", disabled: disabledInput },
+        { label: "Mô tả", value: "Giống cá sống bền, dễ nuôi, không cần chăm sóc nhiều, Giá thành từ rẻ đến đắt đa dạng", type: "quill", name: "description", disabled: disabledInput },
+        { label: "Đánh giá", value: "4.5", type: "text", name: "rating", disabled: disabledInput },
+        { label: "Giá tiền", value: "200.000", type: "number", name: "price", disabled: disabledInput },
+        { label: "Tồn kho", value: "120", type: "number", name: "stock", disabled: disabledInput },
+        { label: "Đã bán", value: "26", type: "number", name: "sold", disabled: disabledInput },
+        { label: "Ngày thêm vào", value: "2025-04-24", type: "date", name: "createdAt", disabled: disabledInput },
+        { label: "Cập nhật gần đây", value: "2025-04-25", type: "date", name: "updatedAt", disabled: disabledInput },
     ];
 
     const listButton = [

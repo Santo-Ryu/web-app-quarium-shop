@@ -22,14 +22,14 @@ export const Personal = () => {
 
     const label = {text: 'Cá nhân', icon: faGear}
     const fieldsInfomation = [
-        { label: "ID quan trị viên", type: "text", name: "id" , disabled: disabledInput},
-        { label: "Họ và tên", type: "text", name: "name", disabled: disabledInput},
-        { label: "Giới tính", type: "select", name: "gender", options: ['Nam', 'Nữ'] , disabled: disabledInput },
-        { label: "Ngày sinh", type: "date", name: "date", disabled: disabledInput },
-        { label: "Email", type: "text", name: "email", disabled: disabledInput },
-        { label: "Số điện thoại", type: "number", name: "phone", disabled: disabledInput },
-        { label: "Ngày đăng ký", type: "date", name: "createdAt", disabled: disabledInput },
-        { label: "Cập nhật gần đây", type: "date", name: "updatedAt", disabled: disabledInput },
+        { label: "ID quan trị viên", value: "1", type: "text", name: "id" , disabled: disabledInput},
+        { label: "Họ và tên", value: "Ly Na", type: "text", name: "name", disabled: disabledInput},
+        { label: "Giới tính", value: "Nữ", type: "select", name: "gender", options: ['Nam', 'Nữ'] , disabled: disabledInput },
+        { label: "Ngày sinh", value: "2000-02-22", type: "date", name: "date", disabled: disabledInput },
+        { label: "Email", value: "lyna2202@gmail.com", type: "text", name: "email", disabled: disabledInput },
+        { label: "Số điện thoại", value: "0354337115", type: "number", name: "phone", disabled: disabledInput },
+        { label: "Ngày đăng ký", value: "2022-04-26", type: "date", name: "createdAt", disabled: disabledInput },
+        { label: "Cập nhật gần đây", value: "2025-04-26", type: "date", name: "updatedAt", disabled: disabledInput },
     ];
     const fieldsChangePassword = [
         { label: "Mật khẩu hiện tại", type: "password", name: "currentPassword" , disabled: false},

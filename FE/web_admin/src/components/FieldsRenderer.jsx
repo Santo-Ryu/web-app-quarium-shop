@@ -21,7 +21,7 @@ export const FieldsRenderer = ({fields}) => {
                     <div className="fields-renderer__item" key={idx}>
                         {field.label && <label className="fields-renderer__item--label">{field.label}</label>}
                         {field.type === "quill" ? (
-                            <ReactQuill className="fieldsrendererquill" theme="snow" modules={modules} readOnly={field.disabled} />
+                            <ReactQuill className="fields-renderer__quill" theme="snow" value={field.value} modules={modules} readOnly={field.disabled} />
                         ) : field.type === "select" ? (
                             <select className="fields-renderer__item--select" disabled={field.disabled}>
                             {field?.options.map((opt, i) => (
@@ -38,7 +38,7 @@ export const FieldsRenderer = ({fields}) => {
                             <input
                                 className="fields-renderer__item--input"
                                 type={field?.type}
-                                value={""}
+                                value={field.value}
                                 disabled={field?.disabled}
                             />
                         )}

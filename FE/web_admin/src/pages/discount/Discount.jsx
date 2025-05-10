@@ -53,32 +53,18 @@ const columns = [
 const data = [
   {
     id: 1,
-    name: "Cá bảy màu Fancy",
+    name: "Cá beta sữa",
     image: '/src/assets/beta3.jpg',
     discount: "10",
     expiredAt: "2025-06-30",
   },
   {
     id: 2,
-    name: "Cây thủy sinh Anubias",
-    image: '/src/assets/beta3.jpg',
+    name: "Cá beta siêu đẹp",
+    image: '/src/assets/beta1.jpg',
     discount: "15",
     expiredAt: "2025-07-15",
-  },
-  {
-    id: 3,
-    name: "Máy lọc mini AquaPro",
-    image: '/src/assets/beta3.jpg',
-    discount: "5",
-    expiredAt: "2025-06-01",
-  },
-  {
-    id: 4,
-    name: "Cá neon vua",
-    image: '/src/assets/beta3.jpg',
-    discount: "8",
-    expiredAt: "2025-08-20",
-  },
+  }
 ];
 
 

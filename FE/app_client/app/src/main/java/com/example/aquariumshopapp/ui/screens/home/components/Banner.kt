@@ -57,6 +57,7 @@ fun SlideShow() {
         modifier = Modifier
             .fillMaxWidth()
             .height(200.dp)
+            .padding(bottom = 12.dp)
     ) {
         HorizontalPager(
             count = bannerImages.size,

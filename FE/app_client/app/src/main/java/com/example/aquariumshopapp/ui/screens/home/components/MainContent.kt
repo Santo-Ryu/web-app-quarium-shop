@@ -21,6 +21,9 @@ import com.example.aquarium_app.ui.theme.Dimens
 import com.example.aquarium_app.ui.theme.GreenPrimary
 import com.example.aquarium_app.ui.theme.textButtonSmall
 import com.example.aquariumshopapp.R
+import com.example.aquariumshopapp.data.model.Category
+import com.example.aquariumshopapp.data.model.Product
+import com.example.aquariumshopapp.data.model.ProductImage
 import com.example.aquariumshopapp.ui.screens.components.LabelList
 import com.example.aquariumshopapp.ui.screens.components.ProductCardList
 import com.example.aquariumshopapp.ui.screens.home.components.SaleOff
@@ -30,26 +33,19 @@ import com.example.aquariumshopapp.ui.model.TestData
 fun MainContent(
     mainContentModifier: Modifier,
     cardModifier: Modifier,
-    navController: NavController
+    navController: NavController,
+    categories: List<Category>,
+    products: List<Product>,
+    productImages: List<ProductImage>,
 ) {
+    val saleProducts = products.filter { it?.discountPercentage ?: 0 > 0 }
+
     val dataList by remember{
         mutableStateOf(
             listOf(
                 TestData(R.drawable.cay_dong_tien, "12,000", "Cây đồng tiền", "Sống được trên cạn lẫn dưới nước"),
                 TestData(R.drawable.beta2, "120,000", "Cá beta Rồng", "Siêu đẹp, mạnh mẽ như loài rồng"),
                 TestData(R.drawable.beca, "89,000", "Bể cá kinh xanh", "Trong suốt, đẹp đẽ, sang trọng, lịch lãm"),
-            )
-        )
-    }
-
-    var categories by remember {
-        mutableStateOf(
-            listOf(
-                "Tất cả",
-                "Cá cảnh",
-                "Cây thủy sinh",
-                "Dụng cụ",
-                "Bể cá"
             )
         )
     }
@@ -61,15 +57,21 @@ fun MainContent(
         SlideShow()
 
         /*  Sale off  */
-        SaleOff(navController)
+        if (!saleProducts.isEmpty()) {
+            SaleOff(
+                navController = navController,
+                saleProducts = saleProducts,
+                productImages = productImages
+            )
+        }
 
         /*  Sort categories  */
         LabelList(categories, navController)
 
         /*  Product list  */
-        val totalItem = 10
         ProductCardList(
-            dataList = dataList,
+            productImages = productImages,
+            products = products.take(10),
             cardModifier = cardModifier,
             navController
         )

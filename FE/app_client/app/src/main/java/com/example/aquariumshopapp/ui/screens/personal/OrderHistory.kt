@@ -24,7 +24,7 @@ fun OrderHistory(navController: NavController) {
     ) {
         PersonalHeader(navController, "Lịch sử", "personal")
         Spacer(modifier = Modifier.height(12.dp))
-        LabelList(labelList, navController)
+//        LabelList(labelList, navController)
 
         Column(
             modifier = Modifier.weight(1f).padding(12.dp)

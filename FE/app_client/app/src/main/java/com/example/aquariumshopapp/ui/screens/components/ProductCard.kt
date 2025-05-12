@@ -43,19 +43,39 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.aquarium_app.ui.theme.Dimens
 import com.example.aquarium_app.ui.theme.GreenPrimary
 import com.example.aquarium_app.ui.theme.Typography
 import com.example.aquarium_app.ui.theme.*
 import com.example.aquariumshopapp.R
+import com.example.aquariumshopapp.data.api.RetrofitClient
+import com.example.aquariumshopapp.data.model.Product
+import com.example.aquariumshopapp.data.model.ProductImage
+import com.example.aquariumshopapp.data.service.FilterImageList
 import com.example.aquariumshopapp.ui.model.TestData
+import com.example.aquariumshopapp.ui.utils.ValidateUtils
 
 @Composable
 fun ProductCard(
     modifier: Modifier,
     navController: NavController,
-    product: TestData
+    product: Product,
+    productImages: List<ProductImage>
 ) {
+    val images = FilterImageList.filterImagesByProductId(productImages, product.id)
+
+    val price = product.price ?: 0
+    val discountPercentage = product.discountPercentage ?: 0
+
+    val returnPrice = if (discountPercentage > 0) {
+        val discountedPrice = price - (price * discountPercentage)/100
+        ValidateUtils.formatPrice(discountedPrice.toString())
+    } else {
+        ValidateUtils.formatPrice(price.toString())
+    }
+
+
     Column(
         modifier = modifier
             .clickable { navController.navigate("product_details") }
@@ -71,13 +91,12 @@ fun ProductCard(
                     spotColor = Color.Black.copy(.3f)      // 👈 đậm hơn
                 )
         ) {
-            Image(
-                painter = painterResource(product.id),
-                contentDescription = "Product Image",
+            AsyncImage(
+                model = "${RetrofitClient.BASE_URL}api/public/image?name=${images.first().name}",
+                contentDescription = "Product",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
-
             Row(
                 modifier = Modifier
                     .clip(RoundedCornerShape(
@@ -96,7 +115,7 @@ fun ProductCard(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    "4.5",
+                    text = product.rating.toString(),
                     style = Typography.titleMedium,
                     color = RATING_YELLOW_2,
                     textAlign = TextAlign.Center,
@@ -126,7 +145,7 @@ fun ProductCard(
             ) {
 //                Title
                 Text(
-                    product.name,
+                    text = product.name.toString(),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
@@ -139,7 +158,7 @@ fun ProductCard(
                 )
 //                Product detail
                 Text(
-                    product.details,
+                    text = product.description.toString(),
                     modifier = Modifier
                         .padding(
                             bottom = 6.dp,
@@ -165,17 +184,19 @@ fun ProductCard(
                         .padding(start = 8.dp)
                 ) {
 //                    If sale then display
-//                    Text(
-//                        product.price,
-//                        style = TextStyle(
-//                            fontSize = 12.sp,
-//                            fontWeight = FontWeight.Medium,
-//                            color = Color.Red,
-//                            textDecoration = TextDecoration.LineThrough
-//                        )
-//                    )
+                    if (product.discountPercentage != null && product.discountPercentage > 0) {
+                        Text(
+                            text = ValidateUtils.formatPrice(product.price.toString()),
+                            style = TextStyle(
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.Red,
+                                textDecoration = TextDecoration.LineThrough
+                            )
+                        )
+                    }
                     Text(
-                        product.price,
+                        text = returnPrice,
                         style = TextStyle(
                             fontSize = 16.sp,
                             fontWeight = FontWeight.SemiBold

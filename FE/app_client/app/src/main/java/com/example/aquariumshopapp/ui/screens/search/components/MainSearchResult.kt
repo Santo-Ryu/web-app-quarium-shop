@@ -44,7 +44,7 @@ fun MainSearchResult(modifier: Modifier, navController: NavController) {
             .then(modifier)
             .fillMaxSize()
     ) {
-        LabelList(labelList, navController)
+//        LabelList(labelList, navController)
 
         Column(
             modifier = Modifier
@@ -53,13 +53,13 @@ fun MainSearchResult(modifier: Modifier, navController: NavController) {
                 .weight(1f)
                 .verticalScroll(rememberScrollState())
         ) {
-            ProductCardList(
-                dataList,
-                Modifier
-                    .productCardModifier()
-                    .then(Modifier.weight(1f)),
-                navController
-            )
+//            ProductCardList(
+//                dataList,
+//                Modifier
+//                    .productCardModifier()
+//                    .then(Modifier.weight(1f)),
+//                navController
+//            )
         }
     }
 }

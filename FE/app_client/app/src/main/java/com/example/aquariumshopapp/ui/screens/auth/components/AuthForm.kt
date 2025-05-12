@@ -37,17 +37,19 @@ import androidx.compose.ui.unit.sp
 import com.example.aquarium_app.ui.common.CustomOutlinedTextField
 import com.example.aquarium_app.ui.theme.*
 import com.example.aquariumshopapp.R
+import com.example.aquariumshopapp.data.enums.Authenticate
 import com.example.aquariumshopapp.domain.model.AuthFieldsState
 import com.example.aquariumshopapp.ui.model.AuthUIState
 import com.example.aquariumshopapp.ui.screens.auth.components.ExoVideoPlayer
 import com.example.aquariumshopapp.ui.theme.modifierOutlinedTextFieldAuthForm
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun AuthForm(
     authUIState: AuthUIState,
     onChangeFrom: (targetForm: String) -> Unit,
     onInputChange: (AuthFieldsState) -> Unit,
-    onPrimaryButtonClicked: () -> Unit
+    onButtonClick: () -> Unit
 ) {
     val authFieldsState = authUIState.fields
     val authFieldsErrorState = authUIState.errors
@@ -174,7 +176,7 @@ fun AuthForm(
                     /*  Button  */
                     Button(
                         onClick = {
-                            if (authForm.type === "register") onPrimaryButtonClicked()
+                            onButtonClick()
                         },
                         modifier = Modifier
                             .fillMaxWidth(0.8f)

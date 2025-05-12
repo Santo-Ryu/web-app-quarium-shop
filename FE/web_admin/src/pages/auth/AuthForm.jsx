@@ -5,6 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react"
 import { Helmet } from "react-helmet-async";
 import { TextFieldWithIcon } from "/src/components/TextFieldWithIcon";
+import { isValidEmail, isValidFieldNull, isValidPassword, isValidPasswordMatch } from "../../app/service/Validator";
+import { encrypt, hashPassword } from "../../app/service/Encrypt";
+import { register } from "../../app/api/auth.api";
 
 export const AuthForm = ({
     type,
@@ -50,6 +53,46 @@ export const AuthForm = ({
         { icon: faTwitter, color: "#1DA1F2" },   // Twitter xanh nhạt
     ];
 
+    const handleClick = (typeForm) => {
+        console.log("typeForm: ", typeForm)
+        switch(typeForm) {
+            case "register": {
+                return handleRegister()
+            }
+            case "login": {
+
+            }
+            case "forgot_password": {
+
+            }
+            default: "Type form is valid!"
+        }
+    }
+
+    const handleRegister = () => {
+        if (!isValidFieldNull(authInfo.email) || !isValidFieldNull(authInfo.password) || !isValidFieldNull(authInfo.confirmPassword))
+            alert("Thông tin không được để trống!")
+        if (!isValidEmail(authInfo.email)) alert("Email không hợp lệ!")
+        if (!isValidPassword(authInfo.password) || !isValidPassword(authInfo.confirmPassword)) 
+            alert("Mật khẩu phải > 6 ký tự")
+        if (!isValidPasswordMatch(authInfo.password, authInfo.confirmPassword)) 
+            alert("Mật khẩu không trùng khớp!")
+
+        const request = {
+            "email": encrypt(authInfo.email),
+            "password": hashPassword(authInfo.password)
+        }
+        register(request)
+    }
+
+    const handleLogin = () => {
+        
+    }
+
+    const handleForgotPassword = () => {
+
+    }
+
     return(
         <>
             <Helmet>
@@ -90,7 +133,7 @@ export const AuthForm = ({
 
                 {typeForm === "login" && <p className="auth-form__forgot-link"  onClick={() => setTypeForm("forgot_password")}>Quên mật khẩu?</p>}
 
-                <button className="auth-form__button" type="submit">{labelType(typeForm)}</button>
+                <button className="auth-form__button" onClick={() => handleClick(typeForm)} type="submit">{labelType(typeForm)}</button>
 
                 {authSwitch(typeForm)}
 

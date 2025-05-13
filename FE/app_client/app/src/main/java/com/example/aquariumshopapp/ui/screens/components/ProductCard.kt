@@ -1,5 +1,6 @@
 package com.example.aquarium_app.ui.screens.home.components
 
+import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -78,7 +79,9 @@ fun ProductCard(
 
     Column(
         modifier = modifier
-            .clickable { navController.navigate("product_details") }
+            .clickable {
+                navController.navigate("product_details/${product.id}")
+            }
     ) {
 //        Image
         Box(
@@ -86,9 +89,9 @@ fun ProductCard(
                 .fillMaxWidth()
                 .fillMaxHeight(.65f)
                 .shadow(
-                    elevation = 5.dp, // 👈 thấp = bóng ngắn
-                    ambientColor = Color.Black.copy(.3f), // 👈 đậm hơn
-                    spotColor = Color.Black.copy(.3f)      // 👈 đậm hơn
+                    elevation = 5.dp, // thấp = bóng ngắn
+                    ambientColor = Color.Black.copy(.3f), // đậm hơn
+                    spotColor = Color.Black.copy(.3f)      // đậm hơn
                 )
         ) {
             AsyncImage(

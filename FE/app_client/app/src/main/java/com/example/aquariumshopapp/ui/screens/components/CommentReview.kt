@@ -22,19 +22,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.aquarium_app.ui.theme.BlackAlpha10
 import com.example.aquarium_app.ui.theme.Dimens
 import com.example.aquarium_app.ui.theme.Typography
+import com.example.aquariumshopapp.data.api.RetrofitClient
 import com.example.aquariumshopapp.data.model.Comment
+import com.example.aquariumshopapp.ui.utils.ValidateUtils
 
 @Composable
 fun CommentReview(comment: Comment) {
+    val customerImage = comment.customer.image?.name ?: "user.png"
+    val customer = comment.customer
     Row(
         modifier = Modifier
             .padding(Dimens.paddingSmall)
     ) {
-        Image(
-            painter = painterResource(comment.image),
+        AsyncImage(
+            model = "${RetrofitClient.BASE_URL}api/public/image?name=${customerImage}",
             contentScale = ContentScale.Crop,
             contentDescription = "Image",
             modifier = Modifier
@@ -45,7 +50,7 @@ fun CommentReview(comment: Comment) {
         Spacer(modifier = Modifier.width(Dimens.spaceSmall))
         Column() {
             Text(
-                comment.name,
+                text = customer.name.toString(),
                 style = Typography.titleMedium
             )
             Row {
@@ -61,14 +66,14 @@ fun CommentReview(comment: Comment) {
                     modifier = Modifier.size(12.dp)
                 )
                 Text(
-                    ", ${comment.createdAt}",
+                    ", ${ValidateUtils.formatDate(comment.createdAt)}",
                     style = Typography.bodySmall
                 )
             }
         }
     }
     Text(
-        comment.comment,
+        text = comment.content.toString(),
         modifier = Modifier.padding(Dimens.paddingSmall)
     )
     Divider(modifier = Modifier.fillMaxWidth())

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ProductImageRepository: JpaRepository<ProductImage, Long> {
+    fun findByProductId(id: Long): List<ProductImage>
 }

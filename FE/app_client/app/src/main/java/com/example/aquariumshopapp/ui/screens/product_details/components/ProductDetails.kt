@@ -18,18 +18,25 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.aquarium_app.ui.theme.BlackAlpha10
 import com.example.aquarium_app.ui.theme.BlackAlpha30
 import com.example.aquariumshopapp.R
+import com.example.aquariumshopapp.data.api.RetrofitClient
+import com.example.aquariumshopapp.data.model.Comment
+import com.example.aquariumshopapp.data.model.Product
+import com.example.aquariumshopapp.data.model.ProductImage
 
 @Composable
-fun ProductDetails(navController: NavController) {
-    val productImages = listOf(
-        R.drawable.beta2,
-        R.drawable.beta1,
-        R.drawable.beta3,
-    )
-    val mainImage = remember { mutableStateOf(productImages.first()) }
+fun ProductDetails(
+    navController: NavController,
+    product: Product,
+    comments: List<Comment>,
+    images: List<ProductImage>,
+    productRelated: List<Product>,
+    productImageRelated: List<ProductImage>
+) {
+    val mainImage = remember { mutableStateOf(images.first()) }
 
     /*  Product Details  */
     Column(
@@ -41,8 +48,8 @@ fun ProductDetails(navController: NavController) {
     ) {
         /*  Main Product Image  */
         Crossfade(targetState = mainImage.value) { imageRes ->
-            Image(
-                painter = painterResource(imageRes),
+            AsyncImage(
+                model = "${RetrofitClient.BASE_URL}api/public/image?name=${imageRes.name}",
                 contentDescription = "Image",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -57,27 +64,37 @@ fun ProductDetails(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            val visible = false
+            val visible = product.discountPercentage == null || product.discountPercentage == 0
 
             /*  Sale Tags  */
-            if (visible) SaleTag()
+            if (!visible) SaleTag(product)
 
             /*  Title & Price  */
-            ProductTitleAndPrice(visible)
+            ProductTitleAndPrice(
+                visible = visible,
+                product = product
+            )
 
             /*  Product Content  */
             ProductContent(
-                productImages,
-                onImageClick = { clickedImage ->
-                    mainImage.value = clickedImage
-                }
+                productImages = images,
+                onImageClick = { clickedImage -> mainImage.value = clickedImage },
+                product = product
             )
 
             /*  Product Comments  */
-            ProductComment(navController)
+            ProductComment(
+                navController = navController,
+                comments = comments,
+                product = product
+            )
 
             /*  Product Related  */
-            ProductRelated()
+            ProductRelated(
+                products = productRelated,
+                productImages = productImageRelated,
+                navController = navController
+            )
         }
     }
 }

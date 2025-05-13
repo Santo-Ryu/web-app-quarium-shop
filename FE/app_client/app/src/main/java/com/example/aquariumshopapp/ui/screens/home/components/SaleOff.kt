@@ -110,7 +110,7 @@ fun SaleOff(
                                 1.dp, BlackAlpha10,
                                 RoundedCornerShape(Dimens.borderRadiusSmall.dp)
                             )
-                            .clickable { navController.navigate("product_details") }
+                            .clickable { navController.navigate("product_details/${item.id}") }
                     ) {
                         AsyncImage(
                             model = "${RetrofitClient.BASE_URL}api/public/image?name=${image.first().name}",

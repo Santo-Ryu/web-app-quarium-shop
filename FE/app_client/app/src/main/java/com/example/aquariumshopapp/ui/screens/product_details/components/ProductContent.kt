@@ -7,6 +7,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,16 +25,21 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.aquarium_app.ui.theme.BlackAlpha10
 import com.example.aquarium_app.ui.theme.Dimens
 import com.example.aquarium_app.ui.theme.PRODUCT_TEXT_DETAILS
 import com.example.aquarium_app.ui.theme.Typography
 import com.example.aquariumshopapp.R
+import com.example.aquariumshopapp.data.api.RetrofitClient
+import com.example.aquariumshopapp.data.model.Product
+import com.example.aquariumshopapp.data.model.ProductImage
 
 @Composable
 fun ProductContent(
-    productImages: List<Int>,
-    onImageClick: (Int) -> Unit
+    productImages: List<ProductImage>,
+    onImageClick: (ProductImage) -> Unit,
+    product: Product
 ) {
     val paddingSet = Modifier
         .padding(
@@ -60,8 +66,8 @@ fun ProductContent(
                 .then(paddingSet)
         ) {
             productImages.forEach { imageRes ->
-                Image(
-                    painter = painterResource(imageRes),
+                AsyncImage(
+                    model = "${RetrofitClient.BASE_URL}api/public/image?name=${imageRes.name}",
                     contentDescription = "Product Image",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -78,14 +84,6 @@ fun ProductContent(
         }
     }
 
-    val textTemp = "Cá Betta Rồng có ngoại hình vô cùng nổi bật và được ưa chuộng nuôi làm cảnh hiện nay. Loài cá này còn được gọi là cá Xiêm Rồng, cá chọi rồng… có nguồn gốc được lai từ Thái Lan. Cá Betta Rồng có kích thước lớn và ngoại hình vô cùng nổi bật. Đặc biệt là vây và đuôi xoè rất rộng. Cá Betta Rồng được phân thành các loài phổ biến dưới đây: \n" +
-            "\n" +
-            "Betta Rồng đỏ\n" +
-            "Betta Rồng đen\n" +
-            "Betta Rồng xanh\n" +
-            "Betta Rồng vàng \n" +
-            "Betta Rồng đuôi tưa"
-
     /*  Expand Details  */
     val isExpanded = remember { mutableStateOf(false) }
     val showMoreText = if (isExpanded.value) "Thu gọn" else "Xem thêm"
@@ -101,7 +99,7 @@ fun ProductContent(
         )
 
         Text(
-            text = textTemp,
+            text = product.description.toString(),
             modifier = Modifier
                 .padding(
                     start = Dimens.paddingMedium,

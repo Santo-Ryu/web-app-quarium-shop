@@ -16,15 +16,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.aquarium_app.ui.theme.Dimens
 import com.example.aquarium_app.ui.theme.SALE_OFF_BG
 import com.example.aquarium_app.ui.theme.White
 import com.example.aquarium_app.ui.theme.titleSmall
 import com.example.aquariumshopapp.R
+import com.example.aquariumshopapp.data.model.Product
+import com.example.aquariumshopapp.ui.utils.ValidateUtils
 
 @Composable
-fun SaleTag() {
+fun SaleTag(
+    product: Product
+) {
     Row(
         modifier = Modifier
             .height(55.dp)
@@ -47,7 +52,7 @@ fun SaleTag() {
             )
             Spacer(modifier = Modifier.width(Dimens.paddingSmall))
             Text(
-                "Sale off",
+                "Giảm giá",
                 style = titleSmall,
                 color = White
             )
@@ -59,9 +64,10 @@ fun SaleTag() {
             )
         ) {
             Text(
-                "00:29:12",
+                text = "Đến ngày ${ValidateUtils.formatDate(product.discountEndDate.toString())}",
                 style = titleSmall,
-                color = White
+                color = White,
+                textAlign = TextAlign.Right
             )
             Spacer(modifier = Modifier.width(Dimens.paddingSmall))
             Image(

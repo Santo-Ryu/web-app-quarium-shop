@@ -35,7 +35,6 @@ class SecurityConfig(
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
-        println("SECURITY_FILTER_CHAIN_LOADING")
         http
             .formLogin { it.disable() }
             .csrf { it.disable() }

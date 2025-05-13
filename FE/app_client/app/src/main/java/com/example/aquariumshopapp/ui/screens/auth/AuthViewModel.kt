@@ -218,6 +218,9 @@ class AuthViewModel(): ViewModel() {
                 accountDataStore.saveAccount(customer!!)
                 tokenDataStore.saveToken(token!!)
 
+                Log.i("JWT-TOKEN", token)
+                RetrofitClient.setToken(token)
+
                 NotificationUtils.showNotification(context, message.toString())
 
                 navController.navigate("home")

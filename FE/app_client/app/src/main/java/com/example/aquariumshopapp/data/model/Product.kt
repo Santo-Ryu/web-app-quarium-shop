@@ -5,7 +5,7 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 data class Product(
-    val id: Long,
+    val id: Long = 0,
     val name: String? = null,
     val category: Category? = null,
     val description: String? = null,

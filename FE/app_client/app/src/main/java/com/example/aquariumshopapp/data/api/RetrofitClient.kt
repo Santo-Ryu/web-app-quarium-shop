@@ -1,5 +1,7 @@
 package com.example.aquariumshopapp.data.api
 
+import android.util.Log
+import androidx.compose.animation.scaleOut
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

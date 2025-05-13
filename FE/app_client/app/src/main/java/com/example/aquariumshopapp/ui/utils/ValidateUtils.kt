@@ -8,5 +8,8 @@ class ValidateUtils {
             val formatter = DecimalFormat("#,###")
             return formatter.format(price?.toDouble() ?: 0.0) + " đ"
         }
+        fun formatDate(dateTime: String): String {
+            return dateTime.substringBefore("T")
+        }
     }
 }

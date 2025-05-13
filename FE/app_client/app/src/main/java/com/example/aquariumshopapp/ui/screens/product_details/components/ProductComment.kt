@@ -1,6 +1,5 @@
 package com.example.aquariumshopapp.ui.screens.product_details.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -32,6 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.aquarium_app.ui.theme.BUTTON_PRIMARY_GREEN
 import com.example.aquarium_app.ui.theme.BlackAlpha10
 import com.example.aquarium_app.ui.theme.Dimens
@@ -40,10 +40,20 @@ import com.example.aquarium_app.ui.theme.RATING_YELLOW_2
 import com.example.aquarium_app.ui.theme.Typography
 import com.example.aquarium_app.ui.theme.White
 import com.example.aquariumshopapp.R
+import com.example.aquariumshopapp.data.api.RetrofitClient
 import com.example.aquariumshopapp.data.model.Comment
+import com.example.aquariumshopapp.data.model.Customer
+import com.example.aquariumshopapp.data.model.Product
+import com.example.aquariumshopapp.ui.utils.ValidateUtils
 
 @Composable
-fun ProductComment(navController: NavController) {
+fun ProductComment(
+    navController: NavController,
+    comments: List<Comment>,
+    product: Product
+) {
+    if (comments.isNullOrEmpty()) return
+
     val paddingSet = Modifier
         .padding(
             start = Dimens.paddingMedium,
@@ -52,15 +62,11 @@ fun ProductComment(navController: NavController) {
             bottom = Dimens.paddingXSmall
         )
 
-//    Số lượt đánh giá theo rating
-    val ratings = mapOf(
-        5 to 40,
-        4 to 20,
-        3 to 10,
-        2 to 5,
-        1 to 20
-    )
-    val totalReviews = ratings.values.sum()
+    val ratingsCount = (1..5).associateWith { star ->
+        comments.count { it.rating == star }
+    }
+
+    val totalReviews = comments.size
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -68,7 +74,7 @@ fun ProductComment(navController: NavController) {
         modifier = Modifier.then(paddingSet)
     ) {
         Text(
-            "Đánh giá (139 lượt)",
+            "Đánh giá (${product.rating})",
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = Dimens.paddingXSmall),
@@ -85,7 +91,7 @@ fun ProductComment(navController: NavController) {
                 .padding(Dimens.paddingMedium)
         ) {
             (5 downTo 1).forEach { star ->
-                val count = ratings[star] ?: 0
+                val count = ratingsCount[star] ?: 0
                 val progress = if (totalReviews == 0) 0f else count / totalReviews.toFloat()
 
                 Row(
@@ -141,17 +147,12 @@ fun ProductComment(navController: NavController) {
         }
 
         /*  Comments  */
-//        Giới hạn comment không quá 200 chữ
-        val comments = listOf(
-            Comment(R.drawable.avt1, "Thanh Huyền", 4, "Rất tốt", "22/02/2025"),
-            Comment(R.drawable.avt2, "Phương Anh", 4, "Hài lòng", "15/04/2025"),
-        )
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
             comments.forEach { item ->
+                val avatar = item.customer.image?.name ?: "user.png"
                 Column(
                     modifier = Modifier
                         .padding(
@@ -160,8 +161,8 @@ fun ProductComment(navController: NavController) {
                         )
                 ) {
                     Row() {
-                        Image(
-                            painter = painterResource(item.image),
+                        AsyncImage(
+                            model = "${RetrofitClient.BASE_URL}api/public/image?name=${avatar}",
                             contentScale = ContentScale.Crop,
                             contentDescription = "Image",
                             modifier = Modifier
@@ -172,7 +173,7 @@ fun ProductComment(navController: NavController) {
                         Spacer(modifier = Modifier.width(Dimens.spaceSmall))
                         Column() {
                             Text(
-                                item.name,
+                                item.customer.name!!,
                                 style = Typography.titleMedium
                             )
                             Row {
@@ -188,14 +189,14 @@ fun ProductComment(navController: NavController) {
                                     modifier = Modifier.size(12.dp)
                                 )
                                 Text(
-                                    ", ${item.createdAt}",
+                                    ", ${ValidateUtils.formatDate(item.createdAt)}",
                                     style = Typography.bodySmall
                                 )
                             }
                         }
                     }
                     Text(
-                        item.comment,
+                        text = item.content.toString(),
                         modifier = Modifier
                             .padding(
                                 top = Dimens.paddingSmall,
@@ -207,7 +208,7 @@ fun ProductComment(navController: NavController) {
             }
 
             Button(
-                onClick = { navController.navigate("product_review") },
+                onClick = { navController.navigate("product_review/${product.id}") },
                 modifier = Modifier
                     .fillMaxWidth(),
                 shape = RoundedCornerShape(20.dp),

@@ -2,6 +2,7 @@ package com.aquariumshop.aquariumshop.service.impl
 
 import com.aquariumshop.aquariumshop.dto.response.APIResponse
 import com.aquariumshop.aquariumshop.dto.response.CustomerAccountResponse
+import com.aquariumshop.aquariumshop.dto.response.ProductResponse
 import com.aquariumshop.aquariumshop.dto.response.ResponseFactory
 import com.aquariumshop.aquariumshop.mapper.CategoryMapper
 import com.aquariumshop.aquariumshop.mapper.ProductImageMapper
@@ -10,7 +11,7 @@ import com.aquariumshop.aquariumshop.repository.CategoryRepository
 import com.aquariumshop.aquariumshop.repository.ProductImageRepository
 import com.aquariumshop.aquariumshop.repository.ProductRepository
 import com.aquariumshop.aquariumshop.repository.UserImageRepository
-import com.aquariumshop.aquariumshop.service.support.ProductService
+import com.aquariumshop.aquariumshop.service.ProductService
 import org.springframework.core.io.UrlResource
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType

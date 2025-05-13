@@ -23,11 +23,24 @@ import com.example.aquarium_app.ui.theme.SALE_OFF_TEXT
 import com.example.aquarium_app.ui.theme.titleLarge
 import com.example.aquarium_app.ui.theme.titleMedium
 import com.example.aquarium_app.ui.theme.titleSmall
+import com.example.aquariumshopapp.data.model.Product
+import com.example.aquariumshopapp.ui.utils.ValidateUtils
 
 @Composable
 fun ProductTitleAndPrice(
-    visible: Boolean
+    visible: Boolean,
+    product: Product
 ) {
+    val price = product.price ?: 0
+    val discountPercentage = product.discountPercentage ?: 0
+
+    val returnPrice = if (discountPercentage > 0) {
+        val discountedPrice = price - (price * discountPercentage)/100
+        ValidateUtils.formatPrice(discountedPrice.toString())
+    } else {
+        ValidateUtils.formatPrice(price.toString())
+    }
+
     /*  Rating & Sold  */
     Row(
         modifier = Modifier
@@ -39,7 +52,7 @@ fun ProductTitleAndPrice(
             )
     ) {
         Text(
-            "Đã bán: 1,342 | Đánh giá 4.5",
+            "Đã bán: ${product.salesCount} | Đánh giá ${product.rating}",
             style = TextStyle(
                 fontSize = 12.sp
             ),
@@ -62,7 +75,7 @@ fun ProductTitleAndPrice(
     ) {
         /*  Product Name  */
         Text(
-            "Rau má đồng tiền bán cạn",
+            text = product.name.toString(),
             style = titleMedium,
             textAlign = TextAlign.Left,
             color = PRODUCT_NAME,
@@ -79,14 +92,14 @@ fun ProductTitleAndPrice(
         ) {
             if (visible) {
                 Text(
-                    "20,000 đ",
+                    text = product.price.toString(),
                     style = titleSmall,
                     color = GreenPrimary,
                     textDecoration = TextDecoration.LineThrough
                 )
             }
             Text(
-                "20,000 đ",
+                text = returnPrice,
                 style = titleLarge,
                 color = if (visible) SALE_OFF_TEXT else GreenPrimary
             )

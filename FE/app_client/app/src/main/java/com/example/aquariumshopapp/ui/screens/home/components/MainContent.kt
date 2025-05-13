@@ -40,16 +40,6 @@ fun MainContent(
 ) {
     val saleProducts = products.filter { it?.discountPercentage ?: 0 > 0 }
 
-    val dataList by remember{
-        mutableStateOf(
-            listOf(
-                TestData(R.drawable.cay_dong_tien, "12,000", "Cây đồng tiền", "Sống được trên cạn lẫn dưới nước"),
-                TestData(R.drawable.beta2, "120,000", "Cá beta Rồng", "Siêu đẹp, mạnh mẽ như loài rồng"),
-                TestData(R.drawable.beca, "89,000", "Bể cá kinh xanh", "Trong suốt, đẹp đẽ, sang trọng, lịch lãm"),
-            )
-        )
-    }
-
     Column (
         modifier = mainContentModifier,
     ) {

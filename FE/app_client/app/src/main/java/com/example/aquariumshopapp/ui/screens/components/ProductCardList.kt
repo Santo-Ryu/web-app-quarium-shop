@@ -10,15 +10,18 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.aquarium_app.ui.screens.home.components.ProductCard
 import com.example.aquarium_app.ui.theme.*
+import com.example.aquariumshopapp.data.model.Product
+import com.example.aquariumshopapp.data.model.ProductImage
 import com.example.aquariumshopapp.ui.model.TestData
 
 @Composable
 fun ProductCardList(
-    dataList: List<TestData>,
+    productImages: List<ProductImage>,
+    products: List<Product>,
     cardModifier: Modifier,
     navController: NavController
 ) {
-    val totalItem = dataList.size
+    val totalItem = products.size
 
     Column() {
         // Hiển thị từng cặp sản phẩm trong Row
@@ -35,14 +38,16 @@ fun ProductCardList(
                 ProductCard(
                     modifier = cardModifier,
                     navController = navController,
-                    product = dataList[firstIndex]
+                    product = products[firstIndex],
+                    productImages = productImages
                 )
                 Spacer(modifier = Modifier.width(Dimens.paddingXSmall))
                 if (firstIndex + 1 < totalItem) {
                     ProductCard(
                         modifier = cardModifier,
                         navController = navController,
-                        product = dataList[firstIndex + 1]
+                        product = products[firstIndex + 1],
+                        productImages = productImages
                     )
                 } else {
                     Spacer(modifier = Modifier.weight(1f))

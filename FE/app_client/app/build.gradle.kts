@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.aquariumshopapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -40,6 +40,16 @@ android {
 }
 
 dependencies {
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.3")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.3")
+    implementation("jakarta.validation:jakarta.validation-api:3.0.2")
+    implementation("org.hibernate.validator:hibernate-validator:8.0.1.Final")
     implementation("org.osmdroid:osmdroid-wms:6.1.16")
     implementation("org.osmdroid:osmdroid-android:6.1.16")
     implementation("androidx.compose.material:material-icons-extended:1.6.0")

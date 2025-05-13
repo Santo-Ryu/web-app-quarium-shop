@@ -1,5 +1,6 @@
 package com.example.aquariumshopapp.ui.utils
 
+import android.util.Log
 import android.util.Patterns
 
 class Validator {
@@ -13,7 +14,13 @@ class Validator {
         }
 
         fun doPasswordsMatch(password: String, confirmPassword: String): Boolean {
-            return password === confirmPassword
+            Log.e("PASSWORDS_MATCH", "PASSWORD: $password")
+            Log.e("PASSWORDS_MATCH", "CONFIRM_PASSWORD: $confirmPassword")
+            return password == confirmPassword
+        }
+
+        fun checkLengthPass(password: String): Boolean {
+            return password.length >= 6
         }
     }
 }

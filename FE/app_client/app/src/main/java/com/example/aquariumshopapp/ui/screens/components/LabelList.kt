@@ -37,10 +37,11 @@ import com.example.aquarium_app.ui.theme.BlackAlpha10
 import com.example.aquarium_app.ui.theme.Dimens
 import com.example.aquarium_app.ui.theme.GreenPrimary
 import com.example.aquarium_app.ui.theme.Typography
+import com.example.aquariumshopapp.data.model.Category
 
 @Composable
 fun LabelList(
-    list: List<String>, 
+    list: List<Category>,
     navController: NavController
 ) {
     var selectedIndex by remember { mutableStateOf(0) }
@@ -93,7 +94,7 @@ fun LabelList(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        category,
+                        category.category.toString(),
                         textAlign = TextAlign.Center,
                         style = Typography.titleSmall,
                         color = animatedIconColor,

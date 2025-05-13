@@ -40,10 +40,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.aquarium_app.ui.screens.home.components.ProductCard
 import com.example.aquarium_app.ui.theme.Dimens
 import com.example.aquarium_app.ui.theme.*
 import com.example.aquariumshopapp.R
+import com.example.aquariumshopapp.data.api.RetrofitClient
+import com.example.aquariumshopapp.data.model.Product
+import com.example.aquariumshopapp.data.model.ProductImage
+import com.example.aquariumshopapp.data.service.FilterImageList
+import com.example.aquariumshopapp.ui.utils.ValidateUtils
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
@@ -52,7 +58,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun SaleOff(navController: NavController) {
+fun SaleOff(
+    navController: NavController,
+    saleProducts: List<Product>,
+    productImages: List<ProductImage>
+) {
     Column(
         modifier = Modifier
             .padding(Dimens.paddingXSmall)
@@ -78,19 +88,6 @@ fun SaleOff(navController: NavController) {
         }
         Spacer(modifier = Modifier.height(Dimens.paddingSmall))
 
-        /*  Sale slide  */
-        data class TestData(val id: Int, val price: String)
-        val saleProducts by remember{
-            mutableStateOf(
-                listOf(
-                    TestData(R.drawable.cay_dong_tien, "12,000"),
-                    TestData(R.drawable.beta2, "120,000"),
-                    TestData(R.drawable.beca, "89,000"),
-                    TestData(R.drawable.cay_dong_tien, "12,000")
-                )
-            )
-        }
-
         /*  Slide  */
         Row(
             modifier = Modifier
@@ -102,7 +99,9 @@ fun SaleOff(navController: NavController) {
                     .fillMaxSize()
                     .horizontalScroll(rememberScrollState()),
             ) {
-                saleProducts.forEach { item ->
+                saleProducts.forEachIndexed { index, item ->
+                    val image = FilterImageList.filterImagesByProductId(productImages, item.id)
+
                     Column(
                         modifier = Modifier
                             .width(140.dp)
@@ -113,12 +112,11 @@ fun SaleOff(navController: NavController) {
                             )
                             .clickable { navController.navigate("product_details") }
                     ) {
-                        Image(
-                            painter = painterResource(item.id),
+                        AsyncImage(
+                            model = "${RetrofitClient.BASE_URL}api/public/image?name=${image.first().name}",
                             contentDescription = "Product",
                             contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .fillMaxHeight(.8f)
+                            modifier = Modifier.fillMaxHeight(.8f)
                         )
                         Box(
                             modifier = Modifier
@@ -128,7 +126,7 @@ fun SaleOff(navController: NavController) {
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = item.price,
+                                text = ValidateUtils.formatPrice(item.price.toString()) + " (-${item.discountPercentage}%)",
                                 color = SALE_OFF_TAG,
                                 style = Typography.titleMedium,
                                 textAlign = TextAlign.Center,

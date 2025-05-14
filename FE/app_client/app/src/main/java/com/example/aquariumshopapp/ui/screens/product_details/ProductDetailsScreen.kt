@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,7 +33,10 @@ import androidx.navigation.NavController
 import com.example.aquarium_app.ui.theme.BlackAlpha30
 import com.example.aquarium_app.ui.theme.Dimens
 import com.example.aquariumshopapp.R
+import com.example.aquariumshopapp.data.model.CartItem
+import com.example.aquariumshopapp.data.service.ShoppingCartService
 import com.example.aquariumshopapp.ui.screens.product_details.components.ProductDetails
+import kotlinx.coroutines.launch
 
 @Composable
 fun ProductDetailsScreen(
@@ -45,6 +49,8 @@ fun ProductDetailsScreen(
     val images by viewModel.images.collectAsState()
     val productRelated by viewModel.productRelated.collectAsState()
     val productImageRelated by viewModel.productImageRelated.collectAsState()
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(productId) {
         viewModel.getData(productId)
@@ -72,11 +78,6 @@ fun ProductDetailsScreen(
             }
 
             /*  Navbar  */
-            data class IconNavBar(val iconId: Int, val command: String)
-            val listOfNavbar = listOf(
-                IconNavBar(R.drawable.arrow_left_solid, "Back Home"),
-                IconNavBar(R.drawable.cart_shopping_solid, "Add To Card")
-            )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -86,27 +87,40 @@ fun ProductDetailsScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                listOfNavbar.forEach { item ->
-                    Box(
+
+                Box(
+                    modifier = Modifier
+                        .background(BlackAlpha30, shape = CircleShape)
+                        .padding(14.dp)
+                        .clickable {
+                            navController.navigate("home")
+                        }
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.arrow_left_solid),
+                        contentDescription = "Icon",
+                        colorFilter = ColorFilter.tint(Color.White),
                         modifier = Modifier
-                            .background(BlackAlpha30, shape = CircleShape)
-                            .padding(14.dp)
-                            .clickable {
-                                val route = when (item.command) {
-                                    "Add To Cart" -> ""
-                                    else -> "home"
-                                }
-                                navController.navigate(route)
+                            .size(Dimens.iconSizeMedium)
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .background(BlackAlpha30, shape = CircleShape)
+                        .padding(14.dp)
+                        .clickable {
+                            coroutineScope.launch {
+                                viewModel.addToShoppingCart(context)
                             }
-                    ) {
-                        Image(
-                            painter = painterResource(item.iconId),
-                            contentDescription = "Icon",
-                            colorFilter = ColorFilter.tint(Color.White),
-                            modifier = Modifier
-                                .size(Dimens.iconSizeMedium)
-                        )
-                    }
+                        }
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.cart_shopping_solid),
+                        contentDescription = "Icon",
+                        colorFilter = ColorFilter.tint(Color.White),
+                        modifier = Modifier
+                            .size(Dimens.iconSizeMedium)
+                    )
                 }
             }
         }

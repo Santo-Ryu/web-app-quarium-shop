@@ -7,7 +7,6 @@ import androidx.navigation.NavController
 import com.example.aquariumshopapp.data.api.RetrofitClient
 import com.example.aquariumshopapp.data.datastore.AccountDataStore
 import com.example.aquariumshopapp.data.datastore.TokenDataStore
-import com.example.aquariumshopapp.data.enums.Authenticate
 import com.example.aquariumshopapp.data.enums.Role
 import com.example.aquariumshopapp.data.model.request.AccountCreateRequest
 import com.example.aquariumshopapp.data.model.request.AuthenticateRequest
@@ -19,6 +18,7 @@ import com.example.aquariumshopapp.ui.utils.NotificationUtils
 import com.example.aquariumshopapp.ui.utils.Validator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import com.google.firebase.auth.FirebaseAuth
 
 class AuthViewModel(): ViewModel() {
     private val _authFieldsState = MutableStateFlow(AuthFieldsState())
@@ -37,6 +37,8 @@ class AuthViewModel(): ViewModel() {
         )
     )
     val currentForm: StateFlow<AuthForm> = _currentForm
+
+    private val auth = FirebaseAuth.getInstance()
 
     fun onSwitchForm(type: String) {
         _currentForm.value = getAuthForm(type)
@@ -81,6 +83,43 @@ class AuthViewModel(): ViewModel() {
                 listOf("Quên mật khẩu?")
             )
         }
+    }
+
+    fun registerFirebaseAccount(email: String) {
+        auth.createUserWithEmailAndPassword(email, "123123")
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    Log.d("FirebaseAuth", "Đăng ký thành công: ${user?.uid}")
+                } else {
+                    Log.e("FirebaseAuth", "Lỗi đăng ký", task.exception)
+                }
+            }
+    }
+    fun loginFirebaseAccount(email: String,) {
+        auth.signInWithEmailAndPassword(email, "123123")
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    Log.d("FirebaseAuth", "Đăng nhập thành công: ${user?.uid}")
+                } else {
+                    Log.e("FirebaseAuth", "Lỗi đăng nhập", task.exception)
+                }
+            }
+    }
+
+    fun checkIfEmailExists(email: String, callback: (Boolean) -> Unit) {
+        FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val signInMethods = task.result?.signInMethods
+                    val exists = !signInMethods.isNullOrEmpty()
+                    callback(exists) // true = đã tồn tại, false = chưa có
+                } else {
+                    Log.e("FirebaseAuth", "Lỗi kiểm tra email", task.exception)
+                    callback(false)
+                }
+            }
     }
 
     suspend fun onButtonClick(context: Context, navController: NavController) {
@@ -156,11 +195,12 @@ class AuthViewModel(): ViewModel() {
                                             listOf("Bạn chưa có tài khoản?", "Đăng ký"),
                                             listOf("Quên mật khẩu?")
                                         )
+                registerFirebaseAccount(authFieldsState.email)
+                clearAuthFieldState()
             } else {
                 Log.e("REGISTER_RESPONSE", "Error response: ${response.errorBody()?.string()}")
                 NotificationUtils.showNotification(context, response.body()?.message.toString())
             }
-            clearAuthFieldState()
         } catch (e: Exception) {
             Log.e("REGISTER_EXCEPTION", "Exception: ${e.message}", e)
             NotificationUtils.showNotification(context, "Lỗi kết nối: ${e.message}")
@@ -220,6 +260,16 @@ class AuthViewModel(): ViewModel() {
 
                 Log.i("JWT-TOKEN", token)
                 RetrofitClient.setToken(token)
+
+                checkIfEmailExists(authFieldsState.email) { exists ->
+                    if (exists) {
+                        Log.d("EmailCheck", "Email đã được đăng ký")
+                    } else {
+                        registerFirebaseAccount(authFieldsState.email)
+                        Log.d("EmailCheck", "Email chưa được đăng ký")
+                    }
+                }
+                loginFirebaseAccount(authFieldsState.email)
 
                 NotificationUtils.showNotification(context, message.toString())
 

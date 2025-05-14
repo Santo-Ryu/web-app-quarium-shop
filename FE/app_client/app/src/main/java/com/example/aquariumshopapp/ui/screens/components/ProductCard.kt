@@ -1,5 +1,6 @@
 package com.example.aquarium_app.ui.screens.home.components
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -23,9 +24,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -43,6 +47,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.aquarium_app.ui.theme.Dimens
@@ -51,19 +56,31 @@ import com.example.aquarium_app.ui.theme.Typography
 import com.example.aquarium_app.ui.theme.*
 import com.example.aquariumshopapp.R
 import com.example.aquariumshopapp.data.api.RetrofitClient
+import com.example.aquariumshopapp.data.datastore.AccountDataStore
+import com.example.aquariumshopapp.data.model.CartItem
 import com.example.aquariumshopapp.data.model.Product
 import com.example.aquariumshopapp.data.model.ProductImage
 import com.example.aquariumshopapp.data.service.FilterImageList
+import com.example.aquariumshopapp.data.service.ShoppingCartService
 import com.example.aquariumshopapp.ui.model.TestData
+import com.example.aquariumshopapp.ui.screens.components.ProductCardViewModel
+import com.example.aquariumshopapp.ui.utils.NotificationUtils
 import com.example.aquariumshopapp.ui.utils.ValidateUtils
+import kotlinx.coroutines.launch
 
 @Composable
 fun ProductCard(
     modifier: Modifier,
     navController: NavController,
     product: Product,
-    productImages: List<ProductImage>
+    productImages: List<ProductImage>,
+    viewModel: ProductCardViewModel = viewModel()
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
+    val context = LocalContext.current
+    val accountDataStore = AccountDataStore(context)
+
     val images = FilterImageList.filterImagesByProductId(productImages, product.id)
 
     val price = product.price ?: 0
@@ -75,7 +92,6 @@ fun ProductCard(
     } else {
         ValidateUtils.formatPrice(price.toString())
     }
-
 
     Column(
         modifier = modifier
@@ -236,6 +252,16 @@ fun ProductCard(
                             .fillMaxSize()
                             .padding(4.dp)
                             .graphicsLayer(scaleX = scale, scaleY = scale)
+                            .clickable {
+                                coroutineScope.launch {
+                                    viewModel.addToShoppingCart(
+                                        product = product,
+                                        userId = accountDataStore.getAccount()?.id!!.toString(),
+                                        context = context,
+                                        image = images.first().name
+                                    )
+                                }
+                            }
                     )
                 }
             }

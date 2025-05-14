@@ -2,6 +2,7 @@ package com.example.aquariumshopapp.ui.screens.shopping_cart.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,23 +24,31 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.aquarium_app.ui.theme.BlackAlpha10
 import com.example.aquarium_app.ui.theme.BlackAlpha30
 import com.example.aquarium_app.ui.theme.Typography
 import com.example.aquariumshopapp.R
+import com.example.aquariumshopapp.data.api.RetrofitClient
+import com.example.aquariumshopapp.data.model.CartItem
+import com.example.aquariumshopapp.ui.utils.ValidateUtils
 
 @Composable
 fun ShoppingCartCard(
-    totalProduct: Int
+    cartItem: CartItem,
+    increaseQuantity: () -> Unit,
+    decreaseQuantity: () -> Unit,
 ) {
+    val price = ValidateUtils.formatPrice((cartItem.price * (1 - cartItem.discountPercentage/100)).toString())
+
     Row(
         modifier = Modifier
             .fillMaxSize()
             .padding(bottom = 12.dp, top = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Image(
-            painter = painterResource(R.drawable.cay_dong_tien),
+        AsyncImage(
+            model = RetrofitClient.BASE_URL + "api/public/image?name=${cartItem.image}",
             contentDescription = "Product",
             contentScale = ContentScale.Crop,
             modifier = Modifier.size(100.dp)
@@ -52,11 +61,11 @@ fun ShoppingCartCard(
         ) {
             Column {
                 Text(
-                    text = "Cây lá xanh xanh",
+                    text = cartItem.name,
                     style = Typography.titleMedium
                 )
                 Text(
-                    text = "20,000 đ",
+                    text = price,
                     style = Typography.bodyLarge
                 )
             }
@@ -64,14 +73,20 @@ fun ShoppingCartCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                Box() { Icon(imageVector = Icons.Default.Remove, contentDescription = "Remove") }
+                Box(
+                    modifier = Modifier.clickable { decreaseQuantity() }
+                ) { Icon(imageVector = Icons.Default.Remove, contentDescription = "Remove") }
                 Box(
                     modifier = Modifier
                         .size(35.dp)
                         .border(1.dp, BlackAlpha30, shape = RoundedCornerShape(5.dp)),
                     contentAlignment = Alignment.Center
-                ) { Text(text = "${totalProduct}") }
-                Box() { Icon(imageVector = Icons.Default.Add, contentDescription = "Add") }
+                ) {
+                    Text(text = cartItem.quantity.toString())
+                }
+                Box(
+                    modifier = Modifier.clickable { increaseQuantity() }
+                ) { Icon(imageVector = Icons.Default.Add, contentDescription = "Add") }
             }
         }
     }

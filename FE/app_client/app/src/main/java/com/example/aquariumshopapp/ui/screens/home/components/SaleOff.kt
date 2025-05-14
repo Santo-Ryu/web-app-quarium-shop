@@ -102,6 +102,16 @@ fun SaleOff(
                 saleProducts.forEachIndexed { index, item ->
                     val image = FilterImageList.filterImagesByProductId(productImages, item.id)
 
+                    val price = item.price ?: 0
+                    val discountPercentage = item.discountPercentage ?: 0
+
+                    val returnPrice = if (discountPercentage > 0) {
+                        val discountedPrice = price - (price * discountPercentage)/100
+                        ValidateUtils.formatPrice(discountedPrice.toString())
+                    } else {
+                        ValidateUtils.formatPrice(price.toString())
+                    }
+
                     Column(
                         modifier = Modifier
                             .width(140.dp)
@@ -126,7 +136,7 @@ fun SaleOff(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = ValidateUtils.formatPrice(item.price.toString()) + " (-${item.discountPercentage}%)",
+                                text = returnPrice.toString(),
                                 color = SALE_OFF_TAG,
                                 style = Typography.titleMedium,
                                 textAlign = TextAlign.Center,

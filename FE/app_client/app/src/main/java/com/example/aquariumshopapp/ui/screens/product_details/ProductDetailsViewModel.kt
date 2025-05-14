@@ -4,10 +4,14 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.aquariumshopapp.data.api.RetrofitClient
+import com.example.aquariumshopapp.data.datastore.AccountDataStore
 import com.example.aquariumshopapp.data.datastore.TokenDataStore
+import com.example.aquariumshopapp.data.model.CartItem
 import com.example.aquariumshopapp.data.model.Comment
 import com.example.aquariumshopapp.data.model.Product
 import com.example.aquariumshopapp.data.model.ProductImage
+import com.example.aquariumshopapp.data.service.ShoppingCartService
+import com.example.aquariumshopapp.ui.utils.NotificationUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -48,6 +52,38 @@ class ProductDetailsViewModel: ViewModel() {
         }catch (e: Exception) {
             Log.e("PRODUCT_DETAILS EX", e.message.toString())
             e.printStackTrace()
+        }
+    }
+
+    suspend fun addToShoppingCart(context: Context) {
+        val accountDataStore = AccountDataStore(context)
+        val userId = accountDataStore.getAccount()?.id.toString()
+
+        val isInCart = ShoppingCartService.isProductInCart(userId, product.value.id)
+
+        if (isInCart) {
+            NotificationUtils.showNotification(
+                context = context,
+                message = "Sản phẩm này đã có trong giỏ hàng!"
+            )
+            Log.e("SHOPPING_CART", "SẢN PHẨM ĐÃ CÓ TRONG GIỎ HÀNG!")
+        } else {
+            val cartItem = CartItem(
+                productId = product.value.id,
+                image = images.value.find { it.product?.id == product.value.id }?.name.toString(),
+                name = product.value.name.toString(),
+                quantity = 1,
+                price = product.value.price?.toInt()!!,
+                discountPercentage = product.value.discountPercentage!!
+            )
+
+            ShoppingCartService.addCartItem(cartItem, userId)
+
+            NotificationUtils.showNotification(
+                context = context,
+                message = "Đã thêm sản phẩm ${product.value.name} vào giỏ hàng!"
+            )
+            Log.e("SHOPPING_CART", "THÊM SẢN PHẨM THÀNH CÔNG!")
         }
     }
 

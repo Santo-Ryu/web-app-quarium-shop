@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "95106840034",
+    "project_id": "aquariumshop-1a86a",
+    "storage_bucket": "aquariumshop-1a86a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:95106840034:android:dbe8eb3c378c19875c75bb",
+        "android_client_info": {
+          "package_name": "com.example.aquariumshopapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQH9h0xQF-IHOlAjzMZKTYcJxkDfD2x5U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

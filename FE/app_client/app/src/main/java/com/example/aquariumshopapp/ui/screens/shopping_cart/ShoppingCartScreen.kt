@@ -24,20 +24,25 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.aquarium_app.ui.screens.home.components.NavigationBar
 import com.example.aquarium_app.ui.theme.BackgroundColor
@@ -47,10 +52,20 @@ import com.example.aquarium_app.ui.theme.Typography
 import com.example.aquarium_app.ui.theme.White
 import com.example.aquariumshopapp.R
 import com.example.aquariumshopapp.ui.screens.shopping_cart.components.ShoppingCartCard
+import kotlinx.coroutines.launch
 
 @Composable
-fun ShoppingCartScreen(navController: NavController) {
-    val totalProduct by remember { mutableStateOf(0) }
+fun ShoppingCartScreen(
+    navController: NavController,
+    viewModel: ShoppingCartViewModel = viewModel()
+) {
+    val carts = viewModel.carts.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.getCarts(context)
+    }
 
     Column(
         modifier = Modifier
@@ -100,7 +115,27 @@ fun ShoppingCartScreen(navController: NavController) {
                 .padding(start = 12.dp, end = 12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            repeat(1) { ShoppingCartCard(totalProduct) }
+            carts.value.forEach { item ->
+                ShoppingCartCard(
+                    cartItem = item,
+                    increaseQuantity = {
+                        coroutineScope.launch {
+                            viewModel.addQuantity(
+                                cartItem = item,
+                                context = context
+                            )
+                        }
+                    },
+                    decreaseQuantity = {
+                        coroutineScope.launch {
+                            viewModel.decreaseQuantity(
+                                cartItem = item,
+                                context = context
+                            )
+                        }
+                    }
+                )
+            }
         }
 
         NavigationBar(navController)

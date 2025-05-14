@@ -13,6 +13,7 @@ import com.aquariumshop.aquariumshop.mapper.CustomerMapper
 import com.aquariumshop.aquariumshop.mapper.OrderItemMapper
 import com.aquariumshop.aquariumshop.mapper.OrderMapper
 import com.aquariumshop.aquariumshop.mapper.ProductImageMapper
+import com.aquariumshop.aquariumshop.mapper.ProductMapper
 import com.aquariumshop.aquariumshop.model.entity.Order
 import com.aquariumshop.aquariumshop.model.entity.OrderItem
 import com.aquariumshop.aquariumshop.model.entity.OrderStatus
@@ -47,7 +48,8 @@ class CustomerServiceImpl(
     val orderItemMapper: OrderItemMapper,
     val categoryMapper: CategoryMapper,
     val productImageMapper: ProductImageMapper,
-    val encryptServiceImpl: EncryptServiceImpl
+    val encryptServiceImpl: EncryptServiceImpl,
+    val productMapper: ProductMapper
 ): CustomerService {
     override fun getAccount(id: Long): ResponseEntity<APIResponse<CustomerAccountResponse>> {
         val customer = customerRepository.findById(id).orElseThrow { RuntimeException("Không tìm thấy khách hàng!") }
@@ -65,17 +67,22 @@ class CustomerServiceImpl(
             productImages.addAll(productImageRepository.findByProductId(item.product?.id!!))
         }
 
+        val productImageAll = productImageRepository.findAll()
+        val products = productRepository.findAll()
+
         val response = CustomerAccountResponse(
             customer = customerMapper.toResponse(customer),
             orders = orderMapper.toResponseList(orders),
             orderItems = orderItemMapper.toResponseList(orderItems),
             categories = categoryMapper.toResponseList(categories),
-            productImages = productImageMapper.toResponseList(productImages)
+            productImages = productImageMapper.toResponseList(productImages),
+            products = productMapper.toResponseList(products),
+            productImageAll = productImageMapper.toResponseList(productImageAll)
         )
 
         println("------------------------------")
         println("GET_ACCOUNT")
-        println(response)
+        println(productImageAll.toString())
         println("------------------------------")
 
         return ResponseFactory.success(response, "Tải dữ liệu thành công!")

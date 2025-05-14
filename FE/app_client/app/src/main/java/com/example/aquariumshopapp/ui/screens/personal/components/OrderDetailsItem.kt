@@ -1,6 +1,5 @@
-package com.example.aquariumshopapp.ui.screens.payment.components
+package com.example.aquariumshopapp.ui.screens.personal.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,27 +13,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.aquarium_app.ui.theme.BlackAlpha10
 import com.example.aquarium_app.ui.theme.Typography
-import com.example.aquariumshopapp.R
 import com.example.aquariumshopapp.data.api.RetrofitClient
-import com.example.aquariumshopapp.data.model.CartItem
 import com.example.aquariumshopapp.data.model.OrderItem
-import com.example.aquariumshopapp.data.model.Product
 import com.example.aquariumshopapp.ui.utils.ValidateUtils
 
 @Composable
-fun PayProductCard(
-    item: CartItem,
-    image: String,
-    product: Product
+fun OrderDetailsItem(
+    item: OrderItem,
+    image: String
 ) {
-    val visible = item.discountPercentage != null && item.discountPercentage!! > 0
-    val discountAmount = item.price * (item.discountPercentage.toDouble() / 100)
+    val visible = item.discountPercent != null && item.discountPercent!! > 0
+    val discountAmount = item.price * (item.discountPercent.toDouble() / 100)
     val finalPrice = item.price - discountAmount
 
     Row(
@@ -52,7 +45,7 @@ fun PayProductCard(
         )
         Column() {
             Text(
-                text = "${product.name}",
+                text = "${item.product.name}",
                 style = Typography.titleMedium
             )
             Text(
@@ -65,7 +58,7 @@ fun PayProductCard(
             )
             if (visible) {
                 Text(
-                    text = "Giảm giá: ${item.discountPercentage}% (-${ValidateUtils.formatPrice(discountAmount.toString())})", // nếu có giảm giá thì display
+                    text = "Giảm giá: ${item.discountPercent}% (-${ValidateUtils.formatPrice(discountAmount.toString())})", // nếu có giảm giá thì display
                     style = Typography.bodySmall
                 )
             }

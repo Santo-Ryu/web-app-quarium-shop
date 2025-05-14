@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface OrderStatusRepository: JpaRepository<OrderStatus, Long> {
+    fun findByStatusName(statusName: String): OrderStatus
 }

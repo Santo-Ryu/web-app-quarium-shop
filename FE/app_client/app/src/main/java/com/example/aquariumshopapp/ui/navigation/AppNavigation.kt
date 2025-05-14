@@ -70,8 +70,28 @@ fun AppNavigation(context: Context) {
             }
         }
         composable("search_input") { SearchInputScreen(navController) }
-        composable("search_result") { SearchResultScreen(navController) }
-        composable("filter_sidebar") { FilterSideBar(navController) }
+        composable(
+            route = "search_result/{input}/{type}",
+            arguments = listOf(
+                navArgument("input") { type = NavType.StringType },
+                navArgument("type") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val input = backStackEntry.arguments?.getString("input") ?: ""
+            val type = backStackEntry.arguments?.getString("type") ?: ""
+            SearchResultScreen(navController, input, type)
+        }
+        composable(
+            route = "filter_sidebar/{input}/{type}",
+            arguments = listOf(
+                navArgument("input") { type = NavType.StringType },
+                navArgument("type") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val input = backStackEntry.arguments?.getString("input") ?: ""
+            val type = backStackEntry.arguments?.getString("type") ?: ""
+            FilterSideBar(navController, input, type)
+        }
         composable("shopping_cart") { ShoppingCartScreen(navController) }
         composable("payment") { PaymentScreen(navController) }
         composable("notification") { NotificationScreen(navController) }

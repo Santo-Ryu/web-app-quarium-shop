@@ -47,7 +47,7 @@ import com.example.aquariumshopapp.ui.screens.search.components.LabelList
 import com.example.aquariumshopapp.ui.screens.search.components.FilterAround
 
 @Composable
-fun FilterSideBar(navController: NavController) {
+fun FilterSideBar(navController: NavController, input: String, type: String) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -64,7 +64,7 @@ fun FilterSideBar(navController: NavController) {
                 painter = painterResource(R.drawable.arrow_left_solid),
                 contentDescription = "Back to search result",
                 modifier = Modifier.size(25.dp)
-                    .clickable { navController.navigate("search_result") }
+                    .clickable { navController.navigate("search_result/${input}") }
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(

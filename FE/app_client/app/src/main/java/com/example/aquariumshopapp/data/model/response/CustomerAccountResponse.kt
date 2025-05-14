@@ -13,5 +13,6 @@ data class CustomerAccountResponse (
     val orderItems: List<OrderItem> = emptyList(),
     val products: List<Product> = emptyList(),
     val categories: List<Category> = emptyList(),
-    val productImages: List<ProductImage> = emptyList()
+    val productImages: List<ProductImage> = emptyList(),
+    val productImageAll: List<ProductImage> = emptyList(),
 )

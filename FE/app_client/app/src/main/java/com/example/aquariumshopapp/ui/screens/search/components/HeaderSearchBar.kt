@@ -30,7 +30,10 @@ import com.example.aquarium_app.ui.theme.White
 import com.example.aquariumshopapp.R
 
 @Composable
-fun HeaderSearchBar(navController: NavController) {
+fun HeaderSearchBar(
+    navController: NavController,
+    input: String
+) {
     Row(
         modifier = Modifier
             .background(White)
@@ -67,7 +70,7 @@ fun HeaderSearchBar(navController: NavController) {
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.clickable { navController.navigate("filter_sidebar") }
+            modifier = Modifier.clickable { navController.navigate("filter_sidebar/${input}") }
         ) {
             Image(
                 painter = painterResource(R.drawable.filter_solid),

@@ -18,10 +18,6 @@ class Order: BaseEntity() {
     @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
     var customer: Customer? = null
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
-    var product: Product? = null
-
     @Column(nullable = false, columnDefinition = "DEFAULT 0")
     var price: Int = 0
 

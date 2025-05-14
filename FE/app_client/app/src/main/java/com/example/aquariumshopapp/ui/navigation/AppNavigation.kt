@@ -84,6 +84,16 @@ fun AppNavigation(context: Context) {
         composable("change_password") { ChangePasswordScreen(navController) }
         composable("message") { MessageScreen(navController) }
         composable("order_history") { OrderHistory(navController) }
-        composable("order_details") { OrderDetailScreen(navController) }
+        composable(
+            route = "order_details/{id}",
+            arguments = listOf(navArgument("id") {
+                type = NavType.LongType
+            })
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getLong("id")
+            id?.let {
+                OrderDetailScreen(navController, it)
+            }
+        }
     }
 }

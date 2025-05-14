@@ -141,6 +141,42 @@ class ShoppingCartService {
                 }
         }
 
+        fun getCartAndTotal(userId: String, onSuccess: (cartItems: List<CartItem>, total: Int) -> Unit, onFailure: (Exception) -> Unit) {
+            val db = FirebaseFirestore.getInstance()
+            val cartRef = db.collection("carts").document(userId)
+
+            cartRef.get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        val data = document.data
+                        val itemsData = data?.get("items") as? List<Map<String, Any>> ?: emptyList()
+                        val total = (data?.get("total") as? Number)?.toInt() ?: 0
+
+                        val cartItems = itemsData.mapNotNull { item ->
+                            try {
+                                CartItem(
+                                    productId = (item["productId"] as Number).toLong(),
+                                    image = item["image"] as String,
+                                    name = item["name"] as String,
+                                    quantity = (item["quantity"] as Number).toInt(),
+                                    price = (item["price"] as Number).toInt(),
+                                    discountPercentage = (item["discountPercentage"] as Number).toInt()
+                                )
+                            } catch (e: Exception) {
+                                null // Bỏ qua item lỗi
+                            }
+                        }
+
+                        onSuccess(cartItems, total)
+                    } else {
+                        onSuccess(emptyList(), 0)
+                    }
+                }
+                .addOnFailureListener { e ->
+                    onFailure(e)
+                }
+        }
+
         fun removeCartItem(userId: String, productId: String) {
             val db = FirebaseFirestore.getInstance()
 
@@ -224,6 +260,27 @@ class ShoppingCartService {
                 throw e
             }
         }
+
+        suspend fun clearCart(userId: String) {
+            val db = FirebaseFirestore.getInstance()
+            val cartRef = db.collection("carts").document(userId)
+
+            try {
+                // Cập nhật giỏ hàng về rỗng
+                cartRef.update(
+                    mapOf(
+                        "items" to emptyList<Map<String, Any>>(),
+                        "total" to 0
+                    )
+                ).await()
+
+                Log.d("Firestore", "Giỏ hàng đã được xoá sạch.")
+            } catch (e: Exception) {
+                Log.e("Firestore", "Lỗi khi xoá giỏ hàng: $e")
+                throw e
+            }
+        }
+
 
         // Hàm tính tổng tiền từ danh sách sản phẩm
          fun calculateTotal(items: List<Map<String, Any>>): Double {

@@ -42,13 +42,13 @@ fun OrderStatusOverview(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Image(
-                    painter = painterResource(item.iconId),
+                    painter = painterResource(item.iconId!!),
                     contentDescription = "Icon",
-                    colorFilter = ColorFilter.tint(item.color),
+                    colorFilter = ColorFilter.tint(item.color!!),
                     modifier = Modifier.size(Dimens.paddingLarge)
                 )
                 Text(
-                    text = item.title,
+                    text = item.title!!,
                     style = Typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = item.color
@@ -62,7 +62,7 @@ fun OrderStatusOverview(
             ) {
                 Text(
                     text = "${item.totalOrder} đơn hàng",
-                    color = item.color,
+                    color = item.color!!,
                     fontWeight = FontWeight.Medium
                 )
             }

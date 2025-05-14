@@ -1,5 +1,6 @@
 package com.example.aquariumshopapp.ui.screens.personal
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,28 +13,43 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.aquarium_app.ui.theme.Dimens
 import com.example.aquariumshopapp.R
+import com.example.aquariumshopapp.data.enums.Gender
 import com.example.aquariumshopapp.ui.screens.personal.components.PersonalHeader
 import com.example.aquariumshopapp.ui.screens.personal.model.PersonalData
+import com.example.aquariumshopapp.ui.screens.personal.PersonalViewModel
 
 @Composable
-fun PersonalInfoScreen(navController: NavController) {
+fun PersonalInfoScreen(navController: NavController, viewModel: PersonalViewModel = viewModel() ) {
+    val account = viewModel.customer.collectAsState().value
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.getAccount(context)
+    }
+
     val personalDataList = listOf(
-        PersonalData("Họ và tên", "Santo Le", "name"),
-        PersonalData("Email", "abc@gmail.com", "email", true),
-        PersonalData("Số điện thoại", "0354337115", "phone"),
-        PersonalData("Giới tính", "Nam", "gender"),
-        PersonalData("Ngày sinh", "2005-02-22", "birthDate"),
-        PersonalData("Địa chỉ", "", "address"),
-        PersonalData("Tài khoản tạo vào lúc", "2005-06-20", "", true),
-        PersonalData("Cập nhật gần đây", "2005-06-20", "", true),
+        PersonalData("Họ và tên", "${account.name}", "name"),
+        PersonalData("Email", "${account.email}", "email", true),
+        PersonalData("Số điện thoại", "${account.phone ?: "Chưa có"}", "phone"),
+        PersonalData("Giới tính", "${getGender(account.gender.toString())}", "gender"),
+        PersonalData("Ngày sinh", "${account.birthDate ?: "Chưa có"}", "birthDate"),
+        PersonalData("Địa chỉ", "${account.address ?: "Chưa có"}", "address"),
+        PersonalData("Tài khoản tạo vào lúc", "${account.createdAt}", "", true),
+        PersonalData("Cập nhật gần đây", "${account.updatedAt}", "", true),
     )
 
     Column(
@@ -85,4 +101,11 @@ fun PersonalInfoScreen(navController: NavController) {
             Divider()
         }
     }
+}
+
+fun getGender(gender: String): String {
+    if (gender == Gender.OTHER.toString()) return "Khác"
+    if (gender == Gender.FEMALE.toString()) return "Nữ"
+    if (gender == Gender.MALE.toString()) return "Nam"
+    return "Invalid"
 }

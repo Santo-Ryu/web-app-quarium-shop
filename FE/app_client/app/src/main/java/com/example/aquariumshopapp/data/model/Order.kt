@@ -6,7 +6,10 @@ import java.time.LocalDateTime
 data class Order(
     val id: Long,
     val customer: Customer,
-    val price: BigDecimal? = null,
+    val note: String?=null,
+    val paymentMethod: String,
+    val price: Int? = 0,
     val orderDate: String? = null,
-    val status: OrderStatus
+    val status: OrderStatus,
+    val createdAt: String
 )

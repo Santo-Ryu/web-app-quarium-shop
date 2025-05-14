@@ -4,7 +4,7 @@ import com.aquariumshop.aquariumshop.dto.response.OrderItemResponse
 import com.aquariumshop.aquariumshop.model.entity.OrderItem
 import org.mapstruct.Mapper
 
-@Mapper(componentModel = "string", uses = [CustomerMapper::class, ProductMapper::class])
+@Mapper(componentModel = "spring", uses = [OrderMapper::class, ProductMapper::class])
 interface OrderItemMapper {
     fun toResponse(orderItem: OrderItem): OrderItemResponse
     fun toEntity(response: OrderItemResponse): OrderItem

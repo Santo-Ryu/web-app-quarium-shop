@@ -5,7 +5,7 @@ import com.example.aquariumshopapp.data.enums.VerifyEmail
 import java.time.LocalDateTime
 
 data class Customer(
-    val id: Long,
+    val id: Long = 0,
     val email: String? = null,
     val name: String? = null,
     val gender: Gender? = null,

@@ -29,8 +29,30 @@
         height: 100%;
     }
 
-    &__search-bar {
+    &__search-box {
         width: 30%;
+    }
+
+    &__search-result {
+        width: 100%;
+        position: absolute;
+        top: 9%;
+        box-shadow: 0 10px 15px 5px rgba(0, 0, 0, 0.116);
+        background-color: white;
+    }
+    
+    &__search-item {
+        width: 100%;
+        padding: pxToRem(12);
+        cursor: pointer;
+        transition: ease-in-out .3s;
+    }
+    &__search-item:hover {
+        background-color: rgb(212, 212, 212);
+    }
+
+    &__search-bar {
+        width: 100%;
         @include flex-layout(flex, center, center, row);
         background-color: white;
         border-radius: pxToRem(30);
@@ -73,9 +95,10 @@
         height: 100%;
         @include flex-layout();
         cursor: pointer;
+        padding: pxToRem(12) pxToRem(12);
 
         img {
-            padding: pxToRem(5);
+            width: 100%;
             border-radius: 100%;            
             background-color: white;
         }

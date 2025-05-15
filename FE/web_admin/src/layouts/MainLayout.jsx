@@ -19,9 +19,9 @@ export const MainLayout = ({
                     openSidebar={openSidebar}
                 />
                 <div className="main-layout__content">
-                    <Header 
+                    {/* <Header 
                         handleOpenSidebar={handleOpenSidebar}
-                    />
+                    /> */}
                     <div className="main-layout__body">
                         <h1 className="main-layout__label"><FontAwesomeIcon icon={label.icon} />{label.text}</h1>
                         {layout}

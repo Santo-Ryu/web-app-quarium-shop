@@ -5,7 +5,8 @@ export const TextFieldWithIcon = ({
     placeholderText,
     value, 
     onChange,
-    name
+    name,
+    type
 }) => {
     return (
         <>
@@ -13,7 +14,7 @@ export const TextFieldWithIcon = ({
                 <FontAwesomeIcon className="text-field__icon" icon={icon} />
                 <input 
                     className="text-field__input" 
-                    type="text" 
+                    type={type} 
                     placeholder={placeholderText}
                     value={value}
                     onChange={onChange}

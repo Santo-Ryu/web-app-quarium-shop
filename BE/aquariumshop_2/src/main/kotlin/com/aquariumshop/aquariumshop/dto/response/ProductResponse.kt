@@ -13,6 +13,7 @@ data class ProductResponse(
     val discountPercentage: Int? = null,
     val discountStartDate: String? = null,
     val discountEndDate: String? = null,
+    val quantity: Int = 0,
     val rating: Float? = null,
     val salesCount: Int? = null,
     val active: ProductStatus? = null,

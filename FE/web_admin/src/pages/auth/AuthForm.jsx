@@ -7,13 +7,15 @@ import { Helmet } from "react-helmet-async";
 import { TextFieldWithIcon } from "/src/components/TextFieldWithIcon";
 import { isValidEmail, isValidFieldNull, isValidPassword, isValidPasswordMatch } from "../../app/service/Validator";
 import { encrypt, hashPassword } from "../../app/service/Encrypt";
-import { register } from "../../app/api/auth.api";
+import { login, register, resetPassword } from "../../app/api/auth.api";
+import { useNavigate } from "react-router-dom";
 
 export const AuthForm = ({
     type,
     authInfo,
     setAuthInfo
 }) => {
+    const navigate = useNavigate()
     const [typeForm, setTypeForm] = useState(type)
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -53,44 +55,87 @@ export const AuthForm = ({
         { icon: faTwitter, color: "#1DA1F2" },   // Twitter xanh nhạt
     ];
 
-    const handleClick = (typeForm) => {
+    const handleClick = async (typeForm) => {
         console.log("typeForm: ", typeForm)
         switch(typeForm) {
             case "register": {
-                return handleRegister()
+                await handleRegister()
+                break
             }
             case "login": {
-
+                await handleLogin()
+                break
             }
             case "forgot_password": {
-
+                await handleResetPassword()
+                break
             }
             default: "Type form is valid!"
         }
     }
 
-    const handleRegister = () => {
+    const handleRegister = async () => {
         if (!isValidFieldNull(authInfo.email) || !isValidFieldNull(authInfo.password) || !isValidFieldNull(authInfo.confirmPassword))
-            alert("Thông tin không được để trống!")
-        if (!isValidEmail(authInfo.email)) alert("Email không hợp lệ!")
+            return alert("Thông tin không được để trống!")
+        if (!isValidEmail(authInfo.email)) return alert("Email không hợp lệ!")
         if (!isValidPassword(authInfo.password) || !isValidPassword(authInfo.confirmPassword)) 
-            alert("Mật khẩu phải > 6 ký tự")
+            return alert("Mật khẩu phải > 6 ký tự")
         if (!isValidPasswordMatch(authInfo.password, authInfo.confirmPassword)) 
-            alert("Mật khẩu không trùng khớp!")
+            return alert("Mật khẩu không trùng khớp!")
 
         const request = {
             "email": encrypt(authInfo.email),
-            "password": hashPassword(authInfo.password)
+            "password": hashPassword(authInfo.password),
+            "role": encrypt("ADMIN")
         }
-        register(request)
+        const response = await register(request)
+        if (response) {
+            setAuthInfo({
+                email: "",
+                password: "",
+                confirmPassword: ""
+            })
+            setTypeForm("login")
+        }
     }
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
+        if (!isValidFieldNull(authInfo.email) || !isValidFieldNull(authInfo.password))
+            return alert("Thông tin không được để trống!")
         
+        const request = {
+            "email": encrypt(authInfo.email),
+            "password": hashPassword(authInfo.password),
+            "role": encrypt("ADMIN")
+        }
+        const response = await login(request)
+        if (response) {
+            setAuthInfo({
+                email: "",
+                password: "",
+                confirmPassword: ""
+            })
+            navigate("/")
+        }
     }
 
-    const handleForgotPassword = () => {
-
+    const handleResetPassword = async () => {
+        if (!isValidFieldNull(authInfo.email))
+            alert("Thông tin không được để trống!")
+        
+        const request = {
+            "email": encrypt(authInfo.email),
+            "role": encrypt("ADMIN")
+        }
+        const response = await resetPassword(request)        
+        if (response) {
+            setAuthInfo({
+                email: "",
+                password: "",
+                confirmPassword: ""
+            })
+            setTypeForm("login")
+        }
     }
 
     return(
@@ -111,6 +156,7 @@ export const AuthForm = ({
                     value={authInfo.email}
                     onChange={handleChange}
                     name="email"
+                    type="email"
                 />
 
                 {(typeForm === "register" || typeForm === "login") &&
@@ -120,6 +166,7 @@ export const AuthForm = ({
                         value={authInfo.password}
                         onChange={handleChange}
                         name="password"
+                        type="password"
                     />}
 
                 {typeForm === "register" && 
@@ -129,6 +176,7 @@ export const AuthForm = ({
                         value={authInfo.confirmPassword}
                         onChange={handleChange}
                         name="confirmPassword"
+                        type="password"
                     />}
 
                 {typeForm === "login" && <p className="auth-form__forgot-link"  onClick={() => setTypeForm("forgot_password")}>Quên mật khẩu?</p>}

@@ -39,11 +39,17 @@ class EmailServiceImpl(
                 EmailPurpose.PASSWORD_RESET -> "Aquarium Shop - Lấy lại mật khẩu"
             }
 
+            val type = when (role) {
+                Role.CUSTOMER -> "customer"
+                Role.ADMIN -> "admin"
+            }
+
             body = body.replace("{{name}}", name)
                 .replace("{{token}}", token)
                 .replace("{{email}}", email)
                 .replace("{{purpose}}", purpose.toString())
                 .replace("{{role}}", role.toString())
+                .replace("{{type}}", type)
 
             if (purpose === EmailPurpose.PASSWORD_RESET) {
                 body = body.replace("{{password}}", password)

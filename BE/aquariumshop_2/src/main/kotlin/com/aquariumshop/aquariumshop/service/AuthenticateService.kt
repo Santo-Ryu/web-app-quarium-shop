@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView
 interface AuthenticateService {
     fun adminRegister(request: AccountCreateRequest): ResponseEntity<APIResponse<AdminAuthenticateResponse>>
 
-//    fun adminLogin(request: AuthenticateRequest): ResponseEntity<APIResponse<AdminAuthenticateResponse>>
+    fun adminLogin(request: AuthenticateRequest): ResponseEntity<APIResponse<AdminAuthenticateResponse>>
 
     fun adminPasswordReset(request: AuthenticateRequest): ResponseEntity<APIResponse<AdminAuthenticateResponse>>
 

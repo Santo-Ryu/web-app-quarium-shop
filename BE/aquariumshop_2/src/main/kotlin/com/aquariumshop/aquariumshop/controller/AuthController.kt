@@ -16,36 +16,65 @@ import org.springframework.web.servlet.ModelAndView
 @RestController
 @RequestMapping("/api/auth")
 class AuthController(
-    val customerAuthenticateService: AuthenticateService
+    val authenticateService: AuthenticateService
 ) {
     @PostMapping("/admin/register")
     fun adminRegister(@RequestBody @Valid request: AccountCreateRequest): ResponseEntity<APIResponse<AdminAuthenticateResponse>> {
-        return customerAuthenticateService.adminRegister(request)
+        println("ADMIN_REGISTER")
+        return authenticateService.adminRegister(request)
     }
 
-//    @PostMapping("/admin/login")
-//    fun adminLogin(@RequestBody @Valid request: AuthenticateRequest): ResponseEntity<APIResponse<AdminAuthenticateResponse>> {
-//        return customerAuthenticateService.adminLogin(request)
-//    }
+    @PostMapping("/admin/login")
+    fun adminLogin(@RequestBody @Valid request: AuthenticateRequest): ResponseEntity<APIResponse<AdminAuthenticateResponse>> {
+        return authenticateService.adminLogin(request)
+    }
 
     @PostMapping("/admin/password_reset")
     fun adminPasswordReset(@RequestBody @Valid request: AuthenticateRequest): ResponseEntity<APIResponse<AdminAuthenticateResponse>> {
-        return customerAuthenticateService.adminPasswordReset(request)
+        return authenticateService.adminPasswordReset(request)
+    }
+
+    @GetMapping("/admin/verify_password_reset")
+    fun adminVerifyPasswordReset(
+        @RequestParam token: String,
+        @RequestParam email: String,
+        @RequestParam password: String,
+        @RequestParam role: String
+    ): ModelAndView {
+        return authenticateService.handleVerifyPasswordReset(
+            request = VerifyPasswordResetRequest(
+                email = email,
+                password = password,
+                token = token,
+                role = role
+            )
+        )
+    }
+
+    @GetMapping("/admin/verify_email")
+    fun adminVerifyEmail(
+        @RequestParam token: String,
+        @RequestParam email: String,
+        @RequestParam role: String
+    ): ModelAndView {
+        return authenticateService.handleVerifyEmail(
+            request = VerifyEmailRequest(token = token, email = email, role = role)
+        )
     }
 
     @PostMapping("/customer/register")
     fun customerRegister(@RequestBody @Valid request: AccountCreateRequest): ResponseEntity<APIResponse<CustomerAuthenticateResponse>> {
-        return customerAuthenticateService.customerRegister(request)
+        return authenticateService.customerRegister(request)
     }
 
     @PostMapping("/customer/login")
     fun customerLogin(@RequestBody @Valid request: AuthenticateRequest): ResponseEntity<APIResponse<CustomerAuthenticateResponse>> {
-        return customerAuthenticateService.customerLogin(request)
+        return authenticateService.customerLogin(request)
     }
 
     @PostMapping("/customer/password_reset")
     fun customerPasswordReset(@RequestBody @Valid request: AuthenticateRequest): ResponseEntity<APIResponse<CustomerAuthenticateResponse>> {
-        return customerAuthenticateService.customerPasswordReset(request)
+        return authenticateService.customerPasswordReset(request)
     }
 
     @GetMapping("/customer/verify_password_reset")
@@ -55,7 +84,7 @@ class AuthController(
         @RequestParam password: String,
         @RequestParam role: String
     ): ModelAndView {
-        return customerAuthenticateService.handleVerifyPasswordReset(
+        return authenticateService.handleVerifyPasswordReset(
             request = VerifyPasswordResetRequest(
                 email = email,
                 password = password,
@@ -71,7 +100,7 @@ class AuthController(
         @RequestParam email: String,
         @RequestParam role: String
     ): ModelAndView {
-        return customerAuthenticateService.handleVerifyEmail(
+        return authenticateService.handleVerifyEmail(
             request = VerifyEmailRequest(token = token, email = email, role = role)
         )
     }

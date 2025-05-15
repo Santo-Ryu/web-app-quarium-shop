@@ -1,28 +1,30 @@
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const PieChartTopSale = () => {
-  // Dữ liệu test
-  const categories = [
-    { category: 'Danh mục 1' },
-    { category: 'Danh mục 2' },
-    { category: 'Danh mục 3' },
-    { category: 'Danh mục 4' }
-  ];
+const PieChartTopSale = ({
+  categories,
+  products
+}) => {
+  const data = categories.map(category => ({
+    category: category.category,
+    quantity: 0,
+  }));
 
-  const revenues = [
-    { category: 'Danh mục 1', quantity: 150 },
-    { category: 'Danh mục 2', quantity: 200 },
-    { category: 'Danh mục 3', quantity: 80 },
-    { category: 'Danh mục 4', quantity: 300 }
-  ];
+  categories?.forEach(category => {
+    data.category = category.category
+  })
 
-  const dataPie = categories.map(e => {
-    const categoryRevenue = revenues.find(r => r.category === e.category);
-    return {
-      name: e.category,
-      value: categoryRevenue ? categoryRevenue.quantity : 0
-    };
+  products.forEach(product => {
+    const catName = product.category?.category;
+    const match = data.find(r => r.category === catName);
+    if (match) {
+      match.quantity += product.salesCount || 0;
+    }
   });
+
+  const dataPie = data.map(item => ({
+    name: item.category,
+    value: item.quantity,
+  }));
 
   const generateColors = (num) => {
     const colors = new Set();

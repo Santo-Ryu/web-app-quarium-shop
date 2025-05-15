@@ -14,36 +14,44 @@ import { ProductDetails } from "./pages/product/ProductDetails"
 import { Personal } from "./pages/personal/Personal"
 import { Discount } from "./pages/discount/Discount"
 import { Categories } from "./pages/categories/Categories"
+import PrivateRoute from './PrivateRoute'
+import { useTokenExpiration } from './hooks/useTokenExpiration'
 
 function App() {
+  useTokenExpiration()
+  // localStorage.clear()
   return (
     <>
       <HelmetProvider>
         <Router>
           <Routes>
             
-            <Route path="/" element={<Doashboard />} />
-
             <Route path="/auth/:type" element={<Auth />} />
 
-            <Route path="/message" element={<Message />} />
+            <Route path="/" element={
+              <PrivateRoute><Doashboard /></PrivateRoute>
+            } />
 
-            <Route path="/order" element={<OrderPage />} />
-            <Route path="/order-details" element={<OrderDetails />} /> {/* /order-details/{id} */}
-            <Route path="/order-update" element={<OrderUpdate />} /> {/* /order-update/{id} */}
+            <Route path="/message" element={
+              <PrivateRoute><Message /></PrivateRoute>
+            } />
 
-            <Route path="/customer" element={<Customer />} />
-            <Route path="/customer-details" element={<CustomerDetails />} /> {/* /customer-details/{id} */}
-            <Route path="/customer-order-history" element={<CustomerOrderHistory />} /> {/* /customer-order-history/{id} */}
+            <Route path="/order" element={<PrivateRoute><OrderPage /></PrivateRoute>} />
+            <Route path="/order-details" element={<PrivateRoute><OrderDetails /></PrivateRoute>} /> {/* /order-details/{id} */}
+            <Route path="/order-update" element={<PrivateRoute><OrderUpdate /></PrivateRoute>} /> {/* /order-update/{id} */}
 
-            <Route path="/categories" element={<Categories />} />
+            <Route path="/customer" element={<PrivateRoute><Customer /></PrivateRoute>} />
+            <Route path="/customer-details" element={<PrivateRoute><CustomerDetails /></PrivateRoute>} /> {/* /customer-details/{id} */}
+            <Route path="/customer-order-history" element={<PrivateRoute><CustomerOrderHistory /></PrivateRoute>} /> {/* /customer-order-history/{id} */}
 
-            <Route path="/product" element={<Product />} />
-            <Route path="/product-details" element={<ProductDetails />} /> {/* /customer-details/{id} */}
+            <Route path="/categories" element={<PrivateRoute><Categories /></PrivateRoute>} />
 
-            <Route path="/personal" element={<Personal />} />
+            <Route path="/product" element={<PrivateRoute><Product /></PrivateRoute>} />
+            <Route path="/product-details" element={<PrivateRoute><ProductDetails /></PrivateRoute>} /> {/* /customer-details/{id} */}
 
-            <Route path="/discount" element={<Discount />} />
+            <Route path="/personal" element={<PrivateRoute><Personal /></PrivateRoute>} />
+
+            <Route path="/discount" element={<PrivateRoute><Discount /></PrivateRoute>} />
 
           </Routes>
         </Router>

@@ -62,15 +62,22 @@ export default class PieChartStructure extends PureComponent {
   };
 
   render() {
-    // Dữ liệu test
-    const categories = [
-      { category: 'Danh mục A', quantity: 300 },
-      { category: 'Danh mục B', quantity: 500 },
-      { category: 'Danh mục C', quantity: 100 },
-      { category: 'Danh mục D', quantity: 200 }
-    ];
+    const { categories, products } = this.props;
 
-    const data = categories.map(e => ({
+    const data = categories.map(category => ({
+      category: category.category,
+      quantity: 0,
+    }));
+
+    products.forEach(product => {
+      const catName = product.category?.category;
+      const match = data.find(r => r.category === catName);
+      if (match) {
+        match.quantity += product.quantity || 0;
+      }
+    });
+
+    const dataPie = data?.map(e => ({
       name: e.category,
       value: e.quantity,
     }));
@@ -83,7 +90,7 @@ export default class PieChartStructure extends PureComponent {
               <Pie
                 activeIndex={this.state.activeIndex}
                 activeShape={renderActiveShape}
-                data={data}
+                data={dataPie}
                 cx="50%"
                 cy="50%"
                 innerRadius={60}

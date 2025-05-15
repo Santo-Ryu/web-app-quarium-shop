@@ -28,6 +28,6 @@
 
     &__details {
         width: 100%;
-        @include flex-layout(flex, start, center, row);
+        @include flex-layout(flex, end, center, row);
     }
 }

@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 
 
 object RetrofitClient {
-    const val BASE_URL = "http://192.168.101.26:8080/aquarium_shop/"
+    const val BASE_URL = "http://192.168.135.186:8080/aquarium_shop/"
 
     private var token: String? = null
 

@@ -50,7 +50,7 @@ class AuthenticateServiceImpl(
     private val jwtServiceImpl: JWTServiceImpl,
     private val passwordResetTokenRepository: PasswordResetTokenRepository,
     private val customerMapper: CustomerMapper,
-//    private val adminMapper: AdminMapper
+    private val adminMapper: AdminMapper
 ): AuthenticateService {
 
     override fun adminRegister(request: AccountCreateRequest): ResponseEntity<APIResponse<AdminAuthenticateResponse>> {
@@ -59,8 +59,8 @@ class AuthenticateServiceImpl(
         val role = Role.valueOf(encryptServiceImpl.decrypt(request.role))
 
         if (role == Role.ADMIN) {
-            val existingCustomer = customerRepository.findByEmail(email)
-            existingCustomer?.let {
+            val existingAdmin = adminRepository.findByEmail(email)
+            existingAdmin?.let {
                 return ResponseFactory.badRequest("Email đã tồn tại!")
             }
 
@@ -106,62 +106,65 @@ class AuthenticateServiceImpl(
         return ResponseFactory.success(response, "Tạo tài khoản thành công! Kiểm tra email để xác thực tài khoản!")
     }
 
-//    override fun adminLogin(request: AuthenticateRequest): ResponseEntity<APIResponse<AdminAuthenticateResponse>> {
-//        return try {
-//            val email = encryptServiceImpl.decrypt(request.email)
-//            val password = request.password
-//            val role = Role.valueOf(encryptServiceImpl.decrypt(request.role.toString()))
-//
-//            if (role == Role.ADMIN) {
-//                val admin = adminRepository.findByEmail(email)
-//                    ?: return ResponseFactory.badRequest("Email không tồn tại!")
-//
-//                if (admin.password != password) {
-//                    return ResponseFactory.badRequest("Mật khẩu không đúng!")
-//                }
-//
-//                if (admin.verifyEmail === VerifyEmailType.UNVERIFIED) {
-//                    val tokenSearch = verifyEmailRepository.findByEmail(admin.email!!)
-//                    if ( tokenSearch != null) {
-//                        verifyEmailRepository.deleteByEmail(admin.email!!)
-//                    }
-//                    val token = emailServiceImpl.generateToken()
-//                    val verifyEmail = VerifyEmail()
-//                    verifyEmail.token = token
-//                    verifyEmail.email = email
-//                    verifyEmailRepository.save(verifyEmail)
-//
-//                    emailServiceImpl.sendEmail(
-//                        name = admin.name!!,
-//                        token = token,
-//                        email = admin.email!!,
-//                        purpose = EmailPurpose.ACCOUNT_VERIFICATION,
-//                        role = Role.ADMIN
-//                    )
-//                    return ResponseFactory.unauthorized("Email chưa được xác thưc! Kiểm tra email để xác thực tài khoản!")
-//                }
-//
-//                val adminResponse = adminMapper.toResponse(adminRepository.findByEmail(email)!!)
-//                println("ADMIN_RESPONSE: $adminResponse")
-//                val account = AdminAccountResponse(
-//                    admin = adminResponse
-//                )
-//
-//                val jwtToken = jwtServiceImpl.generateAdminToken(admin)
-//                val response = AdminAuthenticateResponse(
-//                    isAuthenticated = true,
-//                    token = jwtToken,
-//                    account = account
-//                )
-//                ResponseFactory.success(response, "Đăng nhập thành công!")
-//            } else {
-//                ResponseFactory.badRequest("Role không phù hợp")
-//            }
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//            ResponseFactory.badRequest("Đăng nhập thất bại: ${e.message}")
-//        }
-//    }
+    override fun adminLogin(request: AuthenticateRequest): ResponseEntity<APIResponse<AdminAuthenticateResponse>> {
+        return try {
+            val email = encryptServiceImpl.decrypt(request.email)
+            val password = request.password
+            val role = Role.valueOf(encryptServiceImpl.decrypt(request.role.toString()))
+
+            println("ROLE $role")
+
+            if (role == Role.ADMIN) {
+                val admin = adminRepository.findByEmail(email)
+                    ?: return ResponseFactory.badRequest("Email không tồn tại!")
+
+                if (admin.password != password) {
+                    return ResponseFactory.badRequest("Mật khẩu không đúng!")
+                }
+
+                if (admin.verifyEmail === VerifyEmailType.UNVERIFIED) {
+                    val tokenSearch = verifyEmailRepository.findByEmail(admin.email!!)
+                    if ( tokenSearch != null) {
+                        verifyEmailRepository.deleteByEmail(admin.email!!)
+                    }
+                    val token = emailServiceImpl.generateToken()
+                    val verifyEmail = VerifyEmail()
+                    verifyEmail.token = token
+                    verifyEmail.email = email
+                    verifyEmailRepository.save(verifyEmail)
+
+                    emailServiceImpl.sendEmail(
+                        name = admin.name!!,
+                        token = token,
+                        email = admin.email!!,
+                        purpose = EmailPurpose.ACCOUNT_VERIFICATION,
+                        role = Role.ADMIN
+                    )
+                    return ResponseFactory.unauthorized("Email chưa được xác thưc! Kiểm tra email để xác thực tài khoản!")
+                }
+
+                val adminResponse = adminMapper.toResponse(adminRepository.findByEmail(email)!!)
+                println("ADMIN_RESPONSE: $adminResponse")
+                val account = AdminAccountResponse(
+                    admin = adminResponse
+                )
+
+                val jwtToken = jwtServiceImpl.generateAdminToken(admin)
+                val response = AdminAuthenticateResponse(
+                    isAuthenticated = true,
+                    token = jwtToken,
+                    account = account
+                )
+                ResponseFactory.success(response, "Đăng nhập thành công!")
+            } else {
+                println("ROLE không phù hợp!")
+                ResponseFactory.badRequest("Role không phù hợp")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResponseFactory.badRequest("Đăng nhập thất bại: ${e.message}")
+        }
+    }
 
     override fun adminPasswordReset(request: AuthenticateRequest): ResponseEntity<APIResponse<AdminAuthenticateResponse>> {
         return try {
@@ -371,7 +374,16 @@ class AuthenticateServiceImpl(
                 customerRepository.save(customer)
                 passwordResetTokenRepository.delete(passwordResetToken!!)
             }
-        }
+        }else if (role === Role.ADMIN) {
+            val admin = adminRepository.findByEmail(email)
+            val passwordResetToken = passwordResetTokenRepository.findByToken(token)
+
+            if (token != null && admin != null) {
+                admin.password = encryptServiceImpl.hashPassword(password)
+                adminRepository.save(admin)
+                passwordResetTokenRepository.delete(passwordResetToken!!)
+            }
+        }else println("ROLE KHÔNG HỢP LỆ!")
 
         return modelAndView
     }

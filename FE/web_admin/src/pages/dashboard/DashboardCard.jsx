@@ -20,7 +20,7 @@ export const DashboardCard = ({
                 <hr className="dashboard-card__line" />
                 <div className="dashboard-card__details">
                     <span 
-                        style={{color: details.number > 0 ? 'green' : 'black'}}
+                        style={{color: details.number > 0 ? 'green' : 'red'}}
                     >{details.number}</span>&nbsp;
                     <span>{details.text}</span>
                 </div>

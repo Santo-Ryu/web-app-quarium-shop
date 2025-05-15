@@ -43,8 +43,8 @@ class SecurityConfig(
                 auth
                     .requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers("/api/public/**").permitAll()
-                    .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                    .requestMatchers("/api/customer/**").hasRole("CUSTOMER")
+                    .requestMatchers("/api/admin/**").permitAll()
+                    .requestMatchers("/api/customer/**").permitAll()
                     .requestMatchers("/templates/**", "/static/**", "/*.html").permitAll()
                     .anyRequest().authenticated()
             }

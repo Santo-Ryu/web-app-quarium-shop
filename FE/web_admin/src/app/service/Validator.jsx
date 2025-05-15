@@ -35,3 +35,9 @@ export const isValidPasswordMatch = (password, confirmPassword) => {
   }
   return true
 }
+
+export const formatCurrencyVN = (amount) => {
+    if (!amount && amount !== 0) return "0 đ";
+
+    return amount.toLocaleString("vi-VN") + " đ";
+};

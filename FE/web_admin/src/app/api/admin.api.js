@@ -1,0 +1,30 @@
+import axios from "axios";
+import { BASE_URL } from "../config/configApi.jsx"
+
+export const getAccount = async () => {
+    try {
+        const token = localStorage.getItem('token')
+        const admin = JSON.parse(localStorage.getItem('admin'))
+        if (token && admin?.id) {
+            const URL = `${BASE_URL}api/admin/get_account`
+            const response = await axios.get(
+                URL,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    params: {id: admin.id}
+                }
+            );
+    
+            if (response.status === 200) {
+               console.log(response.data.data)
+               return response.data.data
+            }
+        }
+    }catch(error) {
+        console.log(error?.response?.data?.message);
+        throw error;
+    }
+}

@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet-async";
 import { MainLayout } from "../../layouts/MainLayout";
 
 export const OrderDetails = () => {
-    const id = useParams();
+    const {id} = useParams();
     const label = {text: 'Chi tiết đơn hàng', icon: faBoxArchive}
 
     return (

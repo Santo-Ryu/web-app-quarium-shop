@@ -21,4 +21,8 @@ class ProductImage: BaseEntity() {
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
     var product: Product? = null
+
+    override fun toString(): String {
+        return "ProductImage(id=$id, name='$name', productId=${product?.id})"
+    }
 }

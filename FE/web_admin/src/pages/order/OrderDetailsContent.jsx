@@ -1,10 +1,34 @@
 import { useNavigate } from 'react-router-dom';
 import { CustomTable } from '../../components/CustomTable';
+import { useGetAccount } from '../../hooks/useAdmin';
+import { formatCurrencyVN } from '../../app/service/Validator';
+import { BASE_URL } from '../../app/config/configApi';
+import { destroyOrder } from '../../app/api/order.api';
 
 export const OrderDetailsContent = ({
     id
 }) => {
     const navigate = useNavigate();
+    const {data, isLoading, fetchData } = useGetAccount()
+
+    if (isLoading) return "Đang tải..."
+
+    const orders = data?.orders
+    const order = orders?.find(item => item.id == id)
+    const customer = order?.customer
+    const orderItems = data?.orderItems
+    const myOrderItems = orderItems?.filter(item => item.order.id === order.id)
+    const productImages = data?.productImages
+
+    let priceTemp = 0
+    let priceDiscount = 0
+
+    myOrderItems?.forEach(e => {
+        priceTemp += e.price * e.quantity
+        if (e.discountPercent > 0) {
+            priceDiscount += (e.price * e.quantity) * e.discountPercent / 100
+        }
+    })
 
     const columns = [
         {
@@ -16,7 +40,7 @@ export const OrderDetailsContent = ({
             name: <span className="order-table__header">Hình ảnh</span>,
             sortable: true,
             width: '100px',
-            cell: row => (<img src={row.image} style={{borderRadius: '8px', border: '1px solid gray', width: '40px', height: '40px'}} alt='Product Image' />)
+            cell: row => (<img src={`${BASE_URL}api/public/image?name=${row.image}`} style={{borderRadius: '8px', border: '1px solid gray', width: '40px', height: '40px'}} alt='Product Image' />)
         },
         {
             name: <span className="order-table__header">Số lượng</span>,
@@ -31,36 +55,58 @@ export const OrderDetailsContent = ({
                     {row.discount > 0 ? (
                         <>
                             <p style={{ textDecoration: 'line-through', color: '#999' }}>{row.price}</p>
-                            <p>{Math.round(parseFloat(row.price) * (1 - row.discount)).toLocaleString()}.000 (-{row.discount*100}%)</p>
+                            <p>{formatCurrencyVN(Math.floor(row.price * (1 - parseFloat(row.discount) / 100)))}</p>
                         </>
                     ) : (
-                        <p>{row.price}</p>
+                        <p>{formatCurrencyVN(row.price)}</p>
                     )}
                 </div>
             )
         },
         {
             name: <span className="order-table__header">Tổng tiền</span>,
-            selector: row => row.totalPrice,
+            selector: row => formatCurrencyVN(row.totalPrice),
             sortable: true
         }
     ]
 
-    const data = [
-        { id: 1, productName: "Cá beta thái", image: "/src/assets/beta1.jpg", quantity: 1, price: "200.000", totalPrice: "160.000", discount: 0.2},
-        { id: 2, productName: "Cá beta sữa", image: "/src/assets/beta3.jpg", quantity: 1, price: "120.000", totalPrice: "120.000", discount: 0},
-    ]      
+
+    const dataT = myOrderItems.map((item, index) => (
+        { 
+            productName: item.product.name,
+            image: productImages.find(pi => pi.product.id === item.product.id).name || "loading.jpg", 
+            quantity: item.quantity, 
+            price: item.price,
+            totalPrice: item.subtotal,
+            discount: item.discountPercent
+        }
+    ))
+
+    const handleDestroyOrder = async () => {
+        const option = window.confirm("Bạn chắc chắn muốn hủy đơn hàng này!")
+        if (option) {
+            const response = await destroyOrder(order.id)
+            if (response) {
+                alert("Đã hủy đơn hàng!")
+                navigate("/order")
+            }
+        }
+    }
 
     const buttonList = [
-        {buttonName: 'Sửa đơn', className: 'order-details__button order-details__button--edit', onClick: () => navigate('/order-update')},
-        {buttonName: 'Hủy đơn', className: 'order-details__button order-details__button--cancel', onClick: () => {}}
+        {buttonName: 'Sửa đơn', className: 'order-details__button order-details__button--edit', onClick: () => navigate(`/order-update/${order.id}`)},
+        {
+            buttonName: 'Hủy đơn', 
+            className: 'order-details__button order-details__button--cancel', 
+            onClick: () => {handleDestroyOrder()}
+        }
     ]
 
     const changeColorStatus = (type) => {
         switch (type) {
-            case "Hoàn thành": return "#00B667";      // Xanh lá
-            case "Chờ xác nhận": return "#f44336";    // Đỏ
-            case "Đang giao": return "#2196F3";       // Xanh dương
+            case "Đã hoàn thành": return "#4CAF50";      // Xanh lá
+            case "Đang xử lý": return "#FFC107";    // Đỏ
+            case "Đang vận chuyển": return "#2196F3";       // Xanh dương
             default: return "#9E9E9E";                // Xám cho các trạng thái chưa rõ
         }
     }
@@ -69,9 +115,9 @@ export const OrderDetailsContent = ({
         <article className="order-details">
             <div className="order-details__main">
                 <header className="order-details__header">
-                    <h4 className="order-details__title">Mã đơn hàng: <u>#89988</u></h4>
-                    <div className="order-details__status" style={{backgroundColor: changeColorStatus('Hoàn thành')}}>
-                        <p className="order-details__status-text">Hoàn thành</p>
+                    <h4 className="order-details__title">Mã đơn hàng: <u>#{order.id}</u></h4>
+                    <div className="order-details__status" style={{backgroundColor: changeColorStatus(order.status.statusName)}}>
+                        <p className="order-details__status-text">{order.status.statusName}</p>
                     </div>
                 </header>
 
@@ -79,15 +125,15 @@ export const OrderDetailsContent = ({
                     <section className="order-details__customer">
                         <h3 className="order-details__section-title">Khách hàng</h3>
                         <div className="order-details__customer-details">
-                            <p className="order-details__customer-name">Huynh Nhan</p>
-                            <p className="order-details__customer-info">035433714</p>
-                            <p className="order-details__customer-info">Đà Nẵng</p>
+                            <p className="order-details__customer-name">{customer.name}</p>
+                            <p className="order-details__customer-info">{customer.phone}</p>
+                            <p className="order-details__customer-info">{customer.address}</p>
                         </div>
                     </section>
                     <section className="order-details__notes">
                         <h3 className="order-details__section-title">Ghi chú</h3>
                         <div className="order-details__notes-content">
-                            Lời nhắc: không có
+                            {order.note ? order.note : ""}
                         </div>
                     </section>
                 </div>
@@ -96,7 +142,7 @@ export const OrderDetailsContent = ({
                     <CustomTable 
                         hiddenSearchBar={false}
                         columns={columns}
-                        data={data}
+                        data={dataT}
                         rowPerPage={7}
                     />
                 </section>
@@ -108,25 +154,25 @@ export const OrderDetailsContent = ({
                     <div className="order-details__price-breakdown">
                         <dl className="order-details__price-item">
                             <dt className="order-details__price-label">Tạm tính</dt>
-                            <dd className="order-details__price-value">180.000 đ</dd>
+                            <dd className="order-details__price-value">{formatCurrencyVN(priceTemp)}</dd>
                         </dl>
                         <dl className="order-details__price-item">
                             <dt className="order-details__price-label">Khuyến mãi</dt>
-                            <dd className="order-details__price-value">-40.000 đ</dd>
+                            <dd className="order-details__price-value">{formatCurrencyVN(priceDiscount)}</dd>
                         </dl>
                         <dl className="order-details__price-item">
                             <dt className="order-details__price-label">Phí vận chuyển</dt>
-                            <dd className="order-details__price-value">10.000 đ</dd>
+                            <dd className="order-details__price-value">miễn phí</dd>
                         </dl>
                         <dl className="order-details__price-item">
                             <dt className="order-details__price-label">Thành tiền</dt>
-                            <dd className="order-details__price-value">190.000 đ</dd>
+                            <dd className="order-details__price-value">{formatCurrencyVN(order.price)}</dd>
                         </dl>
                     </div>
 
                     <footer className="order-details__total">
                         <h3 className="order-details__total-label">Cần thanh toán</h3>
-                        <p className="order-details__total-amount">190.000 đ</p>
+                        <p className="order-details__total-amount">{formatCurrencyVN(order.price)}</p>
                     </footer>
                 </section>
 
@@ -140,7 +186,7 @@ export const OrderDetailsContent = ({
                             {button.buttonName}
                         </button>
                     ))}
-                    <button className="order-details__button order-details__button--close">Đóng</button>
+                    <button className="order-details__button order-details__button--close" onClick={() => {navigate("/order")}}>Đóng</button>
                 </footer>
             </div>
         </article>

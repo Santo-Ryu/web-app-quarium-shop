@@ -1,7 +1,5 @@
 package com.example.aquariumshopapp.data.api
 
-import android.util.Log
-import androidx.compose.animation.scaleOut
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -10,7 +8,7 @@ import java.util.concurrent.TimeUnit
 
 
 object RetrofitClient {
-    const val BASE_URL = "http://192.168.135.186:8080/aquarium_shop/"
+    const val BASE_URL = "http://192.168.101.26:8080/aquarium_shop/"
 
     private var token: String? = null
 

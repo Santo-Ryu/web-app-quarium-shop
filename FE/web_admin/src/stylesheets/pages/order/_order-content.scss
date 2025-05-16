@@ -52,10 +52,8 @@
         padding: pxToRem(8) pxToRem(12);
         gap: pxToRem(10);
 
-        input {
+        p {
             width: 100%;
-            border: 1px solid$stroke-black-20;
-            padding: pxToRem(8) pxToRem(12);
             border-radius: pxToRem(8);
         }
     }

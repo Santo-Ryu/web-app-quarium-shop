@@ -5,7 +5,7 @@ import { MainLayout } from "../../layouts/MainLayout";
 import { OrderUpdateContent } from "./OrderUpdateContent";
 
 export const OrderUpdate = () => {
-    const id = useParams();
+    const {id} = useParams();
     const label = {text: 'Chỉnh sửa đơn hàng', icon: faBoxArchive}
 
     return (

@@ -1,5 +1,6 @@
 package com.example.aquariumshopapp.ui.screens.payment
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -58,7 +59,6 @@ import com.example.aquarium_app.ui.theme.Typography
 import com.example.aquarium_app.ui.theme.White
 import com.example.aquariumshopapp.R
 import com.example.aquariumshopapp.data.enums.PaymentMethod
-import com.example.aquariumshopapp.data.model.OrderItem
 import com.example.aquariumshopapp.ui.screens.payment.components.PayProductCard
 import com.example.aquariumshopapp.ui.utils.ValidateUtils
 import kotlinx.coroutines.launch
@@ -68,7 +68,7 @@ fun PaymentScreen(navController: NavController, viewModel: PaymentViewModel = vi
     val isLDataLoaded = viewModel.isDataLoaded.collectAsState().value
     val customer = viewModel.customer.collectAsState().value
     val orders = viewModel.orders.collectAsState().value
-    val productImages = viewModel.productImages.collectAsState().value
+    val productImages = viewModel.productImageAll.collectAsState().value
     val orderImages = viewModel.orderItems.collectAsState().value
     val carts = viewModel.carts.collectAsState().value
     val total = viewModel.total.collectAsState().value
@@ -135,12 +135,17 @@ fun PaymentScreen(navController: NavController, viewModel: PaymentViewModel = vi
                     ) {
                         carts.forEach { item ->
                             val product = productImages.find { it.product?.id == item.productId }?.product
-
-                            PayProductCard(
-                                item = item,
-                                image = item.image,
-                                product = product!!
-                            )
+                            Log.e("PAYMENT_LOG", "$productImages")
+                            Log.e("PAYMENT_LOG", "$product")
+                            Log.e("PAYMENT_LOG", "$item")
+                            Log.e("PAYMENT_LOG", "${item.productId}, ${item.name}, ${item.image}, ${item.price}, ${item.discountPercentage}, ${item.quantity}, ")
+                            if (product != null) {
+                                PayProductCard(
+                                    item = item,
+                                    image = item.image,
+                                    product = product
+                                )
+                            }
                         }
                     }
                 }

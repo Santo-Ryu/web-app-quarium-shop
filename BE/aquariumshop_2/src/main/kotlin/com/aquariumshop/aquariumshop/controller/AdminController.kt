@@ -48,6 +48,4 @@ class AdminController(
     fun updateCustomer(@RequestBody request: CustomerResponse): ResponseEntity<APIResponse<Any>> {
         return adminServiceImpl.updateCustomer(request)
     }
-
-
 }

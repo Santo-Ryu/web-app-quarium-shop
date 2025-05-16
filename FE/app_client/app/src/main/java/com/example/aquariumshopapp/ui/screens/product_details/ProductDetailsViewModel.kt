@@ -3,6 +3,7 @@ package com.example.aquariumshopapp.ui.screens.product_details
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 import com.example.aquariumshopapp.data.api.RetrofitClient
 import com.example.aquariumshopapp.data.datastore.AccountDataStore
 import com.example.aquariumshopapp.data.datastore.TokenDataStore
@@ -87,5 +88,33 @@ class ProductDetailsViewModel: ViewModel() {
         }
     }
 
+    suspend fun commentProduct(context: Context, rating: Int, comment: String, navController: NavController): Any {
+        try {
+            val accountDataStore = AccountDataStore(context)
+            val customer = accountDataStore.getAccount()
+
+            if (comment.isEmpty())
+                NotificationUtils.showNotification(context, "Không thể để bình luận bị rỗng!")
+
+            val comment = Comment(
+                customer = customer,
+                product = product.value,
+                content = comment,
+                rating = rating
+            )
+
+            val response = RetrofitClient.instance.comment(comment)
+            if (response.isSuccessful) {
+                getData(product.value.id)
+                NotificationUtils.showNotification(context, "Bình luận thành công!")
+                navController.navigate("product_review/${product.value.id}")
+            }else return false
+
+            return true
+        }catch (e: Exception){
+            e.printStackTrace()
+            return false
+        }
+    }
 
 }

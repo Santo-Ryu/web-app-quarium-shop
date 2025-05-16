@@ -61,4 +61,7 @@ interface ApiService {
 
     @POST("api/customer/change_password")
     suspend fun changePassword(@Body request: AuthenticateRequest): Response<APIResponse<Any>>
+
+    @POST("api/customer/comment")
+    suspend fun comment(@Body request: Comment): Response<APIResponse<Any>>
 }

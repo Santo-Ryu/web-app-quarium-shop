@@ -1,8 +1,10 @@
 package com.aquariumshop.aquariumshop.service
 
+import com.aquariumshop.aquariumshop.dto.request.AuthenticateRequest
 import com.aquariumshop.aquariumshop.dto.request.DiscountProductRequest
 import com.aquariumshop.aquariumshop.dto.request.ProductUpdateRequest
 import com.aquariumshop.aquariumshop.dto.response.APIResponse
+import com.aquariumshop.aquariumshop.dto.response.CommentResponse
 import com.aquariumshop.aquariumshop.dto.response.CustomerAccountResponse
 import com.aquariumshop.aquariumshop.dto.response.ProductResponse
 import org.springframework.http.ResponseEntity
@@ -15,4 +17,5 @@ interface ProductService {
     fun updateProduct(request: ProductUpdateRequest): ResponseEntity<APIResponse<Any>>
     fun applyDiscountProduct(request: List<DiscountProductRequest>): ResponseEntity<APIResponse<Any>>
     fun destroyDiscountProduct(request: List<DiscountProductRequest>): ResponseEntity<APIResponse<Any>>
+    fun comment(request: CommentResponse): ResponseEntity<APIResponse<Any>>
 }

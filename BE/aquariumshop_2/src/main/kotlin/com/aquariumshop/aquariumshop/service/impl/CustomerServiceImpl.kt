@@ -9,6 +9,7 @@ import com.aquariumshop.aquariumshop.dto.response.ResponseFactory
 import com.aquariumshop.aquariumshop.enums.Gender
 import com.aquariumshop.aquariumshop.enums.PaymentMethod
 import com.aquariumshop.aquariumshop.mapper.CategoryMapper
+import com.aquariumshop.aquariumshop.mapper.CommentMapper
 import com.aquariumshop.aquariumshop.mapper.CustomerMapper
 import com.aquariumshop.aquariumshop.mapper.OrderItemMapper
 import com.aquariumshop.aquariumshop.mapper.OrderMapper
@@ -19,6 +20,7 @@ import com.aquariumshop.aquariumshop.model.entity.OrderItem
 import com.aquariumshop.aquariumshop.model.entity.OrderStatus
 import com.aquariumshop.aquariumshop.model.entity.ProductImage
 import com.aquariumshop.aquariumshop.repository.CategoryRepository
+import com.aquariumshop.aquariumshop.repository.CommentRepository
 import com.aquariumshop.aquariumshop.repository.CustomerRepository
 import com.aquariumshop.aquariumshop.repository.OrderItemRepository
 import com.aquariumshop.aquariumshop.repository.OrderRepository
@@ -49,7 +51,9 @@ class CustomerServiceImpl(
     val categoryMapper: CategoryMapper,
     val productImageMapper: ProductImageMapper,
     val encryptServiceImpl: EncryptServiceImpl,
-    val productMapper: ProductMapper
+    val productMapper: ProductMapper,
+    val commentRepository: CommentRepository,
+    val commentMapper: CommentMapper
 ): CustomerService {
     override fun getAccount(id: Long): ResponseEntity<APIResponse<CustomerAccountResponse>> {
         val customer = customerRepository.findById(id).orElseThrow { RuntimeException("Không tìm thấy khách hàng!") }
@@ -70,6 +74,8 @@ class CustomerServiceImpl(
         val productImageAll = productImageRepository.findAll()
         val products = productRepository.findAll()
 
+        val comments = commentRepository.findAll()
+
         val response = CustomerAccountResponse(
             customer = customerMapper.toResponse(customer),
             orders = orderMapper.toResponseList(orders),
@@ -77,7 +83,8 @@ class CustomerServiceImpl(
             categories = categoryMapper.toResponseList(categories),
             productImages = productImageMapper.toResponseList(productImages),
             products = productMapper.toResponseList(products),
-            productImageAll = productImageMapper.toResponseList(productImageAll)
+            productImageAll = productImageMapper.toResponseList(productImageAll),
+            comments = commentMapper.toResponseList(comments)
         )
 
         println("------------------------------")

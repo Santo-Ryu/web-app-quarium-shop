@@ -24,3 +24,4 @@
 **/.project
 **/.settings/
 **/.env
+**/ServiceAccountKey.json

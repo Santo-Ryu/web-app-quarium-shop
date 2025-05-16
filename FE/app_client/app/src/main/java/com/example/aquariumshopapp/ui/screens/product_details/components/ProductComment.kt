@@ -1,5 +1,6 @@
 package com.example.aquariumshopapp.ui.screens.product_details.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -52,7 +53,16 @@ fun ProductComment(
     comments: List<Comment>,
     product: Product
 ) {
-    if (comments.isNullOrEmpty()) return
+    val productComments = comments.filter { it.product?.id == product.id }
+    Log.e("PRODUCT_COMMENT", product.toString())
+    Log.e("PRODUCT_COMMENT", productComments.toString())
+
+    if (productComments.isNullOrEmpty()) {
+        return Text(
+            text = "Chưa có đánh giá nào!",
+            modifier = Modifier.fillMaxWidth().padding(start = 16.dp)
+        )
+    }
 
     val paddingSet = Modifier
         .padding(
@@ -63,10 +73,10 @@ fun ProductComment(
         )
 
     val ratingsCount = (1..5).associateWith { star ->
-        comments.count { it.rating == star }
+        productComments.count { it.rating == star }
     }
 
-    val totalReviews = comments.size
+    val totalReviews = productComments.size
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -151,8 +161,8 @@ fun ProductComment(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            comments.forEach { item ->
-                val avatar = item.customer.image?.name ?: "user.png"
+            productComments.forEach { item ->
+                val avatar = item.customer?.image?.name ?: "user.png"
                 Column(
                     modifier = Modifier
                         .padding(
@@ -173,7 +183,7 @@ fun ProductComment(
                         Spacer(modifier = Modifier.width(Dimens.spaceSmall))
                         Column() {
                             Text(
-                                item.customer.name!!,
+                                item.customer?.name!!,
                                 style = Typography.titleMedium
                             )
                             Row {
@@ -189,7 +199,7 @@ fun ProductComment(
                                     modifier = Modifier.size(12.dp)
                                 )
                                 Text(
-                                    ", ${ValidateUtils.formatDate(item.createdAt)}",
+                                    ", ${ValidateUtils.formatDate(item.createdAt!!)}",
                                     style = Typography.bodySmall
                                 )
                             }

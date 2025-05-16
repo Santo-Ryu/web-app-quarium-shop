@@ -65,29 +65,5 @@ fun MainContent(
             cardModifier = cardModifier,
             navController
         )
-
-        // Nút "Xem thêm"
-        Button(
-            onClick = {},
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    top = Dimens.paddingXSmall,
-                    start = Dimens.paddingXSmall,
-                    end = Dimens.paddingXSmall,
-                    bottom = Dimens.paddingXSmall
-                )
-                .height(45.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = GreenPrimary
-            )
-        ) {
-            Text(
-                text = "Xem thêm",
-                style = textButtonSmall,
-                modifier = Modifier
-                    .background(Color.Transparent)
-            )
-        }
     }
 }

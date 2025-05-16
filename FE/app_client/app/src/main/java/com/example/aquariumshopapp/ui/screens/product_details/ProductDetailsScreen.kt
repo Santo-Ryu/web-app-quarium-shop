@@ -73,7 +73,12 @@ fun ProductDetailsScreen(
                     comments = comments,
                     images = images,
                     productRelated = productRelated,
-                    productImageRelated = productImageRelated
+                    productImageRelated = productImageRelated,
+                    onComment = { rating, comment ->
+                        coroutineScope.launch {
+                            viewModel.commentProduct(context, rating, comment, navController)
+                        }
+                    }
                 )
             }
 

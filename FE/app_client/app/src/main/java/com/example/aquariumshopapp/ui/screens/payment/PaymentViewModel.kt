@@ -84,6 +84,7 @@ class PaymentViewModel: ViewModel() {
             if (paymentMethod == PaymentMethod.QR.toString()) {
                 return NotificationUtils.showNotification(context, "Ứng dụng chưa cập nhật tính năng này!")
             }
+
             val request = PaymentRequest(
                 id = customer.value.id,
                 carts = carts.value,

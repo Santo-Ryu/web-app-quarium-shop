@@ -9,7 +9,7 @@ export const Sidebar = ({
 
     const listIcon = [
         {icon: faHome, label: "Trang chủ", link: "/"},
-        {icon: faMessage, label: "Tin nhắn", link: "/message"},
+        // {icon: faMessage, label: "Tin nhắn", link: "/message"},
         {icon: faBoxArchive, label: "Đơn hàng", link: "/order"},
         {icon: faUser, label: "Khách hàng", link: "/customer"},
         {icon: faList, label: "Danh mục", link: "/categories"},

@@ -3,33 +3,27 @@ package com.aquariumshop.aquariumshop.service.impl
 import com.aquariumshop.aquariumshop.dto.request.DiscountProductRequest
 import com.aquariumshop.aquariumshop.dto.request.ProductUpdateRequest
 import com.aquariumshop.aquariumshop.dto.response.APIResponse
+import com.aquariumshop.aquariumshop.dto.response.CommentResponse
 import com.aquariumshop.aquariumshop.dto.response.CustomerAccountResponse
-import com.aquariumshop.aquariumshop.dto.response.ProductResponse
 import com.aquariumshop.aquariumshop.dto.response.ResponseFactory
 import com.aquariumshop.aquariumshop.mapper.CategoryMapper
 import com.aquariumshop.aquariumshop.mapper.ProductImageMapper
 import com.aquariumshop.aquariumshop.mapper.ProductMapper
+import com.aquariumshop.aquariumshop.model.entity.Comment
 import com.aquariumshop.aquariumshop.model.entity.Product
 import com.aquariumshop.aquariumshop.repository.CategoryRepository
+import com.aquariumshop.aquariumshop.repository.CommentRepository
+import com.aquariumshop.aquariumshop.repository.CustomerRepository
 import com.aquariumshop.aquariumshop.repository.ProductImageRepository
 import com.aquariumshop.aquariumshop.repository.ProductRepository
-import com.aquariumshop.aquariumshop.repository.UserImageRepository
 import com.aquariumshop.aquariumshop.service.ProductService
-import org.springframework.core.io.UrlResource
-import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
-import org.springframework.http.MediaTypeFactory.getMediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
-import java.nio.file.Paths
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeParseException
 import java.util.Date
-import java.util.Locale
+import kotlin.collections.forEach
 
 @Service
 class ProductServiceImpl(
@@ -39,7 +33,9 @@ class ProductServiceImpl(
     val productMapper: ProductMapper,
     val categoryMapper: CategoryMapper,
     val productImageMapper: ProductImageMapper,
-    val imageServiceImpl: ImageServiceImpl
+    val imageServiceImpl: ImageServiceImpl,
+    val customerRepository: CustomerRepository,
+    val commentRepository: CommentRepository
 ): ProductService {
     override fun getHomeData(): ResponseEntity<APIResponse<CustomerAccountResponse>> {
         val products = productMapper.toResponseList(productRepository.findAll())
@@ -55,6 +51,30 @@ class ProductServiceImpl(
         println("GET HOME DATA")
 
         return ResponseFactory.success(response, "Tải dữ liệu thành công!")
+    }
+
+    override fun comment(request: CommentResponse): ResponseEntity<APIResponse<Any>> {
+        val product = productRepository.findById(request.product.id).orElseThrow{ RuntimeException("Lỗi") }
+        val customer = customerRepository.findById(request.customer.id).orElseThrow{ RuntimeException("Lỗi") }
+
+        val comment = Comment()
+        comment.product = product
+        comment.customer = customer
+        comment.rating = request.rating
+        comment.content = request.content
+        commentRepository.save(comment)
+
+        val commentOfProduct = commentRepository.findByProductId(request.id)
+        if (commentOfProduct.isNotEmpty()) {
+            var ratingSum = 0
+            commentOfProduct.forEach { item ->
+                ratingSum += item.rating!!
+            }
+            product.rating = ratingSum.toFloat() / commentOfProduct.size
+            productRepository.save(product)
+        }
+
+        return ResponseFactory.success("", "Bình luận thành công!")
     }
 
     override fun addNewProduct(

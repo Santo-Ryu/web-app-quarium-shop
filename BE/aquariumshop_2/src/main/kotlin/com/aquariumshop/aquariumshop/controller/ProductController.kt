@@ -110,4 +110,10 @@ class ProductController(
     fun destroyDiscount(@RequestBody request: List<DiscountProductRequest>): ResponseEntity<APIResponse<Any>> {
         return productServiceImpl.destroyDiscountProduct(request)
     }
+
+    @PostMapping("/customer/comment")
+    fun comment(@RequestBody request: CommentResponse): ResponseEntity<APIResponse<Any>> {
+        return productServiceImpl.comment(request)
+    }
+
 }

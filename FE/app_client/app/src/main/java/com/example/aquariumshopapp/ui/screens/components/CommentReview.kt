@@ -32,7 +32,7 @@ import com.example.aquariumshopapp.ui.utils.ValidateUtils
 
 @Composable
 fun CommentReview(comment: Comment) {
-    val customerImage = comment.customer.image?.name ?: "user.png"
+    val customerImage = comment.customer?.image?.name ?: "user.png"
     val customer = comment.customer
     Row(
         modifier = Modifier
@@ -50,7 +50,7 @@ fun CommentReview(comment: Comment) {
         Spacer(modifier = Modifier.width(Dimens.spaceSmall))
         Column() {
             Text(
-                text = customer.name.toString(),
+                text = customer?.name.toString(),
                 style = Typography.titleMedium
             )
             Row {
@@ -66,7 +66,7 @@ fun CommentReview(comment: Comment) {
                     modifier = Modifier.size(12.dp)
                 )
                 Text(
-                    ", ${ValidateUtils.formatDate(comment.createdAt)}",
+                    ", ${ValidateUtils.formatDate(comment.createdAt!!)}",
                     style = Typography.bodySmall
                 )
             }

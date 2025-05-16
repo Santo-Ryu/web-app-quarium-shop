@@ -11,6 +11,7 @@ import com.example.aquariumshopapp.data.datastore.AccountDataStore
 import com.example.aquariumshopapp.data.datastore.TokenDataStore
 import com.example.aquariumshopapp.data.enums.Role
 import com.example.aquariumshopapp.data.model.Category
+import com.example.aquariumshopapp.data.model.Comment
 import com.example.aquariumshopapp.data.model.Customer
 import com.example.aquariumshopapp.data.model.Order
 import com.example.aquariumshopapp.data.model.OrderItem
@@ -33,6 +34,7 @@ class PersonalViewModel: ViewModel() {
     private val _categories = MutableStateFlow<List<Category>>(emptyList())
     private val _productImages = MutableStateFlow<List<ProductImage>>(emptyList())
     private val _isDataLoaded = MutableStateFlow(false)
+    private val _comments = MutableStateFlow<List<Comment>>(emptyList())
 
     val customer: StateFlow<Customer> = _customer
     val orders: StateFlow<List<Order>> = _orders
@@ -55,6 +57,7 @@ class PersonalViewModel: ViewModel() {
                 _orderItems.value = data.orderItems
                 _categories.value = data.categories
                 _productImages.value = data.productImages
+                _comments.value = data.comments
                 _isDataLoaded.value = true // đánh dấu đã tải xong
                 Log.e("GET_ACCOUNT", customer.value.toString())
             }

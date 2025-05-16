@@ -66,7 +66,7 @@ fun PersonalScreen(navController: NavController, viewModel: PersonalViewModel = 
 
     val fields = listOf<FieldsInfoItem>(
         FieldsInfoItem("Thông tin cá nhân", "personal_info"),
-        FieldsInfoItem("Nhắn tin", "message"),
+//        FieldsInfoItem("Nhắn tin", "message"),
         FieldsInfoItem("Thay đổi mật khẩu", "change_password"),
         FieldsInfoItem("Lịch sử mua hàng", "order_history",),
     )

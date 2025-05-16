@@ -40,7 +40,21 @@ android {
     }
 }
 
+
 dependencies {
+    // OkHttp (HTTP client)
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+    // Ktor (WebSockets)
+    implementation("io.ktor:ktor-client-cio:3.1.1")
+    implementation("io.ktor:ktor-client-websockets:3.1.1")
+    implementation("io.ktor:ktor-client-content-negotiation:3.1.1")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:3.1.1")
+    implementation("io.ktor:ktor-client-logging:3.1.1")
+
+    implementation("io.ktor:ktor-client-core:2.3.4")
+
     implementation(libs.firebase.auth)
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
     implementation("com.google.firebase:firebase-firestore-ktx:24.7.0")

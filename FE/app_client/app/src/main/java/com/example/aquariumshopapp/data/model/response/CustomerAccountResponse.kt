@@ -1,6 +1,7 @@
 package com.example.aquariumshopapp.data.model.response
 
 import com.example.aquariumshopapp.data.model.Category
+import com.example.aquariumshopapp.data.model.Comment
 import com.example.aquariumshopapp.data.model.Customer
 import com.example.aquariumshopapp.data.model.Order
 import com.example.aquariumshopapp.data.model.OrderItem
@@ -15,4 +16,5 @@ data class CustomerAccountResponse (
     val categories: List<Category> = emptyList(),
     val productImages: List<ProductImage> = emptyList(),
     val productImageAll: List<ProductImage> = emptyList(),
+    val comments: List<Comment> = emptyList()
 )

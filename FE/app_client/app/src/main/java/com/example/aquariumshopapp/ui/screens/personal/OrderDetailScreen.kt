@@ -17,17 +17,25 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Slider
+import androidx.compose.material.SliderDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,12 +57,15 @@ import com.example.aquarium_app.ui.theme.GreenPrimary
 import com.example.aquarium_app.ui.theme.Typography
 import com.example.aquarium_app.ui.theme.WAITING_YELLOW
 import com.example.aquarium_app.ui.theme.White
+import com.example.aquarium_app.ui.theme.textButtonSmall
 import com.example.aquariumshopapp.R
+import com.example.aquariumshopapp.data.datastore.AccountDataStore
 import com.example.aquariumshopapp.data.model.OrderItem
 import com.example.aquariumshopapp.ui.screens.payment.components.PayProductCard
 import com.example.aquariumshopapp.ui.screens.personal.PersonalViewModel
 import com.example.aquariumshopapp.ui.screens.personal.components.OrderDetailsItem
 import com.example.aquariumshopapp.ui.utils.ValidateUtils
+import kotlinx.coroutines.launch
 
 @Composable
 fun OrderDetailScreen(navController: NavController, id: Long, viewModel: PersonalViewModel = viewModel()) {

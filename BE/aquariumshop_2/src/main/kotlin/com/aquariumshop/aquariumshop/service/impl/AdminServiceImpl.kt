@@ -58,7 +58,8 @@ class AdminServiceImpl(
     val customerMapper: CustomerMapper,
     val orderStatusRepository: OrderStatusRepository,
     val userImageRepository: UserImageRepository,
-    val encryptServiceImpl: EncryptServiceImpl
+    val encryptServiceImpl: EncryptServiceImpl,
+    val notificationService: NotificationService
 ): AdminService {
     override fun getAccount(id: Long): ResponseEntity<APIResponse<AdminAccountResponse>> {
         val admin = adminRepository.findById(id).orElseThrow { RuntimeException("Không tìm thấy admin!") }
@@ -196,6 +197,17 @@ class AdminServiceImpl(
 
         val statusE = orderStatusRepository.findByStatusName(status)
         val order = orderRepository.findById(orderId).orElseThrow{RuntimeException("Lỗi")}
+
+        if (order.status?.statusName != statusE.statusName) {
+            println("CREATE_NOTIFICATIONS")
+            notificationService.createNotificationToFirestore(
+                userId = order.customer?.id.toString(),
+                title = "Đơn hàng #${order.id} của bạn ${statusE.statusName?.lowercase()}!",
+                orderId = order.id.toString(),
+                status = statusE.statusName.toString()
+            )
+        }
+
         order.status = statusE
         order.price = price
         orderRepository.save(order)

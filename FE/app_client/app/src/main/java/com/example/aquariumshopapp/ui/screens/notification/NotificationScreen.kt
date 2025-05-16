@@ -17,6 +17,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,12 +26,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.aquarium_app.ui.screens.home.components.NavigationBar
 import com.example.aquarium_app.ui.theme.BackgroundColor
@@ -46,7 +50,14 @@ import com.example.aquarium_app.ui.theme.White
 import com.example.aquariumshopapp.R
 
 @Composable
-fun NotificationScreen(navController: NavController) {
+fun NotificationScreen(navController: NavController, viewModel: NotificationsViewModel = viewModel()) {
+    val notifications = viewModel.notifications.collectAsState().value
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.getNotifications(context)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -77,55 +88,45 @@ fun NotificationScreen(navController: NavController) {
         }
 
         /*  Notification  */
-        data class ItemNotification(
-            val iconId: Int,
-            val iconColor: Color,
-            val message: String,
-            val messageColor: Color,
-        )
-        val items = listOf(
-            ItemNotification(
-                R.drawable.square_check_solid,
-                DONE_GREEN,
-                "Đơn hàng #994823 của bạn đã được giao thành công!",
-                DONE_GREEN
-            ),
-            ItemNotification(
-                R.drawable.hourglass_end_solid,
-                WAITING_YELLOW,
-                "Đơn hàng #569556 của bạn đang chờ xác nhận!",
-                WAITING_YELLOW
-            ),
-            ItemNotification(
-                R.drawable.truck_fast_solid,
-                DELIVERING_BLUE,
-                "Đơn hàng #266594 của bạn đang được giao!",
-                DELIVERING_BLUE
-            ),
-        )
         Column(
             modifier = Modifier
                 .weight(1f)
         ) {
-            items.forEach { item ->
+            notifications.forEach { item ->
+                val iconId = when(item.status) {
+                    "Đã hoàn thành" -> R.drawable.square_check_solid
+                    "Đang xử lý" -> R.drawable.hourglass_end_solid
+                    "Đang vận chuyển" -> R.drawable.truck_fast_solid
+                    else -> {}
+                }
+                val notificationColor = when(item.status) {
+                    "Đã hoàn thành" -> DONE_GREEN
+                    "Đang xử lý" -> WAITING_YELLOW
+                    "Đang vận chuyển" -> DELIVERING_BLUE
+                    else -> {}
+                }
+
                 Row(
                     modifier = Modifier.fillMaxWidth()
                         .background(BackgroundColor.copy(.3f))
-                        .padding(8.dp),
+                        .padding(8.dp)
+                        .clickable {
+                            navController.navigate("order_details/${item.orderId}")
+                        },
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Image(
-                        painter = painterResource(item.iconId),
+                        painter = painterResource(iconId as Int),
                         contentDescription = "Icon",
-                        colorFilter = ColorFilter.tint(item.iconColor),
+                        colorFilter = ColorFilter.tint(notificationColor as Color),
                         modifier = Modifier.size(50.dp)
                             .clip(RoundedCornerShape(8.dp))
                     )
                     Row() {
                         Text(
-                            text = item.message,
+                            text = item.title,
                             style = Typography.titleMedium,
-                            color = item.messageColor
+                            color = notificationColor
                         )
                     }
                 }

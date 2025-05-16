@@ -41,3 +41,7 @@ export const formatCurrencyVN = (amount) => {
 
     return amount.toLocaleString("vi-VN") + " đ";
 };
+
+export const formatStringToDate = (str) => {
+  return str ? new Date(str).toISOString().split("T")[0] : "NULL"
+}

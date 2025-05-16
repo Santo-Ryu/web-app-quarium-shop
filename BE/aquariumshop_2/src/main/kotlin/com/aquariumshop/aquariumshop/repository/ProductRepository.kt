@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository
 interface ProductRepository: JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p WHERE p.category.category = :categoryName")
     fun findByCategory(categoryName: String): List<Product>
+    fun findByName(name: String): Product?
 }

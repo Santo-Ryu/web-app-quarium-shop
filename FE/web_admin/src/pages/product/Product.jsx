@@ -1,12 +1,21 @@
 import { Helmet } from "react-helmet-async";
 import { MainLayout } from "../../layouts/MainLayout";
-import { faBoxArchive, faBoxes } from "@fortawesome/free-solid-svg-icons";
+import { faAdd, faBoxes } from "@fortawesome/free-solid-svg-icons";
 import { CustomTable } from "../../components/CustomTable";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useGetAccount } from "../../hooks/useAdmin";
+import { BASE_URL } from "../../app/config/configApi";
+import { formatCurrencyVN } from "../../app/service/Validator";
+import { useState } from "react";
+import { deleteProduct } from "../../app/api/product.api";
 
 export const Product = () => {
     const navigate = useNavigate();
+    const [selectedCategoryId, setSelectedCategoryId] = useState(0);
+    const {data, isLoading, fetchData} = useGetAccount()
     const label = {text: 'Sản phẩm', icon: faBoxes}
+
+    if (isLoading) return "Đang tải..."
 
     const switchColorStatus = (status) => {
         switch (status) {
@@ -16,14 +25,6 @@ export const Product = () => {
             default: return "#9E9E9E";                // Xám cho các trạng thái chưa rõ
         }
     };
-
-    const selectOption = [
-        {id: 1, option: "Cá cảnh"},
-        {id: 2, option: "Cây thủy sinh"},
-        {id: 3, option: "Thức Ăn"},
-        {id: 4, option: "Cá cảnh"},
-    ]
-    
 
     const columns = [
         {
@@ -36,7 +37,7 @@ export const Product = () => {
             name: <span className="product-table__header">Hình ảnh</span>,
             sortable: true,
             width: '100px',
-            cell: row => (<img src={row.image} style={{borderRadius: '8px', border: '1px solid gray', width: '40px', height: '40px'}} alt='Product Image' />)
+            cell: row => (<img src={`${BASE_URL}api/public/image?name=${row.image}`} style={{borderRadius: '8px', border: '1px solid gray', width: '40px', height: '40px'}} alt='Product Image' />)
         },
         {
             name: <span style={{ fontSize: '0.9rem', }}>Sản phẩm</span>,
@@ -62,17 +63,48 @@ export const Product = () => {
             name: <span style={{ fontSize: '0.9rem', }}>Chức năng</span>,
             cell: row => (
                 <div className="product-table__button">
-                    <button className="table-button product-table__button--view" onClick={() => navigate('/product-details')}>Xem thêm</button>
-                    <button className="table-button product-table__button--delete">Xóa</button>
+                    <button className="table-button product-table__button--view" onClick={() => navigate(`/product-details/${row.id}`)}>Xem thêm</button>
+                    <button className="table-button product-table__button--delete" onClick={() => handleDeleteProduct(row.id)}>Xóa</button>
                 </div>
             ),
             sortable: true,
         },
     ]
 
-    const data = [
-        {id: 1, image: '/src/assets/beta1.jpg', name: 'Cá beta siêu đẹp', price: "200.000", category: "Cá cảnh", quantity: "125"}
-    ];
+    const productImages = data?.productImages
+    const dataT = data?.products
+        ?.filter((e) => selectedCategoryId === 0 || e.category.id === selectedCategoryId)
+        ?.map((e) => ({
+            id: e.id,
+            image: productImages?.find(p => p.product.id === e.id)?.name || 'isLoading.jpg',
+            name: e.name,
+            price: formatCurrencyVN(e.price),
+            category: e.category.category,
+            quantity: e.quantity
+        }))
+
+    
+    const selectOption = [{id: 0, option: "Tất cả"}]
+    data?.categories?.map((e, index) => {
+        selectOption.push(
+            {
+                id: e.id,
+                option: e.category
+            }
+        )
+    })
+
+    const buttons = [{
+        func: () => {navigate("/product-add")},
+        icon: faAdd,
+        name: "Thêm"
+    }]
+
+    const handleDeleteProduct = async (id) => {
+        const response = await deleteProduct(id)
+        if (response) alert("Xóa thành công!")
+        fetchData()
+    }
 
     return (
         <>
@@ -81,11 +113,13 @@ export const Product = () => {
                 label={label}
                 layout={
                     <CustomTable 
+                        buttons={buttons}
                         selectOption={selectOption}
                         hiddenSearchBar={true}
                         columns={columns}
-                        data={data}
+                        data={dataT}
                         rowPerPage={10}
+                        onSelectChange={(id) => setSelectedCategoryId(parseInt(id))}
                     />
                 } 
             />

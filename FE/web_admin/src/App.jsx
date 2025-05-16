@@ -16,6 +16,7 @@ import { Discount } from "./pages/discount/Discount"
 import { Categories } from "./pages/categories/Categories"
 import PrivateRoute from './PrivateRoute'
 import { useTokenExpiration } from './hooks/useTokenExpiration'
+import { ProductAdd } from "./pages/product/ProductAdd"
 
 function App() {
   useTokenExpiration()
@@ -47,7 +48,8 @@ function App() {
             <Route path="/categories" element={<PrivateRoute><Categories /></PrivateRoute>} />
 
             <Route path="/product" element={<PrivateRoute><Product /></PrivateRoute>} />
-            <Route path="/product-details" element={<PrivateRoute><ProductDetails /></PrivateRoute>} /> {/* /customer-details/:id */}
+            <Route path="/product-details/:id" element={<PrivateRoute><ProductDetails /></PrivateRoute>} /> {/* /customer-details/:id */}
+            <Route path="/product-add" element={<PrivateRoute><ProductAdd /></PrivateRoute>} />
 
             <Route path="/personal" element={<PrivateRoute><Personal /></PrivateRoute>} />
 

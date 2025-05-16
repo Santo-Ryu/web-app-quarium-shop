@@ -13,7 +13,10 @@ const modules = {
   ]
 };
 
-export const FieldsRenderer = ({fields, onChange}) => {
+export const FieldsRenderer = ({
+    fields, 
+    onChange = () => {}
+}) => {
     const typeGender = (type) => {
         switch(type) {
             case "OTHER": return "Khác"
@@ -43,7 +46,7 @@ export const FieldsRenderer = ({fields, onChange}) => {
                                 onChange={(e) => onChange(field.key, e.target.value)}
                             >
                             {field?.options.map((opt, i) => (
-                                <option key={i} value={opt}>{typeGender(opt)}</option>
+                                <option key={i} value={opt}>{opt}</option>
                             ))}
                             </select>
                         ) : field.type === "button" ? (

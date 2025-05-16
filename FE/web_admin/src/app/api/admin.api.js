@@ -76,14 +76,14 @@ export const updateCustomer = async (customer) => {
     }
 }
 
-export const updateCustomerImage = async (customerId, type, file) => {
+export const updateImage = async (id, type, file) => {
     try {
         const token = localStorage.getItem('token')
         if (token) {
             const URL = `${BASE_URL}api/image/update_image`
 
             const formData = new FormData()
-            formData.append('id', customerId)
+            formData.append('id', id)
             formData.append('type', type)
             formData.append('file', file)
 

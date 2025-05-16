@@ -17,6 +17,7 @@
         gap: pxToRem(20);
 
         &--item {
+            height: 100%;
             padding: pxToRem(8) pxToRem(15);
             background-color: $primary-color;
             color: white;
@@ -27,11 +28,17 @@
         }
     }
 
+    &__aside {
+        display: flex;
+        flex-direction: row;
+        gap: pxToRem(10)
+    }
+
     &__input {
-        width: 30%;
+        width: 100%;
         border-radius: pxToRem(8);
         border: 1px solid $stroke-black-20;
-        padding: pxToRem(12);
+        padding: pxToRem(8) pxToRem(12);
     }
 
     &__select {

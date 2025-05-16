@@ -207,6 +207,14 @@ class AdminServiceImpl(
                 status = statusE.statusName.toString()
             )
         }
+        if (order.status?.statusName === "Đã hoàn thành") {
+            orderItemRepository.findByOrderId(order.id!!).forEach { item ->
+                val product = item.product
+                val quantity = item.quantity!! + (product?.salesCount ?: 0)
+                product?.salesCount = quantity
+                productRepository.save(product)
+            }
+        }
 
         order.status = statusE
         order.price = price

@@ -70,7 +70,7 @@ class ProductServiceImpl(
             commentOfProduct.forEach { item ->
                 ratingSum += item.rating!!
             }
-            product.rating = ratingSum.toFloat() / commentOfProduct.size
+            product.rating = ratingSum.toFloat() / commentOfProduct.size.toFloat()
             productRepository.save(product)
         }
 

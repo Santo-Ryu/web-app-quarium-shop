@@ -1,7 +1,10 @@
 package com.example.aquarium_app.ui.screens.home.components
 
 import android.content.Context
+import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.util.Log
+import android.widget.TextView
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -37,6 +40,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -47,6 +51,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -176,17 +181,27 @@ fun ProductCard(
                     style = Typography.titleMedium
                 )
 //                Product detail
-                Text(
-                    text = product.description.toString(),
+                AndroidView(
                     modifier = Modifier
                         .padding(
                             bottom = 6.dp,
                             start = 8.dp
                         )
                         .fillMaxWidth(),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    style = detailTextSmall
+                    factory = { context ->
+                        TextView(context).apply {
+                            text = Html.fromHtml(product.description.toString(), Html.FROM_HTML_MODE_LEGACY)
+                            setTextColor(detailTextSmall.color.toArgb())  // chuyển màu từ Compose Color sang Android color int
+                            textSize = detailTextSmall.fontSize.value     // fontSize từ TextStyle (sp float)
+                            maxLines = 1
+                            ellipsize = android.text.TextUtils.TruncateAt.END
+                            movementMethod = LinkMovementMethod.getInstance() // hỗ trợ click link nếu có
+                        }
+                    },
+                    update = { textView ->
+                        textView.text = Html.fromHtml(product.description.toString(), Html.FROM_HTML_MODE_LEGACY)
+                        textView.maxLines = 1
+                    }
                 )
             }
 

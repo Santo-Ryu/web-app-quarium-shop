@@ -1,5 +1,8 @@
 package com.example.aquariumshopapp.ui.screens.product_details.components
 
+import android.text.Html
+import android.text.method.LinkMovementMethod
+import android.widget.TextView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -21,10 +24,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import coil.compose.AsyncImage
 import com.example.aquarium_app.ui.theme.BlackAlpha10
 import com.example.aquarium_app.ui.theme.Dimens
@@ -87,7 +92,7 @@ fun ProductContent(
     /*  Expand Details  */
     val isExpanded = remember { mutableStateOf(false) }
     val showMoreText = if (isExpanded.value) "Thu gọn" else "Xem thêm"
-    val maxLines = if (isExpanded.value) Int.MAX_VALUE else 3
+    var maxLines = if (isExpanded.value) Int.MAX_VALUE else 3
 
     Column(
         modifier = Modifier
@@ -98,17 +103,27 @@ fun ProductContent(
             style = Typography.titleMedium
         )
 
-        Text(
-            text = product.description.toString(),
+        AndroidView(
             modifier = Modifier
                 .padding(
                     start = Dimens.paddingMedium,
                     end = Dimens.paddingMedium,
                     top = Dimens.paddingSmall
                 ),
-            style = Typography.bodyMedium,
-            color = PRODUCT_TEXT_DETAILS,
-            maxLines = maxLines
+            factory = { context ->
+                TextView(context).apply {
+                    // Parse HTML và gán text
+                    text = Html.fromHtml(product.description.toString(), Html.FROM_HTML_MODE_LEGACY)
+                    setTextColor(PRODUCT_TEXT_DETAILS.toArgb()) // chuyển Color Compose sang Android int color
+                    textSize = Typography.bodyMedium.fontSize.value // đặt kích thước text (float sp)
+                    maxLines = maxLines
+                    movementMethod = LinkMovementMethod.getInstance() // hỗ trợ link nếu có
+                }
+            },
+            update = { textView ->
+                textView.text = Html.fromHtml(product.description.toString(), Html.FROM_HTML_MODE_LEGACY)
+                textView.maxLines = maxLines
+            }
         )
 
         Text(

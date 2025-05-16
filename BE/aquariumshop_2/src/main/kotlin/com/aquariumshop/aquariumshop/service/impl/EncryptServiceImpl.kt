@@ -83,7 +83,7 @@ class EncryptServiceImpl: EncryptService {
                 encryptDataBase64.substring(8)
     }
 
-    /**
+
     override fun encrypt(data: String): String {
         val aesKey = generateAESKey()
         val ivCode = getIVCode()
@@ -116,7 +116,7 @@ class EncryptServiceImpl: EncryptService {
 
         return String(decryptedData)
     }
-     **/
+
 
     private data class ParsedParts(val aesKey: ByteArray, val ivCode: ByteArray)
 
@@ -146,22 +146,22 @@ class EncryptServiceImpl: EncryptService {
 
     /********************/
 
-    private val key = "0123456789abcdef0123456789abcdef".toByteArray(Charsets.UTF_8) // 32 bytes
-    private val iv = "abcdef9876543210".toByteArray(Charsets.UTF_8) // 16 bytes
-
-    override fun encrypt(plainText: String): String {
-        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
-        val secretKey = SecretKeySpec(key, "AES")
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey, IvParameterSpec(iv))
-        val encryptedBytes = cipher.doFinal(plainText.toByteArray(Charsets.UTF_8))
-        return Base64.getEncoder().encodeToString(encryptedBytes)
-    }
-
-    override fun decrypt(encryptedText: String): String {
-        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
-        val secretKey = SecretKeySpec(key, "AES")
-        cipher.init(Cipher.DECRYPT_MODE, secretKey, IvParameterSpec(iv))
-        val decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedText))
-        return String(decryptedBytes, Charsets.UTF_8)
-    }
+//    private val key = "0123456789abcdef0123456789abcdef".toByteArray(Charsets.UTF_8) // 32 bytes
+//    private val iv = "abcdef9876543210".toByteArray(Charsets.UTF_8) // 16 bytes
+//
+//    override fun encrypt(plainText: String): String {
+//        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
+//        val secretKey = SecretKeySpec(key, "AES")
+//        cipher.init(Cipher.ENCRYPT_MODE, secretKey, IvParameterSpec(iv))
+//        val encryptedBytes = cipher.doFinal(plainText.toByteArray(Charsets.UTF_8))
+//        return Base64.getEncoder().encodeToString(encryptedBytes)
+//    }
+//
+//    override fun decrypt(encryptedText: String): String {
+//        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
+//        val secretKey = SecretKeySpec(key, "AES")
+//        cipher.init(Cipher.DECRYPT_MODE, secretKey, IvParameterSpec(iv))
+//        val decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedText))
+//        return String(decryptedBytes, Charsets.UTF_8)
+//    }
 }

@@ -29,7 +29,7 @@ class HomeViewModel(): ViewModel() {
                     val data = response.body()?.data
                     val message = response.body()?.message
 
-                    _products.value = data?.products!!
+                    _products.value = data?.products!!.sortedByDescending { it.createdAt }
                     _categories.value = data?.categories!!
                     _productImages.value = data?.productImages!!
                     Log.e("HOME_VM_SUCCESSFUL", response.body()?.message.toString())

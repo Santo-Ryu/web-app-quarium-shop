@@ -1,5 +1,6 @@
 package com.aquariumshop.aquariumshop.service.impl
 
+import com.aquariumshop.aquariumshop.dto.request.ProductUpdateRequest
 import com.aquariumshop.aquariumshop.dto.response.APIResponse
 import com.aquariumshop.aquariumshop.dto.response.CustomerAccountResponse
 import com.aquariumshop.aquariumshop.dto.response.ProductResponse
@@ -7,6 +8,7 @@ import com.aquariumshop.aquariumshop.dto.response.ResponseFactory
 import com.aquariumshop.aquariumshop.mapper.CategoryMapper
 import com.aquariumshop.aquariumshop.mapper.ProductImageMapper
 import com.aquariumshop.aquariumshop.mapper.ProductMapper
+import com.aquariumshop.aquariumshop.model.entity.Product
 import com.aquariumshop.aquariumshop.repository.CategoryRepository
 import com.aquariumshop.aquariumshop.repository.ProductImageRepository
 import com.aquariumshop.aquariumshop.repository.ProductRepository
@@ -18,6 +20,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.MediaTypeFactory.getMediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 import java.nio.file.Paths
 
 @Service
@@ -27,7 +30,8 @@ class ProductServiceImpl(
     val productImageRepository: ProductImageRepository,
     val productMapper: ProductMapper,
     val categoryMapper: CategoryMapper,
-    val productImageMapper: ProductImageMapper
+    val productImageMapper: ProductImageMapper,
+    val imageServiceImpl: ImageServiceImpl
 ): ProductService {
     override fun getHomeData(): ResponseEntity<APIResponse<CustomerAccountResponse>> {
         val products = productMapper.toResponseList(productRepository.findAll())
@@ -43,5 +47,68 @@ class ProductServiceImpl(
         println("GET HOME DATA")
 
         return ResponseFactory.success(response, "Tải dữ liệu thành công!")
+    }
+
+    override fun addNewProduct(
+        category: String,
+        name: String,
+        description: String,
+        price: Int,
+        quantity: Int,
+        productImages: List<MultipartFile>
+    ): ResponseEntity<APIResponse<Any>> {
+        if (category.isEmpty() || name.isEmpty() || description.isEmpty() || price == 0 || quantity == 0 || productImages.isEmpty())
+            return ResponseFactory.badRequest("Chưa nhập đầy đủ thông tin!")
+        if (price < 0)
+            return ResponseFactory.badRequest("Giá sản phẩm phải > 0")
+        if (quantity < 0)
+            return ResponseFactory.badRequest("Số lượng sản phẩm phải > 0")
+
+        val productExists = productRepository.findByName(name)
+        if (productExists != null) {
+            return ResponseFactory.badRequest("Sản phẩm đã tồn tại!")
+        }
+
+        val categoryOfProduct= categoryRepository.findByCategory(category)
+
+        val newProduct = Product()
+        newProduct.name = name
+        newProduct.category = categoryOfProduct
+        newProduct.description = description
+        newProduct.price = price
+        newProduct.quantity = quantity
+        productRepository.save(newProduct)
+
+        val product = productRepository.findByName(name)
+        productImages.forEach { item ->
+            imageServiceImpl.updateImage(product?.id!!, "product", item)
+        }
+
+        return ResponseFactory.success("ok", "Thểm sản phẩm thành công!")
+    }
+
+    override fun deleteProduct(id: Long): ResponseEntity<APIResponse<Any>> {
+        val product = productRepository.findById(id).orElseThrow { RuntimeException("Lỗi") }
+        productImageRepository.deleteByProductId(product.id!!)
+        productRepository.delete(product)
+        return ResponseFactory.success("ok", "Xóa thành công!")
+    }
+
+    override fun updateProduct(request: ProductUpdateRequest): ResponseEntity<APIResponse<Any>> {
+        val product = productRepository.findById(request.id).orElseThrow { RuntimeException("Lỗi") }
+
+        val categoryOfProduct = categoryRepository.findByCategory(request.category?.category!!)
+        product.category = categoryOfProduct
+        product.name = request.name
+        product.description = request.description
+        product.quantity = product.quantity
+        product.price = product.price
+        productRepository.save(product)
+
+        println("--------------------")
+        println("UPDATE-PRODUCT")
+        println("--------------------")
+
+        return ResponseFactory.success("", "Cập nhật thành công!")
     }
 }

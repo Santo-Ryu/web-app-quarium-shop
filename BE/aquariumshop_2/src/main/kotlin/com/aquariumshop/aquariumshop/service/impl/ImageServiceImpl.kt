@@ -20,6 +20,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.UUID
 
 @Service
 class ImageServiceImpl(
@@ -78,7 +79,8 @@ class ImageServiceImpl(
             if (type.equals("customer") || type.equals("admin") || type.equals("product")) {
                 val timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
                 val extension = file.originalFilename?.substringAfterLast('.', "")
-                val filename = "${id}_$timeStamp.${extension}"
+                val uuid = UUID.randomUUID().toString().substring(0, 8)
+                val filename = "${id}_${timeStamp}_${uuid}.${extension}"
 
                 val filePath = uploadDir.resolve(filename)
                 file.transferTo(filePath.toFile()) // lưu ảnh
@@ -102,7 +104,7 @@ class ImageServiceImpl(
                     productImage.product = productRepository.findById(id).orElseThrow{ RuntimeException("Sản phẩm không tồn tại!") }
                     productImage.name = filename
                     productImageRepository.save(productImage)
-                    println("PRODUCT_SAVE_IMAGE")
+                    println("PRODUCT_SAVE_IMAGE: $filename")
                 }
             }else println("Type invalid!")
 

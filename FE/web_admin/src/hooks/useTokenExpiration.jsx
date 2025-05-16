@@ -22,9 +22,9 @@ export const useTokenExpiration = () => {
 
                 const formattedTimeLeft = `${hours}:${minutes}:${seconds}`;
                 const expirationTime = new Date(parseInt(expParseInt) * 1000).toLocaleDateString();
-                console.log('Checking expiration...');
-                console.log('Expiration time:', expirationTime);
-                console.log('Count time left: ', formattedTimeLeft);
+                // console.log('Checking expiration...');
+                // console.log('Expiration time:', expirationTime);
+                // console.log('Count time left: ', formattedTimeLeft);
     
                 if (timeLeft <= 0) {
                     console.log('Token expired!');

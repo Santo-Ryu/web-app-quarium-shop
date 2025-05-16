@@ -8,7 +8,8 @@ export const CustomTable = ({
     hiddenSearchBar,
     columns,
     data,
-    rowPerPage
+    rowPerPage,
+    onSelectChange = null
 }) => {
     const [search, setSearch] = useState("");
 
@@ -26,31 +27,33 @@ export const CustomTable = ({
         <section className="custom-table">
             <header className="custom-table__header">
                 {selectOption != null && 
-                    <select className='custom-table__select' name="" id="">
+                    <select className='custom-table__select' name="" id="" onChange={(e) => onSelectChange(e.target.value)}>
                         {selectOption.map((e, key) => (
                             <option key={key} value={e.id}>{e.option}</option>
                         ))}
                     </select>
                 }
-                {hiddenSearchBar && 
-                    <input
-                        className='custom-table__input'
-                        type="text"
-                        placeholder="Tìm kiếm"
-                        value={search}
-                        onChange={handleFilter}
-                    />
-                }
-                {buttons != null && 
-                    <div className='custom-table__buttons'>
-                        {buttons != null && buttons.map((e, key) => (
-                            <button className='custom-table__buttons--item' onClick={e.func} key={key}>
-                                <FontAwesomeIcon icon={e.icon} />
-                                {e.name}
-                            </button>
-                        ))}
-                    </div>
-                }
+                <div className='custom-table__aside'>
+                    {hiddenSearchBar && 
+                        <input
+                            className='custom-table__input'
+                            type="text"
+                            placeholder="Tìm kiếm"
+                            value={search}
+                            onChange={handleFilter}
+                        />
+                    }
+                    {buttons != null && 
+                        <div className='custom-table__buttons'>
+                            {buttons != null && buttons.map((e, key) => (
+                                <button className='custom-table__buttons--item' onClick={e.func} key={key}>
+                                    <FontAwesomeIcon icon={e.icon} />
+                                    {e.name}
+                                </button>
+                            ))}
+                        </div>
+                    }
+                </div>
             </header>
 
             <article className='custom-table__content'>

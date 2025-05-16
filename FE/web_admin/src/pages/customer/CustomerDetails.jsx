@@ -6,7 +6,7 @@ import { DetailsContent } from '../../components/DetailsContent';
 import { FieldsRenderer } from "../../components/FieldsRenderer";
 import { useGetAccount } from "../../hooks/useAdmin";
 import { useState, useEffect, useRef } from "react"
-import { updateCustomer, updateCustomerImage } from "../../app/api/admin.api";
+import { updateCustomer, updateImage } from "../../app/api/admin.api";
 
 export const CustomerDetails = () => {
     const [customer, setCustomer] = useState();
@@ -87,7 +87,7 @@ export const CustomerDetails = () => {
         if (!file) return;
 
         try {
-            const success = await updateCustomerImage(customer.id, "customer", file);
+            const success = await updateImage(customer.id, "customer", file);
             if (success) {
                 alert("Cập nhật ảnh thành công");
                 // cập nhật lại ảnh để hiển thị

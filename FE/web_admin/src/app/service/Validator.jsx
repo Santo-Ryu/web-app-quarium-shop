@@ -43,5 +43,12 @@ export const formatCurrencyVN = (amount) => {
 };
 
 export const formatStringToDate = (str) => {
-  return str ? new Date(str).toISOString().split("T")[0] : "NULL"
+  return str ? new Date(str).toISOString().split("T")[0] : ""
+}
+
+export const formatStringToDate2 = (dateString) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  if (isNaN(date)) return "";
+  return date.toISOString().split('T')[0];
 }

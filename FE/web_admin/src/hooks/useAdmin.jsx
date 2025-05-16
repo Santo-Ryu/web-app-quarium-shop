@@ -21,6 +21,7 @@ export const useGetAccount = () => {
         }
     };
 
+    console.log(data)
     useEffect(() => {
         fetchData();
     }, []);

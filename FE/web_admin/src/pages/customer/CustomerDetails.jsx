@@ -49,10 +49,11 @@ export const CustomerDetails = () => {
     }
 
     const handleFieldChange = (key, value) => {
+        if (key === "date") key = "birthDate"; // map lại key đúng với adminInfo
         setCustomer(prev => ({
             ...prev,
-            [key]: value
-        }))
+            [key]: value,
+        }));
     }
 
     const typeInfo = [
@@ -62,8 +63,8 @@ export const CustomerDetails = () => {
         { key: "phone", label: "Số điện thoại", value: customer?.phone || "", type: "tel", disabled: disabledInput },
         { key: "email", label: "Email", value: customer?.email || "", type: "email", disabled: true },
         { key: "address", label: "Địa chỉ", value: customer?.address || "", type: "text", disabled: disabledInput },
-        { key: "birthDate", label: "Ngày sinh", value: customer?.birthDate
-            ? new Date(customer.birthDate).toISOString().split("T")[0] : "", type: "date", disabled: disabledInput },
+        { key: "date", label: "Ngày sinh", value: customer?.birthDate
+            ? new Date(customer.birthDate).toISOString().split("T")[0] : "", type: "date", name: "birthDate", disabled: disabledInput },
         { key: "createdAt", label: "Ngày đăng ký", value: customer?.createdAt
             ? new Date(customer.createdAt).toISOString().split("T")[0] : "", type: "date", disabled: true },
         { key: "updatedAt", label: "Cập nhật gần đây", value: customer?.updatedAt

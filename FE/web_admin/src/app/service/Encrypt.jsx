@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
-import CryptoJS, { enc } from "crypto-js";
+import { useState } from "react";
+import CryptoJS from "crypto-js";
 
 // MÃ HÓA AES + THUẬT TOÁN GIẤU KEY VÀO CHUỖI MÃ HÓA
 const generateAESKey = () => {
@@ -74,6 +75,8 @@ const mixEncodedData = (AESKey, encryptData, iv, timeStr) => {
     return mixEncodeData;
 }
 
+/**
+
 // Mã hóa dữ liệu bằng AESKey mới
 export const encrypt = (data) => {
     const AESKey = generateAESKey();
@@ -115,6 +118,8 @@ export const decrypt = (encodedData) => {
     return decryptText.toString(CryptoJS.enc.Utf8);
 };
 
+**/
+
 const parseMixedParts = (mixedParts) => {
     const AESKeyParts = [];
     const ivParts = [];
@@ -135,4 +140,28 @@ const parseMixedParts = (mixedParts) => {
 // MÃ HÓA 1 CHIỀU
 export const hashPassword = (password) => {
     return CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
+}
+
+
+
+/***********************/
+const key = CryptoJS.enc.Utf8.parse("0123456789abcdef0123456789abcdef");
+const iv = CryptoJS.enc.Utf8.parse("abcdef9876543210");
+
+export function encrypt(text) {
+  const encrypted = CryptoJS.AES.encrypt(text, key, {
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7,
+  });
+  return encrypted.toString();
+}
+
+export function decrypt(ciphertext) {
+  const decrypted = CryptoJS.AES.decrypt(ciphertext, key, {
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7,
+  });
+  return decrypted.toString(CryptoJS.enc.Utf8);
 }

@@ -105,3 +105,48 @@ export const updateImage = async (id, type, file) => {
     }
 }
 
+export const updateAdmin = async (admin) => {
+    try {
+        const token = localStorage.getItem('token')
+        if (token) {
+            const URL = `${BASE_URL}api/admin/update_admin`
+            const response = await axios.post(
+                URL, admin,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+    
+            return response.status === 200
+        }
+    }catch(error) {
+        console.log(error?.response?.data?.message);
+        throw error;
+    }
+}
+
+export const changePassword = async (admin) => {
+    try {
+        const token = localStorage.getItem('token')
+        if (token) {
+            const URL = `${BASE_URL}api/admin/change_password`
+            const response = await axios.post(
+                URL, admin,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+    
+            return response.status === 200
+        }
+    }catch(error) {
+        console.log(error?.response?.data?.message);
+        throw error;
+    }
+}

@@ -1,5 +1,6 @@
 package com.aquariumshop.aquariumshop.controller
 
+import com.aquariumshop.aquariumshop.dto.request.DiscountProductRequest
 import com.aquariumshop.aquariumshop.dto.request.ProductUpdateRequest
 import com.aquariumshop.aquariumshop.dto.response.APIResponse
 import com.aquariumshop.aquariumshop.dto.response.CommentResponse
@@ -98,5 +99,15 @@ class ProductController(
     @PostMapping("/admin/update_product")
     fun updateProduct(@RequestBody request: ProductUpdateRequest): ResponseEntity<APIResponse<Any>> {
         return productServiceImpl.updateProduct(request)
+    }
+
+    @PostMapping("/admin/apply_discount")
+    fun applyDiscount(@RequestBody request: List<DiscountProductRequest>): ResponseEntity<APIResponse<Any>> {
+        return productServiceImpl.applyDiscountProduct(request)
+    }
+
+    @PostMapping("/admin/destroy_discount")
+    fun destroyDiscount(@RequestBody request: List<DiscountProductRequest>): ResponseEntity<APIResponse<Any>> {
+        return productServiceImpl.destroyDiscountProduct(request)
     }
 }

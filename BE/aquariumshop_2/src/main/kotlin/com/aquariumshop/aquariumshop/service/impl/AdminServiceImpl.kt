@@ -4,6 +4,7 @@ import com.aquariumshop.aquariumshop.dto.request.AuthenticateRequest
 import com.aquariumshop.aquariumshop.dto.request.OrderUpdateRequest
 import com.aquariumshop.aquariumshop.dto.response.APIResponse
 import com.aquariumshop.aquariumshop.dto.response.AdminAccountResponse
+import com.aquariumshop.aquariumshop.dto.response.AdminResponse
 import com.aquariumshop.aquariumshop.dto.response.CustomerAccountResponse
 import com.aquariumshop.aquariumshop.dto.response.CustomerResponse
 import com.aquariumshop.aquariumshop.dto.response.ResponseFactory
@@ -56,10 +57,11 @@ class AdminServiceImpl(
     val customerRepository: CustomerRepository,
     val customerMapper: CustomerMapper,
     val orderStatusRepository: OrderStatusRepository,
-    val userImageRepository: UserImageRepository
+    val userImageRepository: UserImageRepository,
+    val encryptServiceImpl: EncryptServiceImpl
 ): AdminService {
     override fun getAccount(id: Long): ResponseEntity<APIResponse<AdminAccountResponse>> {
-        val admin = adminRepository.findById(id).orElseThrow { RuntimeException("Không tìm thấy khách hàng!") }
+        val admin = adminRepository.findById(id).orElseThrow { RuntimeException("Không tìm thấy admin!") }
         val orders = orderRepository.findAll()
         val products = productRepository.findAll()
         val productImages = productImageRepository.findAll()
@@ -93,7 +95,35 @@ class AdminServiceImpl(
         customer.address = request.address
         customer.birthDate = stringToDate(request.birthDate.toString())
         customerRepository.save(customer)
+
+        println("------BIRTH_DATE_LOG------")
+        println(stringToDate(request.birthDate.toString()))
+        println(request.birthDate)
+        println(customer.birthDate)
+        val b = customerRepository.findById(customer.id).orElseThrow { RuntimeException("") }
+        println(b.birthDate)
+        println("--------------------------")
+
         return ResponseFactory.success(customer, "Tải dữ liệu thành công!")
+    }
+
+    override fun updateAdmin(request: AdminResponse): ResponseEntity<APIResponse<Any>> {
+        val admin = adminRepository.findById(request.id).orElseThrow { RuntimeException("Lỗi") }
+        admin.name = request.name
+        admin.gender = request.gender!!
+        admin.phone = request.phone
+        admin.birthDate = stringToDate(request.birthDate.toString())
+        adminRepository.save(admin)
+
+        println("------BIRTH_DATE_LOG------")
+        println(stringToDate(request.birthDate.toString()))
+        println(request.birthDate)
+        println(admin.birthDate)
+        val b = customerRepository.findById(admin.id).orElseThrow { RuntimeException("") }
+        println(b.birthDate)
+        println("--------------------------")
+
+        return ResponseFactory.success(admin, "Tải dữ liệu thành công!")
     }
 
     override fun destroyOrder(id: Long): ResponseEntity<APIResponse<Any>> {
@@ -133,7 +163,17 @@ class AdminServiceImpl(
     }
 
     override fun changePassword(request: AuthenticateRequest): ResponseEntity<APIResponse<Any>> {
-        TODO("Not yet implemented")
+        try {
+            val email = encryptServiceImpl.decrypt(request.email)
+            val admin = adminRepository.findByEmail(email)!!
+            admin.password = request.password
+            adminRepository.save(admin)
+
+            return ResponseFactory.success("ok", "Đổi mật khẩu thành công!")
+        }catch (e: Exception) {
+            e.printStackTrace()
+            return ResponseFactory.success("ok", "Đổi mật khẩu thất bại!")
+        }
     }
 
     override fun deleteCustomer(id: Long): ResponseEntity<APIResponse<Any>> {
@@ -176,7 +216,7 @@ class AdminServiceImpl(
         return ResponseFactory.success("ok", "Cập nhật thành công!")
     }
 
-    fun stringToDate(dateString: String, pattern: String = "dd/MM/yyyy"): Date? {
+    fun stringToDate(dateString: String, pattern: String = "yyyy-MM-dd"): Date? {
         return try {
             val formatter = SimpleDateFormat(pattern, Locale.getDefault())
             formatter.parse(dateString)

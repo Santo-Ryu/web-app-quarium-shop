@@ -109,3 +109,55 @@ export const updateProduct= async (product) => {
         throw error;
     }
 }
+
+export const applyDiscount= async (list) => {
+    try {
+        const token = localStorage.getItem('token')
+        if (token) {
+            const URL = `${BASE_URL}api/admin/apply_discount`
+            const response = await axios.post(
+                URL, list,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+    
+            if (response.status === 200) {
+               return true
+            }else return false
+        }
+    }catch(error) {
+        alert(error?.response?.data?.message)
+        console.log(error?.response?.data?.message);
+        throw error;
+    }
+}
+
+export const destroyDiscount= async (list) => {
+    try {
+        const token = localStorage.getItem('token')
+        if (token) {
+            const URL = `${BASE_URL}api/admin/destroy_discount`
+            const response = await axios.post(
+                URL, list,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+    
+            if (response.status === 200) {
+               return true
+            }else return false
+        }
+    }catch(error) {
+        alert(error?.response?.data?.message)
+        console.log(error?.response?.data?.message);
+        throw error;
+    }
+}

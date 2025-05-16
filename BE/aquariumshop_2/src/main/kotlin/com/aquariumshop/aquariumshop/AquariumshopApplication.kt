@@ -1,5 +1,6 @@
 package com.aquariumshop.aquariumshop
 
+import com.aquariumshop.aquariumshop.service.impl.EncryptServiceImpl
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -27,6 +28,13 @@ class AquariumshopApplication {
 		println("Mail SMTP Auth: ${env.getProperty("MAIL_PROPERTIES_MAIL_SMTP_AUTH")}")
 		println("Mail STARTTLS Enable: ${env.getProperty("MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE")}")
 		println("======================================")
+
+		val ES = EncryptServiceImpl()
+		val data = "hello"
+		val dataEn = ES.encrypt(data)
+		val dataDe = ES.decrypt(dataEn)
+		println("EN: $dataEn")
+		println("DE: $dataDe")
 	}
 }
 

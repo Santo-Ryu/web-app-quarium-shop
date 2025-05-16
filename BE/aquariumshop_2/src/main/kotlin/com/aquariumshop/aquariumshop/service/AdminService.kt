@@ -4,6 +4,7 @@ import com.aquariumshop.aquariumshop.dto.request.AuthenticateRequest
 import com.aquariumshop.aquariumshop.dto.request.OrderUpdateRequest
 import com.aquariumshop.aquariumshop.dto.response.APIResponse
 import com.aquariumshop.aquariumshop.dto.response.AdminAccountResponse
+import com.aquariumshop.aquariumshop.dto.response.AdminResponse
 import com.aquariumshop.aquariumshop.dto.response.CustomerAccountResponse
 import com.aquariumshop.aquariumshop.dto.response.CustomerResponse
 import org.springframework.http.ResponseEntity
@@ -17,4 +18,5 @@ interface AdminService {
     fun updateOrder(request: OrderUpdateRequest): ResponseEntity<APIResponse<Any>>
     fun deleteCustomer(id: Long): ResponseEntity<APIResponse<Any>>
     fun updateCustomer(request: CustomerResponse): ResponseEntity<APIResponse<Any>>
+    fun updateAdmin(request: AdminResponse): ResponseEntity<APIResponse<Any>>
 }

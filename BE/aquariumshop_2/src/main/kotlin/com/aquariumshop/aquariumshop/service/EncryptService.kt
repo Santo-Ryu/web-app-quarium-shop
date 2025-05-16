@@ -1,7 +1,7 @@
 package com.aquariumshop.aquariumshop.service
 
 interface EncryptService {
-    fun encrypt(data: String): String
-    fun decrypt(encodedData: String): String
+    fun encrypt(plainText: String): String
+    fun decrypt(encryptedText: String): String
     fun hashPassword(password: String): String
 }

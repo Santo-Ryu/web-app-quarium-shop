@@ -1,5 +1,6 @@
 package com.aquariumshop.aquariumshop.service.impl
 
+import com.aquariumshop.aquariumshop.dto.request.DiscountProductRequest
 import com.aquariumshop.aquariumshop.dto.request.ProductUpdateRequest
 import com.aquariumshop.aquariumshop.dto.response.APIResponse
 import com.aquariumshop.aquariumshop.dto.response.CustomerAccountResponse
@@ -22,6 +23,13 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.nio.file.Paths
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
+import java.util.Date
+import java.util.Locale
 
 @Service
 class ProductServiceImpl(
@@ -111,4 +119,45 @@ class ProductServiceImpl(
 
         return ResponseFactory.success("", "Cập nhật thành công!")
     }
+
+    override fun applyDiscountProduct(request: List<DiscountProductRequest>): ResponseEntity<APIResponse<Any>> {
+        println("---------------------")
+        println("APPLY_DISCOUNT")
+        request.forEach { item ->
+            println(item)
+            val product = productRepository.findById(item.id).orElseThrow { RuntimeException("Lỗi") }
+            product.discountPercentage = item.discountPercentage
+            product.discountStartDate = LocalDateTime.now()
+
+            println("Date: " + item.discountEndDate)
+            println("Local date time: " + dateToLocalDateTime(item.discountEndDate))
+
+            product.discountEndDate = dateToLocalDateTime(item.discountEndDate)
+            productRepository.save(product)
+        }
+        println("---------------------")
+        return ResponseFactory.success("", "Áp dụng giảm giá thành công!")
+    }
+
+    override fun destroyDiscountProduct(request: List<DiscountProductRequest>): ResponseEntity<APIResponse<Any>> {
+        println("---------------------")
+        println("DESTROY_DISCOUNT")
+        request.forEach { item ->
+            println(item)
+            val product = productRepository.findById(item.id).orElseThrow { RuntimeException("Lỗi") }
+            product.discountPercentage = 0
+            product.discountStartDate = null
+            product.discountEndDate = null
+            productRepository.save(product)
+        }
+        println("---------------------")
+        return ResponseFactory.success("", "Hủy giảm giá thành công!")
+    }
+
+    fun dateToLocalDateTime(date: Date?): LocalDateTime {
+        return date?.toInstant()
+            ?.atZone(ZoneId.systemDefault())
+            ?.toLocalDateTime() ?: LocalDateTime.now()
+    }
+
 }

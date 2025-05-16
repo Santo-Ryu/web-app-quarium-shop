@@ -1,8 +1,10 @@
 package com.aquariumshop.aquariumshop.controller
 
+import com.aquariumshop.aquariumshop.dto.request.AuthenticateRequest
 import com.aquariumshop.aquariumshop.dto.request.OrderUpdateRequest
 import com.aquariumshop.aquariumshop.dto.response.APIResponse
 import com.aquariumshop.aquariumshop.dto.response.AdminAccountResponse
+import com.aquariumshop.aquariumshop.dto.response.AdminResponse
 import com.aquariumshop.aquariumshop.dto.response.CustomerAccountResponse
 import com.aquariumshop.aquariumshop.dto.response.CustomerResponse
 import com.aquariumshop.aquariumshop.service.impl.AdminServiceImpl
@@ -47,5 +49,14 @@ class AdminController(
     @PostMapping("/admin/update_customer")
     fun updateCustomer(@RequestBody request: CustomerResponse): ResponseEntity<APIResponse<Any>> {
         return adminServiceImpl.updateCustomer(request)
+    }
+    @PostMapping("/admin/update_admin")
+    fun updateAdmin(@RequestBody request: AdminResponse): ResponseEntity<APIResponse<Any>> {
+        return adminServiceImpl.updateAdmin(request)
+    }
+
+    @PostMapping("/admin/change_password")
+    fun changePassword(@RequestBody request: AuthenticateRequest): ResponseEntity<APIResponse<Any>> {
+        return adminServiceImpl.changePassword(request)
     }
 }

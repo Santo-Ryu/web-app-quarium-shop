@@ -13,7 +13,14 @@ const modules = {
   ]
 };
 
-export const FieldsRenderer = ({fields}) => {
+export const FieldsRenderer = ({fields, onChange}) => {
+    const typeGender = (type) => {
+        switch(type) {
+            case "OTHER": return "Khác"
+            case "FEMALE": return "Nữ"
+            case "MALE": return "Nam"
+        }
+    }
     return (
         <>
             <dl className="fields-renderer">
@@ -21,11 +28,22 @@ export const FieldsRenderer = ({fields}) => {
                     <div className="fields-renderer__item" key={idx}>
                         {field.label && <label className="fields-renderer__item--label">{field.label}</label>}
                         {field.type === "quill" ? (
-                            <ReactQuill className="fields-renderer__quill" theme="snow" value={field.value} modules={modules} readOnly={field.disabled} />
+                            <ReactQuill 
+                                className="fields-renderer__quill" theme="snow" 
+                                value={field.value} 
+                                modules={modules} 
+                                readOnly={field.disabled} 
+                                onChange={(value) => onChange(field.key, value)}
+                            />
                         ) : field.type === "select" ? (
-                            <select className="fields-renderer__item--select" disabled={field.disabled}>
+                            <select 
+                                className="fields-renderer__item--select" 
+                                disabled={field.disabled}
+                                value={field.value}
+                                onChange={(e) => onChange(field.key, e.target.value)}
+                            >
                             {field?.options.map((opt, i) => (
-                                <option key={i} value={opt}>{opt}</option>
+                                <option key={i} value={opt}>{typeGender(opt)}</option>
                             ))}
                             </select>
                         ) : field.type === "button" ? (
@@ -40,6 +58,7 @@ export const FieldsRenderer = ({fields}) => {
                                 type={field?.type}
                                 value={field.value}
                                 disabled={field?.disabled}
+                                onChange={(e) => onChange(field.key, e.target.value)}
                             />
                         )}
                     </div>

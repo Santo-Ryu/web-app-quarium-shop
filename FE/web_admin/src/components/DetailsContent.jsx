@@ -1,9 +1,15 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { BASE_URL } from "../app/config/configApi"
 
 export const DetailsContent = ({
     listButton,
-    layout
+    layout,
+    image,
+    onImageClick,
+    fileInputRef,
+    onImageChange
 }) => {
+
     return (
         <>
             <main className="details-content">
@@ -15,7 +21,23 @@ export const DetailsContent = ({
 
                 <article className="details-content__func">
                     <h3 className="details-content__func--header">Hình ảnh</h3>
-                    <img className="details-content__func--image" src="/src/assets/avt1.jpg" alt="Image" />
+
+                    <img 
+                        className="details-content__func--image"
+                        src={`${BASE_URL}api/public/image?name=${image}`} 
+                        alt="Image"    
+                        onClick={onImageClick}
+                    />
+                    
+                    {/* Hidden file input */}
+                    <input
+                        type="file"
+                        accept="image/*"
+                        ref={fileInputRef}
+                        onChange={onImageChange}
+                        style={{ display: "none" }}
+                    />
+
                     <ul className="details-content__func--list-button">
                         {listButton.map((e, key) => (
                             <li className="list-button__item" key={key}>

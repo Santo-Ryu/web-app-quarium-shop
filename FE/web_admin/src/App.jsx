@@ -37,17 +37,17 @@ function App() {
             } />
 
             <Route path="/order" element={<PrivateRoute><OrderPage /></PrivateRoute>} />
-            <Route path="/order-details" element={<PrivateRoute><OrderDetails /></PrivateRoute>} /> {/* /order-details/{id} */}
-            <Route path="/order-update" element={<PrivateRoute><OrderUpdate /></PrivateRoute>} /> {/* /order-update/{id} */}
+            <Route path="/order-details/:id" element={<PrivateRoute><OrderDetails /></PrivateRoute>} /> {/* /order-details/:id */}
+            <Route path="/order-update/:id" element={<PrivateRoute><OrderUpdate /></PrivateRoute>} /> {/* /order-update/:id */}
 
             <Route path="/customer" element={<PrivateRoute><Customer /></PrivateRoute>} />
-            <Route path="/customer-details" element={<PrivateRoute><CustomerDetails /></PrivateRoute>} /> {/* /customer-details/{id} */}
-            <Route path="/customer-order-history" element={<PrivateRoute><CustomerOrderHistory /></PrivateRoute>} /> {/* /customer-order-history/{id} */}
+            <Route path="/customer-details/:id" element={<PrivateRoute><CustomerDetails /></PrivateRoute>} /> {/* /customer-details/:id */}
+            <Route path="/customer-order-history/:id" element={<PrivateRoute><CustomerOrderHistory /></PrivateRoute>} /> {/* /customer-order-history/:id */}
 
             <Route path="/categories" element={<PrivateRoute><Categories /></PrivateRoute>} />
 
             <Route path="/product" element={<PrivateRoute><Product /></PrivateRoute>} />
-            <Route path="/product-details" element={<PrivateRoute><ProductDetails /></PrivateRoute>} /> {/* /customer-details/{id} */}
+            <Route path="/product-details" element={<PrivateRoute><ProductDetails /></PrivateRoute>} /> {/* /customer-details/:id */}
 
             <Route path="/personal" element={<PrivateRoute><Personal /></PrivateRoute>} />
 

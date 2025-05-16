@@ -1,11 +1,51 @@
-import { width } from '@fortawesome/free-brands-svg-icons/fa42Group';
 import { CustomTable } from '../../components/CustomTable';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../../app/config/configApi';
+import { useGetAccount } from '../../hooks/useAdmin';
+import { formatCurrencyVN } from '../../app/service/Validator';
+import { useState, useEffect } from "react"
+import { deleteProductInOrder, updateOrder } from '../../app/api/order.api';
 
 export const OrderUpdateContent = ({
     id
 }) => {
     const navigate = useNavigate();
+    const [orderState, setOrderSate] = useState({
+        orderId: 0,
+        orderStatus: "",
+        products: [],
+    });
+    const {data, isLoading, fetchData } = useGetAccount()
+
+    const orders = data?.orders
+    const order = orders?.find(item => item.id == id)
+    const customer = order?.customer
+    const orderItems = data?.orderItems
+    const myOrderItems = orderItems?.filter(item => item.order.id === order.id)
+    const productImages = data?.productImages
+
+    useEffect(() => {
+        if (order && myOrderItems && productImages && orderState.products.length === 0) {
+            const updatedProduct = myOrderItems.map((item) => ({
+                productId: item.product.id,
+                productName: item.product.name,
+                image: productImages.find(pi => pi.product.id === item.product.id)?.name || "loading.jpg",
+                quantity: item.quantity,
+                price: item.price,
+                discount: item.discountPercent,
+                totalPrice: item.price * item.quantity * (1 - item.discountPercent / 100),
+            }));
+
+            setOrderSate({
+                orderId: order.id,
+                orderStatus: order.status.statusName,
+                products: updatedProduct,
+            });
+        }
+    }, [order, myOrderItems, productImages]);
+
+
+    if (isLoading || !order) return "Đang tải..."
 
     const columns = [
         {
@@ -16,11 +56,33 @@ export const OrderUpdateContent = ({
         {
             name: <span className="order-table__header">Hình ảnh</span>,
             sortable: true,
-            cell: row => (<img src={row.image} style={{borderRadius: '8px', border: '1px solid gray', width: '40px', height: '40px'}} alt='Product Image' />)
+            cell: row => (<img src={`${BASE_URL}api/public/image?name=${row.image}`} style={{borderRadius: '8px', border: '1px solid gray', width: '40px', height: '40px'}} alt='Product Image' />)
         },
         {
             name: <span className="order-table__header">Số lượng</span>,
-            selector: row => (<input className='order-table__quantity' type='number' value={row.quantity} />),
+            selector: (row, index) => (
+                <input 
+                    className='order-table__quantity' 
+                    type='number' 
+                    value={row.quantity} 
+                    min={1}
+                    onChange={e => {
+                        const quantity = parseInt(e.target.value) || 1;
+                        const newProduct = [...orderState.products];
+
+                        const discount = newProduct[index].discount || 0;
+                        const price = newProduct[index].price;
+                        const discountedPrice = discount > 0 
+                            ? Math.floor(price * (1 - discount / 100))
+                            : price;
+
+                        newProduct[index].quantity = quantity;
+                        newProduct[index].totalPrice = discountedPrice * quantity;
+
+                        setOrderSate(prev => ({ ...prev, product: newProduct }));
+                    }} 
+                />
+            ),
             sortable: true,
         },
         {
@@ -31,46 +93,74 @@ export const OrderUpdateContent = ({
                     {row.discount > 0 ? (
                         <>
                             <p style={{ textDecoration: 'line-through', color: '#999' }}>{row.price}</p>
-                            <p>{Math.round(parseFloat(row.price) * (1 - row.discount)).toLocaleString()}.000 (-{row.discount*100}%)</p>
+                            <p>{formatCurrencyVN(Math.floor(row.price * (1 - parseFloat(row.discount) / 100)))}</p>
                         </>
                     ) : (
-                        <p>{row.price}</p>
+                        <p>{formatCurrencyVN(row.price)}</p>
                     )}
                 </div>
             )
         },
         {
             name: <span className="order-table__header">Tổng tiền</span>,
-            selector: row => row.totalPrice,
+            selector: row => formatCurrencyVN(row.totalPrice),
             sortable: true
         },
         {
             name: <span className="order-table__header">Chức năng</span>,
             sortable: true,
             cell: row => (
-                <button className='order-table__button--delete'>Xóa</button>
+                <button className='order-table__button--delete' onClick={() => handleDeleteProductInOrder(order.id, row.productId)}>Xóa</button>
             )
         }
     ]
 
-    const data = [
-        { id: 1, productName: "Cá beta thái", image: "/src/assets/beta1.jpg", quantity: 1, price: "200.000", totalPrice: "160.000", discount: 0.2},
-        { id: 2, productName: "Cá beta sữa", image: "/src/assets/beta3.jpg", quantity: 1, price: "120.000", totalPrice: "120.000", discount: 0},
-    ]      
+    const handleUpdateOrder = async (request, id) => {
+        const response = await updateOrder(request)
+        if (response) {
+            alert("Cập nhật thành công!")
+            navigate(`/order-details/${id}`)
+        }else alert("Có lỗi xảy ra!")
+    }
+
+    const handleDeleteProductInOrder = async (orderId, productId) => {
+        const response = await deleteProductInOrder(orderId, productId)
+        if (response) {
+            alert("Xóa sản phẩm thành công!")
+            navigate("/order")
+        }else alert("Có lỗi xảy ra!")
+    }
 
     const buttonList = [
-        {buttonName: 'Lưu', className: 'order-details__button order-details__button--edit', onClick: () => {}},
-        {buttonName: 'Đóng', className: 'order-details__button order-details__button--cancel', onClick: () => navigate('/order-details')}
+        {buttonName: 'Lưu', className: 'order-details__button order-details__button--edit', onClick: () => {handleUpdateOrder(orderState, order.id)}},
+        {buttonName: 'Đóng', className: 'order-details__button order-details__button--cancel', onClick: () => navigate(`/order-details/${order.id}`)}
     ]
 
-    const selectStatus = ["Hoàn thành", "Chờ xử lý", "Đang giao"]
+    const selectStatus = ["Đã hoàn thành", "Đang xử lý", "Đang vận chuyển"]
+
+    const priceTemp = orderState.products.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const priceDiscount = orderState.products.reduce((sum, item) => {
+        if (item.discount > 0) {
+            return sum + (item.price * item.quantity * item.discount / 100);
+        }
+        return sum;
+    }, 0);
+    const totalPrice = priceTemp - priceDiscount;
 
     return (
         <article className="order-details">
             <div className="order-details__main">
                 <header className="order-details__header">
-                    <h4 className="order-details__title">Mã đơn hàng: <u>#89988</u></h4>
-                    <select className='order-details__select' name="" id="">
+                    <h4 className="order-details__title">Mã đơn hàng: <u>#{order.id}</u></h4>
+                    <select className='order-details__select' 
+                        value={orderState.orderStatus} 
+                        onChange={e => 
+                            setOrderSate(prev => ({
+                                ...prev,
+                                orderStatus: e.target.value
+                            }))
+                        }
+                        >
                         {selectStatus.map((status, key) => (
                             <option key={key} value={status}>{status}</option>
                         )) }
@@ -81,15 +171,15 @@ export const OrderUpdateContent = ({
                     <section className="order-details__customer">
                         <h3 className="order-details__section-title">Khách hàng</h3>
                         <div className="order-details__customer-details--input">
-                            <input type="text" name="" placeholder='Khách hàng' id="" value={"Huynh Nhan"} />
-                            <input type="tel" name="" placeholder='Số điện thoại' id="" value={"035433714"} />
-                            <input type="text" name="" placeholder='Địa chỉ' value={"Đà Nẵng"} id="" />
+                            <p>{customer.name}</p>
+                            <p>{customer.phone}</p>
+                            <p>{customer.address}</p>
                         </div>
                     </section>
                     <section className="order-details__notes">
                         <h3 className="order-details__section-title">Ghi chú</h3>
                         <div className="order-details__notes-content">
-                            Lời nhắc: không có
+                            {order.note}
                         </div>
                     </section>
                 </div>
@@ -98,7 +188,7 @@ export const OrderUpdateContent = ({
                     <CustomTable 
                         hiddenSearchBar={false}
                         columns={columns}
-                        data={data}
+                        data={orderState.products}
                         rowPerPage={7}
                     />
                 </section>
@@ -110,25 +200,25 @@ export const OrderUpdateContent = ({
                     <div className="order-details__price-breakdown">
                         <dl className="order-details__price-item">
                             <dt className="order-details__price-label">Tạm tính</dt>
-                            <dd className="order-details__price-value">180.000 đ</dd>
+                            <dd className="order-details__price-value">{formatCurrencyVN(priceTemp)}</dd>
                         </dl>
                         <dl className="order-details__price-item">
                             <dt className="order-details__price-label">Khuyến mãi</dt>
-                            <dd className="order-details__price-value">-40.000 đ</dd>
+                            <dd className="order-details__price-value">{formatCurrencyVN(priceDiscount)}</dd>
                         </dl>
                         <dl className="order-details__price-item">
                             <dt className="order-details__price-label">Phí vận chuyển</dt>
-                            <dd className="order-details__price-value">10.000 đ</dd>
+                            <dd className="order-details__price-value">miễn phí</dd>
                         </dl>
                         <dl className="order-details__price-item">
                             <dt className="order-details__price-label">Thành tiền</dt>
-                            <dd className="order-details__price-value">190.000 đ</dd>
+                            <dd className="order-details__price-value">{formatCurrencyVN(totalPrice)}</dd>
                         </dl>
                     </div>
 
                     <footer className="order-details__total">
                         <h3 className="order-details__total-label">Cần thanh toán</h3>
-                        <p className="order-details__total-amount">190.000 đ</p>
+                        <p className="order-details__total-amount">{formatCurrencyVN(totalPrice)}</p>
                     </footer>
                 </section>
 

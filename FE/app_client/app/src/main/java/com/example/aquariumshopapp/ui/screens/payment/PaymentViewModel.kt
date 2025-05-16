@@ -25,6 +25,7 @@ class PaymentViewModel: ViewModel() {
     private val _orderItems = MutableStateFlow<List<OrderItem>>(emptyList())
     private val _categories = MutableStateFlow<List<Category>>(emptyList())
     private val _productImages = MutableStateFlow<List<ProductImage>>(emptyList())
+    private val _productImageAll = MutableStateFlow<List<ProductImage>>(emptyList())
     private val _isDataLoaded = MutableStateFlow(false)
     private val _carts = MutableStateFlow<List<CartItem>>(emptyList())
     private val _total = MutableStateFlow(0)
@@ -34,6 +35,7 @@ class PaymentViewModel: ViewModel() {
     val orderItems: StateFlow<List<OrderItem>> = _orderItems
     val categories: StateFlow<List<Category>> = _categories
     val productImages: StateFlow<List<ProductImage>> = _productImages
+    val productImageAll: StateFlow<List<ProductImage>> = _productImageAll
     val isDataLoaded: StateFlow<Boolean> = _isDataLoaded
     val carts: StateFlow<List<CartItem>> = _carts
     val total: StateFlow<Int> = _total
@@ -52,6 +54,7 @@ class PaymentViewModel: ViewModel() {
                 _orderItems.value = data.orderItems
                 _categories.value = data.categories
                 _productImages.value = data.productImages
+                _productImageAll.value = data.productImageAll
                 _isDataLoaded.value = true // đánh dấu đã tải xong
 
                 ShoppingCartService.getCartAndTotal(
@@ -59,7 +62,7 @@ class PaymentViewModel: ViewModel() {
                     onSuccess = { items, total ->
                         _carts.value = items
                         carts.value.forEach {
-                            Log.d("Firestore", "Sản phẩm: ${it.name} - SL: ${it.quantity}")
+                            Log.d("Firestore", "Sản phẩm: ${it.productId}, ${it.name}, ${it.image}, ${it.price}, ${it.discountPercentage}, ${it.quantity}")
                         }
 
                         _total.value = total

@@ -2,13 +2,16 @@ import { Helmet } from "react-helmet-async";
 import { MainLayout } from "../../layouts/MainLayout";
 import { faBackwardStep, faHistory } from "@fortawesome/free-solid-svg-icons";
 import { CustomTable } from "../../components/CustomTable";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useGetAccount } from "../../hooks/useAdmin";
+import { useEffect, useState } from "react";
+import { formatCurrencyVN } from "../../app/service/Validator";
 
 const switchColorStatus = (status) => {
     switch (status) {
-        case "Hoàn thành": return "#4CAF50";      // Xanh lá
-        case "Chờ xác nhận": return "#FFC107";    // Vàng
-        case "Đang giao": return "#2196F3";       // Xanh dương
+        case "Đã hoàn thành": return "#4CAF50";      // Xanh lá
+        case "Đang xử lý": return "#FFC107";    // Vàng
+        case "Đang vận chuyển": return "#2196F3";       // Xanh dương
         case "Đã hủy": return "#f44336";          // Đỏ
         default: return "#9E9E9E";                // Xám cho các trạng thái chưa rõ
     }
@@ -49,7 +52,7 @@ const columns = [
     },
     {
         name: <span style={{ fontSize: '0.9rem', }}>Ngày giao</span>,
-        selector: row => row.updatedAt,
+        selector: row => row.orderDate,
         sortable: true,
     },
     {
@@ -60,43 +63,57 @@ const columns = [
     },
     {
         name: <span style={{ fontSize: '0.9rem', }}>Chức năng</span>,
-        cell: row => (<Link to={'/order-details/{id}'}>Xem thêm</Link>),
+        cell: row => (<Link to={`/order-details/${row.id}`}>Xem thêm</Link>),
         sortable: true,
         width: '160px'
     },
 ]
 
-const data = [
-    { id: "1", code: "#51233", name: "Huynh Nhan", status: "Đang giao", createdAt: "08/05/2025", updatedAt: "NULL", price: "23,000 đ" },
-    { id: "2", code: "#51234", name: "Huynh Nhan", status: "Hoàn thành", createdAt: "07/05/2025", updatedAt: "07/05/2025", price: "150,000 đ" },
-    { id: "3", code: "#51235", name: "Huynh Nhan", status: "Chờ xác nhận", createdAt: "06/05/2025", updatedAt: "NULL", price: "80,000 đ" },
-    { id: "4", code: "#51236", name: "Huynh Nhan", status: "Đang giao", createdAt: "06/05/2025", updatedAt: "NULL", price: "210,000 đ" },
-    { id: "5", code: "#51237", name: "Huynh Nhan", status: "Chờ xác nhận", createdAt: "05/05/2025", updatedAt: "NULL", price: "45,000 đ" },
-    { id: "6", code: "#51238", name: "Huynh Nhan", status: "Đang giao", createdAt: "04/05/2025", updatedAt: "NULL", price: "99,000 đ" },
-    { id: "7", code: "#51239", name: "Huynh Nhan", status: "Hoàn thành", createdAt: "04/05/2025", updatedAt: "04/05/2025", price: "320,000 đ" },
-    { id: "8", code: "#51240", name: "Huynh Nhan", status: "Chờ xác nhận", createdAt: "03/05/2025", updatedAt: "NULL", price: "30,000 đ" },
-    { id: "9", code: "#51241", name: "Huynh Nhan", status: "Chờ xác nhận", createdAt: "02/05/2025", updatedAt: "NULL", price: "120,000 đ" },
-    { id: "10", code: "#51242", name: "Huynh Nhan", status: "Hoàn thành", createdAt: "01/05/2025", updatedAt: "01/05/2025", price: "170,000 đ" },
-    { id: "11", code: "#51243", name: "Huynh Nhan", status: "Đang giao", createdAt: "30/04/2025", updatedAt: "NULL", price: "55,000 đ" },
-    { id: "12", code: "#51244", name: "Huynh Nhan", status: "Hoàn thành", createdAt: "29/04/2025", updatedAt: "29/04/2025", price: "88,000 đ" },
-    { id: "13", code: "#51245", name: "Huynh Nhan", status: "Chờ xác nhận", createdAt: "28/04/2025", updatedAt: "NULL", price: "190,000 đ" },
-    { id: "14", code: "#51246", name: "Huynh Nhan", status: "Chờ xác nhận", createdAt: "28/04/2025", updatedAt: "NULL", price: "60,000 đ" },
-    { id: "15", code: "#51247", name: "Huynh Nhan", status: "Hoàn thành", createdAt: "27/04/2025", updatedAt: "27/04/2025", price: "230,000 đ" },
-    { id: "16", code: "#51248", name: "Huynh Nhan", status: "Đang giao", createdAt: "26/04/2025", updatedAt: "NULL", price: "75,000 đ" },
-    { id: "17", code: "#51249", name: "Huynh Nhan", status: "Chờ xác nhận", createdAt: "25/04/2025", updatedAt: "NULL", price: "100,000 đ" },
-    { id: "18", code: "#51250", name: "Huynh Nhan", status: "Chờ xác nhận", createdAt: "24/04/2025", updatedAt: "NULL", price: "40,000 đ" },
-    { id: "19", code: "#51251", name: "Huynh Nhan", status: "Hoàn thành", createdAt: "23/04/2025", updatedAt: "23/04/2025", price: "300,000 đ" },
-    { id: "20", code: "#51252", name: "Huynh Nhan", status: "Đang giao", createdAt: "22/04/2025", updatedAt: "NULL", price: "110,000 đ" }
-];
-
-export const CustomerOrderHistory = ({
-    id
-}) => {
+export const CustomerOrderHistory = () => {
+    const {id} = useParams()
     const navigate = useNavigate();
-    const label = {text: 'Lịch sử mua hàng của Huynh Nhan', icon: faHistory}
+    const {data, isLoading, fetchData} = useGetAccount()
+    const [customer, setCustomer] = useState();
+
+    useEffect(() => {
+        if (data?.customers) {
+            data?.customers?.map((e, index) => {
+                if (e.id === Number(id)) {
+                    console.log("Customer found: ", e)
+                    console.log("Customer ID FOUND: ", id)
+                    setCustomer(e)
+                    console.log(e)
+                }
+            })
+        }
+    }, [data, id])
+
+    if (isLoading) return "Đang tải"
+
+    const label = {text: `Lịch sử mua hàng của ${customer?.name}`, icon: faHistory}
     const buttons = [
-        {func: () => navigate('/customer-details'), name: "Trở về", icon: faBackwardStep}
+        {func: () => navigate(`/customer-details/${customer?.id}`), name: "Trở về", icon: faBackwardStep}
     ]
+
+
+    const myOrders = data?.orders
+    ?.filter(order => order?.customer?.id === Number(id))
+    ?.map((order, key) => (order));
+
+    const dataT = myOrders?.map((o, index) => 
+        {
+            console.log("ORDER: ", o)
+            return { 
+                id: o.id, 
+                code: `#${o.id}`, 
+                name: o?.customer?.name || "NULL", 
+                status: o.status.statusName, 
+                createdAt: o.createdAt, 
+                orderDate: new Date(o.orderDate).toISOString().split("T")[0] || "NULL", 
+                price: formatCurrencyVN(o.price)
+            }
+        }
+    );
 
     return (
         <>
@@ -108,7 +125,7 @@ export const CustomerOrderHistory = ({
                         buttons={buttons}
                         hiddenSearchBar={true}
                         columns={columns}
-                        data={data}
+                        data={dataT}
                         rowPerPage={10}
                     />
                 } 
